@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+
+<head>
+    <!-- Metas -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="LionCoders" />
+    <!-- Links -->
+    <link rel="icon" type="image/png" href="#" />
+    <!-- google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800" rel="stylesheet">
+    <!-- Plugins CSS -->
+    <link href="css/plugin.css" rel="stylesheet" />
+    <!-- style CSS -->
+    <link href="css/style.css" rel="stylesheet" />
+    <!--color switcher css-->
+    <link rel="stylesheet" href="css/switcher/skin-aqua.css" media="screen" id="style-colors" />
+    <!-- Document Title -->
+    <title>MiiPets - Contact us </title>
+</head>
+
+<body>
+    <!--Preloader starts-->
+    <div class="preloader js-preloader">
+        <img src="images/preloader.gif" alt="...">
+    </div>
+    <!--Preloader ends-->
+    <!--Page Wrapper starts-->
+    <div class="page-wrapper fixed-footer">
+      <!--header starts-->
+      <header class="header transparent scroll-hide" style="background-color: white;">
+          <!--Main Menu starts-->
+          <div class="site-navbar-wrap v1" style="background-color: #027931;">
+              <div class="container">
+                  <div class="site-navbar">
+                      <div class="row align-items-center">
+                          <div class="col-md-4 col-6">
+                              <a class="navbar-brand" href="#"><img src="images/miipets/logos/logo_white_transparent.png" alt="MiiPets" class="img-fluid"></a>
+                          </div>
+                          <div class="col-md-8 col-6">
+                              <nav class="site-navigation float-left">
+                                  <div class="container">
+                                      <ul class="site-menu js-clone-nav d-none d-lg-block">
+                                          <li class="no-children">
+                                              <a href="home.html">Home</a>
+                                          </li>
+                                          <li class="has-children">
+                                              <a href="#">Listings</a>
+                                              <ul class="dropdown">
+                                                  <li class="has-children">
+                                                      <a href="#">MiiSitter Services</a>
+                                                      <ul class="dropdown sub-menu">
+                                                          <li><a href="list-fullwidth.html">Walker</a></li>
+                                                          <li><a href="list-fullwidth-map.html">Boarding</a></li>
+                                                          <li><a href="list-left-sidebar.html">House Sitting</a></li>
+                                                          <li><a href="list-right-sidebar.html">Daycare</a></li>
+                                                      </ul>
+                                                  </li>
+                                                  <li class="has-children">
+                                                      <a href="#">MiiProvider Services</a>
+                                                      <ul class="dropdown sub-menu">
+                                                          <li><a href="grid-fullwidth.html">Grooming</a></li>
+                                                          <li><a href="grid-fullwidth-map.html">Trainer</a></li>
+                                                          <li><a href="grid-fullwidth-map.html">Adoption</a></li>
+                                                      </ul>
+                                                  </li>
+                                                </ul>
+                                          </li>
+                                          <li class="has-children">
+                                              <a href="about.html">About</a>
+                                              <ul class="dropdown">
+                                                  <li><a href="about.html">About MiiPets</a></li>
+                                                  <li class="has-children">
+                                                      <a href="#">FAQ</a>
+                                                      <ul class="dropdown sub-menu">
+                                                          <li><a href="list-fullwidth.html">MiiOwners</a></li>
+                                                          <li><a href="list-fullwidth-map.html">MiiSitters</a></li>
+                                                          <li><a href="list-left-sidebar.html">MiiProviders</a></li>
+                                                      </ul>
+                                                  </li>
+                                                  <li><a href="contact.html">Contact us</a></li>
+                                              </ul>
+                                          </li>
+                                          <li class="no-children">
+                                              <a href="login.html">Login</a>
+                                          </li>
+                                          <li class="no-children">
+                                              <a href="#">Register</a>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </nav>
+                              <div class="d-lg-none sm-right">
+                                  <a href="#" class="mobile-bar js-menu-toggle">
+                                      <span class="ion-android-menu"></span>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!--mobile-menu starts -->
+                  <div class="site-mobile-menu">
+                      <div class="site-mobile-menu-header">
+                          <div class="site-mobile-menu-close  js-menu-toggle">
+                              <span class="ion-ios-close-empty"></span>
+                          </div>
+                      </div>
+                      <div class="site-mobile-menu-body"></div>
+                  </div>
+                  <!--mobile-menu ends-->
+              </div>
+          </div>
+          <!--Main Menu ends-->
+      </header>
+      <!--Header ends-->
+
+      <br>
+      <br>
+      <br>
+      <br>
+
+        <!--Contact section starts-->
+        <div class="contact-section v1 section-padding">
+            <div class="container-fluid px-0">
+                <div class="row">
+                    <div class="col-md-12">
+                         <div class="contact-map v1">
+                        <iframe src="https://maps.google.com/maps?q=bootleggers%20century%20city&t=&z=13&ie=UTF8&iwloc=&output=embed" width="1920" height="400" style="border:0"></iframe>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7 col-md-12">
+                        <h3>Write to us</h3>
+                        <form action="php/send_mail.php" method="post" id="contact_form">
+                            <div class="form-control-wrap">
+                                <div id="message" class="alert alert-danger alert-dismissible fade"></div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="fname" placeholder="Name*" name="fname">
+                                </div>
+                                <div class="form-group mar-top-40">
+                                    <input type="email" class="form-control" id="email" placeholder="email*" name="email">
+                                </div>
+                                <div class="form-group mar-top-60">
+                                    <textarea class="form-control" rows="10" name="comment" id="comment" placeholder="Your Message"></textarea>
+                                </div>
+                                <div class="form-group mar-top-40">
+                                    <button type="submit" class="btn v7">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4 offset-lg-1 col-md-12">
+                        <div class="contact-widget sidebar-widget res-box mar-bot-30">
+                            <h3>Our Office</h3>
+                            <!--<img src="images/others/office.jpg" alt="...">-->
+                            <p>This is not our real office location, but more an inside joke until we get real offices.</p>
+                        </div>
+                        <!--
+                        <div class="sidebar-widget mar-bot-0">
+                            <div class="business-time">
+                                <div class="business-title">
+                                    <h6><i class="ion-android-alarm-clock"></i> Business Hours</h6>
+                                    <span class="float-right" style="background-color: #027931;">Open Now</span>
+                                </div>
+
+                                <ul class="business-hours">
+                                    <li class="business-open">
+                                        <span class="day">Saturday</span>
+                                        <div class="atbd_open_close_time">
+                                            <span class="time">11:00 am</span> - <span class="time">06:00 pm</span>
+                                        </div>
+                                    </li>
+                                    <li class="business-open trend-closed">
+                                        <span class="day">Sunday</span>
+                                        <div class="atbd_open_close_time">
+                                            <span class="time">Closed</span>
+                                        </div>
+                                    </li>
+                                    <li class="business-open">
+                                        <span class="day">Monday</span>
+                                        <div class="atbd_open_close_time">
+                                            <span class="time">10:00 am</span> - <span class="time">06:00 pm</span>
+                                        </div>
+                                    </li>
+                                    <li class="business-open">
+                                        <span class="day">Tuesday</span>
+                                        <div class="atbd_open_close_time">
+                                            <span class="time">10:00 am</span> - <span class="time">06:30 pm</span>
+                                        </div>
+                                    </li>
+                                    <li class="business-open">
+                                        <span class="day">Wednesday</span>
+                                        <div class="atbd_open_close_time">
+                                            <span class="time">09:00 am</span> - <span class="time">05:00 pm</span>
+                                        </div>
+                                    </li>
+                                    <li class="business-open">
+                                        <span class="day">Thursday</span>
+                                        <div class="atbd_open_close_time">
+                                            <span class="time">10:00 am</span> - <span class="time">07:00 pm</span>
+                                        </div>
+                                    </li>
+                                    <li class="business-open">
+                                        <span class="day">Friday</span>
+                                        <div class="atbd_open_close_time">
+                                            <span class="time">11:00 am</span> - <span class="time">06:00 pm</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Contact section ends-->
+        <!-- Scroll to top starts-->
+        <span class="scrolltotop"><i class="ion-arrow-up-c"></i></span>
+        <!-- Scroll to top ends-->
+    </div>
+    <!--Page Wrapper ends-->
+    <!--Footer Starts-->
+     <div class="footer-wrapper no-pad-tb footer-fixed v1" style="background-color: white;">
+       <div class="overlay op-1"></div>
+        <div class="footer-top-area section-padding" >
+            <div class="container">
+                <div class="row nav-folderized">
+                    <div class="col-lg-3 col-md-12">
+                        <div class="footer-logo">
+                            <a href="index.html"> <img src="images/miipets/logos/logo_high_resolution.png" alt="logo"></a>
+                            <div class="company-desc">
+                                <p>
+                                    HAPPIER.HEALTHIER.HOMES
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <div class="footer-content nav">
+                            <h2 class="title">Helpful Links</h2>
+                            <ul class="list">
+                                <li><a class="link-hov style2" href="login.html">Login</a></li>
+                                <li><a class="link-hov style2" href="home.html">Book</a></li>
+                                <li><a class="link-hov style2" href="#">FAQ</a></li>
+                                <li><a class="link-hov style2" href="#">Privacy policy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <div class="footer-content nav">
+                            <h2 class="title">Contact us</h2>
+                            <ul class="list footer-list">
+                                <li>
+                                    <div class="contact-info">
+                                        <div class="icon">
+                                            <i class="ion-ios-location"></i>
+                                        </div>
+                                        <div class="text">Bootlegger Century City</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="contact-info">
+                                        <div class="icon">
+                                            <i class="ion-email"></i>
+                                        </div>
+                                        <div class="text"><a href="#">info@miipets.com</a></div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="social-buttons style2">
+                                <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+                                <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+                                <li><a href="#"><i class="ion-social-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2 text-center">
+                        <p>&copy; 2019 listagram. All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Footer ends-->
+
+    <!--Scripts starts-->
+    <!--plugin js-->
+    <script src="js/plugin.js"></script>
+    <!--google maps-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8C7p0Ws2gUu7wo0b6pK9Qu7LuzX2iWY&amp;libraries=places&amp;callback=initAutocomplete"></script>
+    <!--Main js-->
+    <script src="js/main.js"></script>
+    <!--Scripts ends-->
+</body>
+
+</html>
