@@ -1,3 +1,12 @@
+# Tech stack
+
+* Python
+* Django (web framework)
+* Google cloud (hosting services)
+* HTML
+* CSS
+* JavaScript
+
 # MVP
 
 The code encountered here will be for the MVP product that MiiPets launches. It will cater the following needs:
@@ -11,3 +20,5 @@ Possible inclussions:
 
 * MiiPoints
 * MiiRewards
+
+# HTML template is obtained from Envato Market
