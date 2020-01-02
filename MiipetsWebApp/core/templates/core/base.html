@@ -122,7 +122,13 @@
       <br>
       <br>
       <br>
-
+      {% if messages %}
+        {% for message in messages %}
+          <div class=" alert alert-{{message.tags}}">
+            {{message}}
+          </div>
+        {% endfor %}
+      {% endif %}
       {% block content %}{% endblock %} <!-- Here the data of the page gets generated-->
 
       <span class="scrolltotop"><i class="ion-arrow-up-c"></i></span>

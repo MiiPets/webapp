@@ -120,7 +120,16 @@
             <div class="overlay op-4"></div>
             <div class="container">
                 <div class="row">
+
                     <div class="col-md-12 text-center">
+                      {% if messages %}
+                        {% for message in messages %}
+                          <div class=" alert alert-{{message.tags}}">
+                            {{message}}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                      <br>
                         <h1 class="hero-title v2">
                             Enjoy your freedom <!-- MAIN MESSAGE SEEN -->
                         </h1>
