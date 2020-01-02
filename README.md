@@ -6,6 +6,7 @@
 * HTML
 * CSS
 * JavaScript
+* Postgres
 
 # MVP
 
