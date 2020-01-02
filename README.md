@@ -6,7 +6,8 @@
 * HTML
 * CSS
 * JavaScript
-* Postgres
+
+While in the developement stage, the DB used is sqlite3. When we move into production this will change though.
 
 # MVP
 
