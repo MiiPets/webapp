@@ -1,0 +1,212 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+
+<head>
+  <!-- Metas -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="LionCoders" />
+  <!-- Links -->
+  <link rel="icon" type="image/png" href="#" />
+  <!-- google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800" rel="stylesheet">
+  <!-- Plugins CSS -->
+  <link rel='stylesheet' href="{% static 'css/plugin.css' %}">
+  <!-- style CSS -->
+  <link rel='stylesheet' href="{% static 'css/style.css' %}">
+
+  <!-- Adding title -->
+  {%if title%}
+    <title>MiiPets - {{title}}</title>
+  {% else %}
+    <title>MiiPets</title>
+  {% endif %}
+
+</head>
+
+<body>
+   <!--Preloader starts
+    <div class="preloader js-preloader">
+        <img src="images/preloader.gif" alt="...">
+    </div>-->
+    <!--Preloader ends-->
+
+    <!--Page Wrapper starts-->
+    <div class="page-wrapper fixed-footer">
+      <!--header starts-->
+      <header class="header transparent scroll-hide" style="background-color: white;">
+          <!--Main Menu starts-->
+          <div class="site-navbar-wrap v1" style="background-color: #027931;">
+              <div class="container">
+                  <div class="site-navbar">
+                      <div class="row align-items-center">
+                          <div class="col-md-4 col-6">
+                              <a class="navbar-brand" href="{% url 'core-home' %}"><img src="{% static 'images/miipets/logos/logo_white_transparent.png' %}" alt="MiiPets" class="img-fluid"></a>
+                          </div>
+                          <div class="col-md-8 col-6">
+                              <nav class="site-navigation float-left">
+                                  <div class="container">
+                                      <ul class="site-menu js-clone-nav d-none d-lg-block">
+                                          <li class="no-children">
+                                              <a href="{% url 'core-home' %}">Home</a>
+                                          </li>
+                                          <li class="has-children">
+                                              <a href="#">Listings</a>
+                                              <ul class="dropdown">
+                                                  <li class="has-children">
+                                                      <a href="#">MiiSitter Services</a>
+                                                      <ul class="dropdown sub-menu">
+                                                          <li><a href="#">Walker</a></li>
+                                                          <li><a href="#">Boarding</a></li>
+                                                          <li><a href="#">House Sitting</a></li>
+                                                          <li><a href="#">Daycare</a></li>
+                                                      </ul>
+                                                  </li>
+                                                  <li class="has-children">
+                                                      <a href="#">MiiProvider Services</a>
+                                                      <ul class="dropdown sub-menu">
+                                                          <li><a href="#">Grooming</a></li>
+                                                          <li><a href="#">Trainer</a></li>
+                                                          <li><a href="#">Adoption</a></li>
+                                                      </ul>
+                                                  </li>
+                                                </ul>
+                                          </li>
+                                          <li class="has-children">
+                                              <a href="{% url 'core-about' %}">About</a>
+                                              <ul class="dropdown">
+                                                  <li><a href="{% url 'core-about' %}">About MiiPets</a></li>
+                                                  <li class="has-children">
+                                                      <a href="{% url 'core-faq' %}">FAQ</a>
+                                                      <ul class="dropdown sub-menu">
+                                                        <li><a href="{% url 'core-faq' %}#miiowners-faq">MiiOwners</a></li>
+                                                        <li><a href="{% url 'core-faq' %}#miisitters-faq">MiiSitters</a></li>
+                                                        <li><a href="{% url 'core-faq' %}#miiproviders-faq">MiiProviders</a></li>
+                                                      </ul>
+                                                  </li>
+                                                  <li><a href="{% url 'core-contact' %}">Contact us</a></li>
+                                              </ul>
+                                          </li>
+                                          <li class="no-children">
+                                              <a href="#">Login</a>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </nav>
+                              <div class="d-lg-none sm-right">
+                                  <a href="#" class="mobile-bar js-menu-toggle">
+                                      <span class="ion-android-menu"></span>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!--mobile-menu starts -->
+                  <div class="site-mobile-menu">
+                      <div class="site-mobile-menu-header">
+                          <div class="site-mobile-menu-close  js-menu-toggle">
+                              <span class="ion-ios-close-empty"></span>
+                          </div>
+                      </div>
+                      <div class="site-mobile-menu-body"></div>
+                  </div>
+                  <!--mobile-menu ends-->
+              </div>
+          </div>
+          <!--Main Menu ends-->
+      </header>
+      <!--Header ends-->
+
+      <br>
+      <br>
+      <br>
+
+      {% block content %}{% endblock %} <!-- Here the data of the page gets generated-->
+
+      <span class="scrolltotop"><i class="ion-arrow-up-c"></i></span>
+      <!-- Scroll to top ends-->
+  </div>
+  <!--Page Wrapper ends-->
+  <!--Footer Starts-->
+   <div class="footer-wrapper no-pad-tb footer-fixed v1" style="background-color: white;">
+     <div class="overlay op-1"></div>
+      <div class="footer-top-area section-padding" >
+          <div class="container">
+              <div class="row nav-folderized">
+                  <div class="col-lg-3 col-md-12">
+                      <div class="footer-logo">
+                          <a href="{% url 'core-home' %}"> <img src="{% static 'images/miipets/logos/logo_high_resolution.png' %}" alt="logo"></a>
+                          <div class="company-desc">
+                              <p>
+                                  HAPPIER.HEALTHIER.HOMES
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-3 col-md-12">
+                      <div class="footer-content nav">
+                          <h2 class="title">Helpful Links</h2>
+                          <ul class="list">
+                              <li><a class="link-hov style2" href="#">Login</a></li>
+                              <li><a class="link-hov style2" href="#">Book</a></li>
+                              <li><a class="link-hov style2" href="#">FAQ</a></li>
+                              <li><a class="link-hov style2" href="#">Privacy policy</a></li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col-lg-3 col-md-12">
+                      <div class="footer-content nav">
+                          <h2 class="title">Contact us</h2>
+                          <ul class="list footer-list">
+                              <li>
+                                  <div class="contact-info">
+                                      <div class="icon">
+                                          <i class="ion-ios-location"></i>
+                                      </div>
+                                      <div class="text">Bootlegger Century City</div>
+                                  </div>
+                              </li>
+                              <li>
+                                  <div class="contact-info">
+                                      <div class="icon">
+                                          <i class="ion-email"></i>
+                                      </div>
+                                      <div class="text"><a href="#">info@miipets.com</a></div>
+                                  </div>
+                              </li>
+                          </ul>
+                          <ul class="social-buttons style2">
+                              <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+                              <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+                              <li><a href="#"><i class="ion-social-instagram"></i></a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="footer-bottom-area">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-8 offset-md-2 text-center">
+                      <p>&copy; 2019 listagram. All Rights Reserved.</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--Footer ends-->
+
+  <!--Scripts starts-->
+  <!--plugin js-->
+  <script src="{% static 'js/plugin.js' %}"></script>
+  <!--google maps-->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8C7p0Ws2gUu7wo0b6pK9Qu7LuzX2iWY&amp;libraries=places&amp;callback=initAutocomplete"></script>
+  <!--Main js-->
+  <script src="{% static 'js/main.js'  %}"></script>
+  <!--Scripts ends-->
+</body>
+
+</html>

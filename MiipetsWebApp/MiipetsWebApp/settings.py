@@ -31,6 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'core.apps.CoreConfig',
+    'miisitters.apps.MiisittersConfig',
+    'miiowners.apps.MiiownersConfig',
+    'sitter_bookings.apps.SitterBookingsConfig',
+    'phonenumber_field',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -113,8 +118,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
+
+GOOGLE_API_KEY = 'AIzaSyBq-jTx1C141HSzMyUk9KeaOm_2U2c69Uo' # !!this is personal and should be changed to official MIIPETS!!
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
 STATIC_URL = '/static/'
