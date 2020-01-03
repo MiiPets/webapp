@@ -1,0 +1,210 @@
+{%extends "core/base.html"%}
+{%load static%}
+
+{%block content%}
+
+  <!--Breadcrumb section starts-->
+      <!--<div class="breadcrumb-section" style="background-image: url(images/miipets/background/ramiz-dedakovic-9SWHIgu8A8k-unsplash.jpg); background-size: 100 100 ">
+        <div class="overlay op-5"></div>
+        <div class="container">
+            <div class="row align-items-center  pad-top-80">
+                <div class="col-md-6 col-12">
+                    <div class="breadcrumb-menu">
+                        <h2 class="page-title">FAQ</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!--Breadcrumb section ends-->
+
+    <!--FAQ Section starts-->
+    <div class="list-details-section section-padding faq-section pad-bot-90">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="list-menu" class="list_menu faq-menu">
+                        <ul class="list-details-tab fixed_nav">
+                            <li class="nav-item"><a href="#miiowners-faq">MiiOwners</a></li>
+                            <li class="nav-item"><a href="#miisitters-faq">MiiSitters</a></li>
+                            <li class="nav-item"><a href="#miiproviders-faq">MiiProviders</a></li>
+                            <!--li class="nav-item"><a href="#general-faq">General help</a></li>-->
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <!--Listing Details starts-->
+                    <div class="list-details-wrap">
+                        <div id="miiowners-faq" class="list-details-section">
+                            <h4>MiiOwners</h4>
+                            <div id="accordion1" role="tablist">
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingOne">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            How can I trust a MiiSitter?
+                                        </a>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="card-body">
+                                            We have vetted all our sitters. We have also put in a rating system with
+                                            detailed profiles, so that you have options when choosing your MiiSitter. We
+                                            ensure that ID numbers and photos line up with MiiSitters. We continue to put
+                                            processes in place to protect all parties involved.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingTwo">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            What are MiiRating and MiiPoints?
+                                        </a>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div class="card-body">
+                                            MiiRating is the rating you get from the Sitter. This will be determined by the Bio of your animals,
+                                            communication with Sitter, timely arrivals and departures. This rating will be displayed for the MiiPets community to see.
+                                            The better your rating the more likely MiiSitters and Providers we take your bookings.
+                                            <br>
+                                            You will also get MiiPoints for being a good MiiOwner. In the future these points will be redeemable for rewards.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingThree">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            How does Payment work?
+                                        </a>
+                                    </div>
+                                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div class="card-body">
+                                          There is no cash transactions. The payment will be made through the website (PayFast). (See T&C’s).
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingFour">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                            What happens if something goes wrong?
+                                        </a>
+                                    </div>
+                                    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                        <div class="card-body">
+                                          Safety and security are a must for both owner and sitter. In addition to the
+                                          steps MiiPets takes to help protect our community, we encourage both
+                                          owners and sitters to stay aware and take certain safety precautions when
+                                          they’re booking or sitting. For refunds from PayFast, please refer to the T&C’s
+                                          section.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="miisitters-faq" class="list-details-section">
+                            <h4>MiiSitter</h4>
+                            <div id="accordion2" role="tablist">
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="head_1">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapse_1" aria-expanded="false" aria-controls="collapseOne">
+                                             How does payment work?
+                                        </a>
+                                    </div>
+                                    <div id="collapse_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="head_1">
+                                        <div class="card-body">
+                                          There is no cash transactions. The payment will be made through the website
+                                          (PayFast) and the money will be distributed accordingly. We take a
+                                          percentage % of your booking. (See T&C’s).
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="head_2">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapse_2" aria-expanded="false" aria-controls="collapseTwo">
+                                            Can I cancel a booking?
+                                        </a>
+                                    </div>
+                                    <div id="collapse_2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="head_2">
+                                        <div class="card-body">
+                                          Yes. But this will effect you MiiRating. If you feel that the owner has over
+                                          sold their property or animals, we are happy to take queries. But we
+                                          recommend you finish the booking and then give a poor MiiRating, unless this puts you
+                                          in a dangerous position. MiiPets will take this into acount.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="head_3">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapse_3" aria-expanded="false" aria-controls="collapseThree">
+                                            What safety do I have?
+                                        </a>
+                                    </div>
+                                    <div id="collapse_3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="head_3">
+                                        <div class="card-body">
+                                          We have tried our best to ensure that ID numbers and photos line up with
+                                          MiiOwners. We cannot make any complete guarantees, but we have and will
+                                          continue to put processes in place to protect all parties involved.
+  `                                           </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="head_4">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour" aria-expanded="false" aria-controls="collapse_4">
+                                            What are MiiRating and MiiPoints?
+                                        </a>
+                                    </div>
+                                    <div id="collapse_4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="head_4">
+                                        <div class="card-body">
+                                          MiiRating is the rating you get for the service you provided. This will be
+                                          determined by the amount you charge, communication to owners timeliness.
+                                          This rating will be displayed for the MiiPets community to see. The better your
+                                          rating the more we will push your name in searches and the more bookings
+                                          you will receive.
+
+                                          You will also get MiiPoints for services provided which can be used by you to
+                                          upgrade your profile (eg from novice to advanced sitter). You will in the future
+                                          be able to use your MiiPoint to buy rewards.
+                                                                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="miiproviders-faq" class="list-details-section">
+                            <h4>MiiProviders</h4>
+                            <div id="accordion3" role="tablist">
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingOne">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapse_5" aria-expanded="false" aria-controls="collapseOne">
+                                            What are the benefits of being on MiiPets?
+                                        </a>
+                                    </div>
+                                    <div id="collapse_5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="card-body">
+                                            We bring the world to you. Easy bookings for your service, uploaded straight to your calendar.
+                                         </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingTwo">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapse_6" aria-expanded="false" aria-controls="collapseTwo">
+                                            What if they book out of office hours?
+                                        </a>
+                                    </div>
+                                    <div id="collapse_6" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div class="card-body">
+                                            A notification will be send to you if it is out of office hours / Or we can limit the bookings for you to only be open during business hours.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--FAQ Section starts-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FAQ Section ends-->
+{%endblock content%}

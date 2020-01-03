@@ -1,0 +1,41 @@
+{%extends "core/base.html"%}
+{%load static%}
+
+{%block content%}
+  <!--User Login section starts-->
+  <div class="user-login-section section-padding bg-fixed" style="background-image: url(images/header/hero-5.jpg)">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-10 offset-md-1  text-center">
+                  <div class="login-wrapper">
+                      <ul class="ui-list nav nav-tabs justify-content-center mar-bot-30" role="tablist">
+                          <li class="nav-item">
+                              <h3 style="color: #027931;">LOGIN</h3>
+                          </li>
+                      </ul>
+                      <div class="ui-dash tab-content">
+                          <div class="tab-pane fade show active" id="login" role="tabpanel">
+                              <form id="login-form" action="#" method="post">
+                                  {% csrf_token %}
+                                  {{form.as_p}}
+                                  <div class="row mar-top-20">
+                                      <div class="col-md-6 col-12 text-left"></div>
+                                      <div class="col-md-6 col-12 text-right">
+                                          <div class="res-box sm-left">
+                                              <a href="#" tabindex="5" class="forgot-password">Forgot Password?</a>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="res-box text-center mar-top-30">
+                                      <button type="submit" class="btn v3"  style="background-color: #027931;"><i class="ion-log-in"></i> Log In</button>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+<!--User login section ends-->
+{%endblock content%}
