@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from phonenumber_field.modelfields import PhoneNumberField
 #from address.models import AddressField
 
@@ -39,32 +39,10 @@ class Metrics(TimeStampMixin):
         ordering = ('-created_at',)
 
 
-class Role(models.Model):
-  '''
-  The Role entries are managed by the system,
-  automatically created via a Django data migration.
-
-  This allows users to be sitters, owners and providers
-  '''
-  PROVIDER = 1
-  SITTER = 2
-  OWNER = 3
-  ADMIN = 4
-  ROLE_CHOICES = (
-      (PROVIDER, 'provider'),
-      (SITTER, 'sitter'),
-      (OWNER, 'owner'),
-      (ADMIN, 'admin')
-  )
-
-  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
-
-  def __str__(self):
-      return self.get_id_display()
-
-
 class User(AbstractUser):
-  roles = models.ManyToManyField(Role)
+    is_owner = models.BooleanField(default=False)
+    is_sitter = models.BooleanField(default=False)
+
 
 class MiiOwner(TimeStampMixin):
     """
@@ -77,7 +55,7 @@ class MiiOwner(TimeStampMixin):
     name =  models.CharField(max_length=50)
     surname =  models.CharField(max_length=50)
     email = models.EmailField(max_length=254)
-    profile_picture = models.ImageField(upload_to=image_directory_path)
+    # profile_picture = models.ImageField(upload_to=image_directory_path)
     #location = AddressField()
 
     def __str__(self):
@@ -149,6 +127,7 @@ class SitterServices(TimeStampMixin):
 
     def __str__(self):
         return ("Sitter activity of {} with sitter: {}, with pet name being {}".format(self.type, self.sitter))
+
 
 class SitterBooking(TimeStampMixin):
     """

@@ -1,0 +1,12 @@
+{%extends "core/base.html"%}
+{%load static%}
+
+{%block content%}
+<div class="user-login-section section-padding bg-fixed">
+        <div class="col-md-10 offset-md-1  text-center">
+            <p>Select below the type of account you want to create</p>
+            <a href="{% url 'core-owner-register' %}" class="btn btn-student btn-lg" role="button">MiiOwner</a>
+            <a href="{% url 'core-sitter-register' %}" class="btn btn-teacher btn-lg" role="button">MiiSitter</a>
+        </div>
+</div>
+{%endblock content%}

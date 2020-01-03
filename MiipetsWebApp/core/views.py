@@ -2,8 +2,12 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View
+from django.contrib.auth import login, logout
+from django.shortcuts import redirect
+from django.views.generic import CreateView
+from .forms import MiiOwnerSignUpForm, MiiSitterSignUpForm
+from .models import User, Metrics
 
-from .models import Metrics
 
 def get_latest_metrics_for_about():
     """
@@ -23,12 +27,55 @@ def get_latest_metrics_for_about():
 
     return total_owners, total_sitters, total_providers, total_pets
 
+
+class MiiOwnerSignUpView(CreateView):
+    """
+    Used to crete a new MiiOwner user and allow this user
+    to only access certain parts of the website.
+    """
+
+    model = User
+    form_class = MiiOwnerSignUpForm
+    template_name = 'core/register_final.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'MiiOwner'
+        kwargs['title'] = 'Register'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('core-home')
+
+
+class MiiSitterSignUpView(CreateView):
+    """
+    Used to crete a new MiiSitter user and allow this user
+    to only access certain parts of the website.
+    """
+
+    model = User
+    form_class = MiiSitterSignUpForm
+    template_name = 'core/register_final.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'MiiSitter'
+        kwargs['title'] = 'Register'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('core-home')
+
 def home(request):
     """
     Home page view
     """
 
     return render(request, 'core/home.html')
+
 
 def about(request):
     """
@@ -47,6 +94,7 @@ def about(request):
 
     return render(request, 'core/about.html', context)
 
+
 def contact(request):
     """
     Contact us page view
@@ -58,6 +106,7 @@ def contact(request):
 
     return render(request, 'core/contact.html', context)
 
+
 def faq(request):
     """
     FAQ us page view
@@ -68,3 +117,22 @@ def faq(request):
           }
 
     return render(request, 'core/faq.html', context)
+
+def register(request):
+    """
+    View that asked the new user if they want to register
+    as a sitter or owner.
+    """
+
+    context = {
+          "title":"register"
+          }
+
+    return render(request, 'core/register.html', context)
+
+from django.contrib.auth import logout
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('core-home')

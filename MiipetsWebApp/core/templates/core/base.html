@@ -89,9 +89,15 @@
                                                   <li><a href="{% url 'core-contact' %}">Contact us</a></li>
                                               </ul>
                                           </li>
-                                          <li class="no-children">
-                                              <a href="#">Login</a>
-                                          </li>
+                                          {% if request.user.is_authenticated %}
+                                            <li class="no-children">
+                                                <a href="{% url 'core-logout' %}">Logout</a>
+                                            </li>
+                                          {%else%}
+                                            <li class="no-children">
+                                                <a href="#">Login</a>
+                                            </li>
+                                          {%endif%}
                                       </ul>
                                   </div>
                               </nav>
