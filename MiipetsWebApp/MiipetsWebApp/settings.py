@@ -117,6 +117,10 @@ PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
 AUTH_USER_MODEL = 'core.User'
 
+LOGIN_REDIRECT_URL = 'core-home'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'

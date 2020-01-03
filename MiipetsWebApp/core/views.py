@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.views.generic import CreateView
 from .forms import MiiOwnerSignUpForm, MiiSitterSignUpForm
 from .models import User, Metrics
+from .decorators import miiowner_required, miisitter_required
 
 
 def get_latest_metrics_for_about():
@@ -132,6 +133,13 @@ def register(request):
 
 from django.contrib.auth import logout
 
+
+def logout_view(request):
+    context = {
+        "title":"Login"
+    }
+
+    return render(request, 'core/login.html', context)
 
 def logout_view(request):
     logout(request)

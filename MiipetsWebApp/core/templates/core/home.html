@@ -90,7 +90,10 @@
                                               </li>
                                             {%else%}
                                               <li class="no-children">
-                                                  <a href="#">Login</a>
+                                                  <a href="{% url 'core-login' %}">Login</a>
+                                              </li>
+                                              <li class="no-children">
+                                                  <a href="{% url 'core-register' %}">Sign Up</a>
                                               </li>
                                             {%endif%}
                                         </ul>

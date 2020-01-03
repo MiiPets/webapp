@@ -40,8 +40,20 @@ class Metrics(TimeStampMixin):
 
 
 class User(AbstractUser):
+
+    """
+    Data that is required for all of the user types are defined in here
+    with specific data in the lower tables.
+    """
+
+    # used to differentiate users
     is_owner = models.BooleanField(default=False)
     is_sitter = models.BooleanField(default=False)
+    email = models.EmailField(max_length=254)
+    REQUIRED_FIELDS = ['email']
+
+    def __str__(self):
+        return ("{}, ID:{}".format(self.first_name, self.id))
 
 
 class MiiOwner(TimeStampMixin):
@@ -52,14 +64,11 @@ class MiiOwner(TimeStampMixin):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    name =  models.CharField(max_length=50)
-    surname =  models.CharField(max_length=50)
-    email = models.EmailField(max_length=254)
-    # profile_picture = models.ImageField(upload_to=image_directory_path)
+    profile_picture = models.ImageField(upload_to=image_directory_path)
     #location = AddressField()
 
     def __str__(self):
-        return ("MiiOwner with name: {} and surname: {}".format(self.name, self.surname))
+        return ("MiiOwner ({}), ID: {}".format(self.user.first_name, self.user.id))
 
 
 class Pets(TimeStampMixin):
@@ -78,7 +87,7 @@ class Pets(TimeStampMixin):
     profile_picture_path = models.ImageField(upload_to=image_directory_path)
 
     def __str__(self):
-        return ("Pet of user: {}, with pet name being {}".format(self.owner, self.name))
+        return ("{} of MiiOwner: {}".format( self.name, self.owner.id))
 
 
 class MiiSitter(TimeStampMixin):
@@ -87,16 +96,13 @@ class MiiSitter(TimeStampMixin):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    name =  models.CharField(max_length=50)
-    surname =  models.CharField(max_length=50)
-    email = models.EmailField(max_length=254)
     contact_number = PhoneNumberField()
     profile_picture = models.ImageField(upload_to=image_directory_path)
     #location = AddressField()
     bio = models.TextField()
 
     def __str__(self):
-        return ("MiiSitter with name: {} and surname: {}".format(self.name, self.surname))
+        return ("MiiSitter ({}), ID: {}".format(self.user.first_name, self.user.id))
 
 
 class SitterServices(TimeStampMixin):
@@ -136,6 +142,7 @@ class SitterBooking(TimeStampMixin):
     """
 
     owner = models.ForeignKey(MiiOwner, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(upload_to=image_directory_path)
     listing = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
     date_start = models.DateField()
     date_end = models.DateField()

@@ -95,7 +95,10 @@
                                             </li>
                                           {%else%}
                                             <li class="no-children">
-                                                <a href="#">Login</a>
+                                                <a href="{% url 'core-login' %}">Login</a>
+                                            </li>
+                                            <li class="no-children">
+                                                <a href="{% url 'core-register' %}">Sign Up</a>
                                             </li>
                                           {%endif%}
                                       </ul>
@@ -161,7 +164,7 @@
                       <div class="footer-content nav">
                           <h2 class="title">Helpful Links</h2>
                           <ul class="list">
-                              <li><a class="link-hov style2" href="#">Login</a></li>
+                              <li><a class="link-hov style2" href="{% url 'core-login' %}">Login</a></li>
                               <li><a class="link-hov style2" href="#">Book</a></li>
                               <li><a class="link-hov style2" href="#">FAQ</a></li>
                               <li><a class="link-hov style2" href="#">Privacy policy</a></li>
