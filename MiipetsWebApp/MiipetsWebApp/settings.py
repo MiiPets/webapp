@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
+    'miiprofile.apps.MiiprofileConfig',
     'phonenumber_field',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,6 +119,11 @@ PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 AUTH_USER_MODEL = 'core.User'
 
 LOGIN_REDIRECT_URL = 'core-home'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 

@@ -1,11 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from phonenumber_field.modelfields import PhoneNumberField
-#from address.models import AddressField
+
 
 def image_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
+    return 'profile_pictures/user_{}/{}'.format(instance.id, filename)
 
 
 class TimeStampMixin(models.Model):
@@ -50,6 +50,7 @@ class User(AbstractUser):
     is_owner = models.BooleanField(default=False)
     is_sitter = models.BooleanField(default=False)
     email = models.EmailField(max_length=254)
+    profile_picture = models.ImageField(upload_to=image_directory_path)
     REQUIRED_FIELDS = ['email']
 
     def __str__(self):
@@ -64,8 +65,7 @@ class MiiOwner(TimeStampMixin):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    profile_picture = models.ImageField(upload_to=image_directory_path)
-    #location = AddressField()
+    #profile_picture = models.ImageField(upload_to=image_directory_path)
 
     def __str__(self):
         return ("MiiOwner ({}), ID: {}".format(self.user.first_name, self.user.id))
@@ -97,7 +97,7 @@ class MiiSitter(TimeStampMixin):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     contact_number = PhoneNumberField()
-    profile_picture = models.ImageField(upload_to=image_directory_path)
+    #profile_picture = models.ImageField(upload_to=image_directory_path)
     #location = AddressField()
     bio = models.TextField()
 

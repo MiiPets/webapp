@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views as core_views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', core_views.home, name='core-home'),
@@ -13,3 +15,6 @@ urlpatterns = [
     path('register/owner/', core_views.MiiOwnerSignUpView.as_view(), name='core-owner-register'),
     path('register/sitter/', core_views.MiiSitterSignUpView.as_view(), name='core-sitter-register'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

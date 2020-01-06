@@ -88,6 +88,9 @@
                                               <li class="no-children">
                                                   <a href="{% url 'core-logout' %}">Logout</a>
                                               </li>
+                                              <li class="no-children">
+                                                  <a href="{% url 'profile-profile-owner' %}">Profile</a>
+                                              </li>
                                             {%else%}
                                               <li class="no-children">
                                                   <a href="{% url 'core-login' %}">Login</a>
@@ -140,7 +143,7 @@
                       {% endif %}
                       <br>
                         <h1 class="hero-title v2">
-                            Enjoy your freedom <!-- MAIN MESSAGE SEEN -->
+                            Enjoy your freedom  {% if request.user.is_authenticated %} {{user.first_name}} {%endif%}<!-- MAIN MESSAGE SEEN -->
                         </h1>
                         <p class="hero-desc v2">
                             With Peach of Mind <!-- Just below that -->

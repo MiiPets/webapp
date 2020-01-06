@@ -70,6 +70,7 @@ class MiiSitterSignUpView(CreateView):
         login(self.request, user)
         return redirect('core-home')
 
+
 def home(request):
     """
     Home page view
@@ -119,6 +120,7 @@ def faq(request):
 
     return render(request, 'core/faq.html', context)
 
+
 def register(request):
     """
     View that asked the new user if they want to register
@@ -131,8 +133,6 @@ def register(request):
 
     return render(request, 'core/register.html', context)
 
-from django.contrib.auth import logout
-
 
 def logout_view(request):
     context = {
@@ -140,6 +140,7 @@ def logout_view(request):
     }
 
     return render(request, 'core/login.html', context)
+
 
 def logout_view(request):
     logout(request)

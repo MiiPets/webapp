@@ -9,13 +9,13 @@ class MiiOwnerSignUpForm(UserCreationForm):
     This sign up form allows MiiOwners to register on the site
     and will ascociate the user as a MiiOwner.
     """
-
-    def __init__(self, *args, **kwargs):
-        super(MiiOwnerSignUpForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-
-        for fieldname in ['username', 'password1', 'password2']:
-            self.fields[fieldname].help_text = None
+    #remove comments to make sign up page less wordy
+    # def __init__(self, *args, **kwargs):
+    #     super(MiiOwnerSignUpForm, self).__init__(*args, **kwargs)
+    #     self.helper = FormHelper()
+    #
+    #     for fieldname in ['username', 'password1', 'password2']:
+    #         self.fields[fieldname].help_text = None
 
 
     email = forms.EmailField(required = True)
@@ -24,6 +24,14 @@ class MiiOwnerSignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
+
+    def clean_email(self):
+        username = self.cleaned_data.get('username')
+        email = self.cleaned_data.get('email')
+
+        if email and User.objects.filter(email=email).exclude(username=username).count():
+            raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
+        return email
 
     @transaction.atomic
     def save(self):
@@ -42,13 +50,13 @@ class MiiSitterSignUpForm(UserCreationForm):
     This sign up form allows MiiOwners to register on the site
     and will ascociate the user as a MiiOwner.
     """
-
-    def __init__(self, *args, **kwargs):
-        super(MiiSitterSignUpForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-
-        for fieldname in ['username', 'password1', 'password2']:
-                self.fields[fieldname].help_text = None
+    #remove comments to make sign up page less wordy
+    # def __init__(self, *args, **kwargs):
+    #     super(MiiSitterSignUpForm, self).__init__(*args, **kwargs)
+    #     self.helper = FormHelper()
+    #
+    #     for fieldname in ['username', 'password1', 'password2']:
+    #             self.fields[fieldname].help_text = None
 
 
     email = forms.EmailField(required = True)
@@ -59,6 +67,16 @@ class MiiSitterSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
 
+
+    def clean_email(self):
+        username = self.cleaned_data.get('username')
+        email = self.cleaned_data.get('email')
+
+        if email and User.objects.filter(email=email).exclude(username=username).count():
+            raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
+        return email
+
+    
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)
