@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'miiprofile.apps.MiiprofileConfig',
+    'pets.apps.PetsConfig',
     'phonenumber_field',
     'django.contrib.admin',
     'django.contrib.auth',

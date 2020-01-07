@@ -8,6 +8,11 @@ def image_directory_path(instance, filename):
     return 'profile_pictures/user_{}/{}'.format(instance.id, filename)
 
 
+def image_directory_path_pet(instance, filename):
+    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
+    return 'pet_profile_pictures/pet_{}/owner_{}/{}'.format(instance.name, instance.owner,filename)
+
+
 class TimeStampMixin(models.Model):
 
     """
@@ -54,7 +59,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['email']
 
     def __str__(self):
-        return ("{}, ID:{}".format(self.first_name, self.id))
+        return ("User: {}, ID:{}".format(self.first_name, self.id))
 
 
 class MiiOwner(TimeStampMixin):
@@ -68,7 +73,7 @@ class MiiOwner(TimeStampMixin):
     #profile_picture = models.ImageField(upload_to=image_directory_path)
 
     def __str__(self):
-        return ("MiiOwner ({}), ID: {}".format(self.user.first_name, self.user.id))
+        return ("MiiOwner: {}, ID: {}".format(self.user.first_name, self.user.id))
 
 
 class Pets(TimeStampMixin):
@@ -79,12 +84,12 @@ class Pets(TimeStampMixin):
     detail as they can.
     """
 
-    owner = models.ForeignKey(MiiOwner, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     age = models.PositiveIntegerField()
     breed = models.CharField(max_length=50)
     type = models.CharField(max_length=50)
-    profile_picture_path = models.ImageField(upload_to=image_directory_path)
+    profile_picture = models.ImageField(upload_to=image_directory_path_pet)
 
     def __str__(self):
         return ("{} of MiiOwner: {}".format( self.name, self.owner.id))

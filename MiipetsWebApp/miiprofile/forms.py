@@ -30,10 +30,6 @@ class UpdateMiiOwnerProfile(forms.ModelForm):
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)
-        #user.first_name = self.cleaned_data.get('name')
-        #user.last_name = self.cleaned_data.get('surname')
-        #user.email = self.cleaned_data.get('email')
         user.profile_picture = self.cleaned_data.get('profile_picture')
         user.save()
-        #miiowner = MiiOwner.objects.filter(user=user).update(profile_picture=self.profile_picture)
         return user

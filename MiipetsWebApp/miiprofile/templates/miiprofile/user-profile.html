@@ -12,7 +12,7 @@
                         {% if user.profile_picture %}
                           <a href = "{% url 'profile-edit-owner' %}"><img src="{{user.profile_picture.url}}" alt=""></a>
                         {%else%}
-                          <img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}" style = " width:70% " alt="">
+                          <a href = "{% url 'profile-edit-owner' %}"><img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt=""></a>
                         {%endif%}
                       </div>
                       <div class="user-name">
@@ -25,6 +25,7 @@
                               <span class="ion-android-star-half"></span>
                               <a href="#my-reviews">({{number_of_reviews}})</a>
                           </div>
+                          <h3><a class="link-hov style2" href="{% url 'pets-add-pet' %}">Add Pet</a></h3>
                       </div>
                   </div>
               </div>
@@ -53,7 +54,11 @@
                             {% for pet in pets %}
                               <div class="col-md-6">
                                   <div class="similar-item mar-bot-40">
-                                      <img src="images/single-listing/park-hyatt.jpg" alt="..."> <!-- DOG IMAGE-->
+                                      <img src= {%if pet.profile_picture %}
+                                                  "{{pet.profile_picture.url}}"
+                                                {%else%}
+                                                  "{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"
+                                                {%endif%} alt="..." style = "width:50%;"> <!-- DOG IMAGE-->
                                       <div class="similar-title-box">
                                           <h5><a href="#">{{pet.name}}</a></h5>
                                           <p><span class="price-amt">{{pet.breed}}</span>/{{pet.age}} Years old</p>
