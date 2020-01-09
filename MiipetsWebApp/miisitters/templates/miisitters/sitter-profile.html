@@ -1,0 +1,64 @@
+{%extends "core/base.html"%}
+{%load static%}
+
+{%block content%}
+<!--Dashboard content starts-->
+<div class="dash-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="recent-activity">
+                    <div class="act-title">
+                        <h5><i class="ion-person"></i>Profile Details</h5>
+                    </div>
+                    <div class="profile-wrap">
+                        <div class="row">
+                            <div class="col-md-8 offset-md-2 py-4">
+                                <div class="edit-profile-photo text-center">
+                                  {% if user.profile_picture %}
+                                    <img src="{{user.profile_picture.url}}" alt="" style = "width: 40%;">
+                                  {%else%}
+                                    <img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt="">
+                                  {%endif%}
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="my-profile">
+                                    <ul class="db-profile-info">
+                                        <li>
+                                            <h6>First Name :</h6>
+                                            <span>{{user.first_name}}</span>
+                                        </li>
+                                        <li>
+                                            <h6>Last Name :</h6>
+                                            <span>{{user.last_name}}</span>
+                                        </li>
+                                        <li>
+                                            <h6>Email Id :</h6>
+                                            <span>{{user.email}}</span>
+                                        </li>
+                                        <li>
+                                            <h6>Phone :</h6>
+                                            <span>{{user.contact_number}}</span>
+                                        </li>
+                                        <li>
+                                            <h6>Address :</h6>
+                                            <span>{{user.address}}</span>
+                                        </li>
+                                        <li>
+                                            <h6>Bio :</h6>
+                                            <span>{{user.bio|linebreaks}}</span>
+                                        </li>
+                                    </ul>
+                                    <a href="{% url 'sitter-edit-profile' %}" class="btn v5" style="background-color: #027931;">Edit profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dashboard content ends-->
+{%endblock content%}

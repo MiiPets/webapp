@@ -29,14 +29,19 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
+    'miiprofile.apps.MiiprofileConfig',
+    'pets.apps.PetsConfig',
+    'miisitters.apps.MiisittersConfig',
+    'listings.apps.ListingsConfig',
     'phonenumber_field',
+    'djmoney',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -100,9 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -114,13 +116,17 @@ USE_L10N = True
 USE_TZ = True
 
 PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
+CURRENCIES = ('ZAR', 'USD')
 
 AUTH_USER_MODEL = 'core.User'
 
 LOGIN_REDIRECT_URL = 'core-home'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'

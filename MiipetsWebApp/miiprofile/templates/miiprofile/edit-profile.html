@@ -1,0 +1,61 @@
+{%extends "core/base.html"%}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+  <!--Dashboard breadcrumb ends-->
+  <!--Dashboard content starts-->
+  <br>
+  <br>
+  <br>
+  <div class="dash-content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="db-add-list-wrap">
+                      <div class="act-title">
+                          <h5><i class="ion-person"></i> Profile Details :</h5>
+                      </div>
+                      <div class="db-add-listing">
+                          <div class="row">
+                              <div class="col-md-4 offset-md-4">
+                                  <!-- Avatar -->
+                                  <div class="user-avatar">
+                                      {% if user.profile_picture %}
+                                        <img src="{{user.profile_picture.url}}" alt="">
+                                      {%else%}
+                                        <img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}" style = " width:70% " alt="">
+                                      {%endif%}
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                <!--DETAILS -->
+                                <form enctype="multipart/form-data" method="post">
+                                  {% csrf_token %}
+                                  {{form|crispy}}
+                                  <div class="res-box text-center mar-top-30">
+                                      <button type="submit" class="btn v3" style="background-color: #027931;"><i class="ion-log-in" ></i> Update Profile</button>
+                                  </div>
+                                </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="db-add-list-wrap">
+                      <div class="act-title">
+                          <h5><i class="ion-person"></i>Change Password :</h5>
+                      </div>
+                      <!--
+                      <form method="POST">
+
+                      </form>-->
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+  <!--Dashboard content ends-->
+  <!--User profile details ends-->
+{%endblock content%}

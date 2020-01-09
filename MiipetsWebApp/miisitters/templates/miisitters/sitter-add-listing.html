@@ -1,0 +1,46 @@
+
+{%extends "core/base.html"%}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+  <!--Dashboard breadcrumb ends-->
+  <!--Dashboard content starts-->
+  <div class="dash-content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="db-add-list-wrap">
+                      <div class="act-title">
+                          <h5><i class="ion-person"></i> Listing Details :</h5>
+                      </div>
+                      <div class="db-add-listing">
+                          <div class="row">
+                              <div class="col-md-12">
+                                <!--DETAILS -->
+                                <form enctype="multipart/form-data" method="post">
+                                  {% csrf_token %}
+                                  {{form|crispy}}
+                                  <div class="res-box text-center mar-top-30">
+                                      <button type="submit" class="btn v3" style="background-color: #027931;"><i class="ion-log-in" ></i>Add Listing</button>
+                                  </div>
+                                </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="db-add-list-wrap">
+                      <div class="act-title">
+                          <h5><i class="ion-person"></i>Some tips :</h5>
+                      </div>
+                        <h3>BLA BLABY BLA</h3>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+  <!--Dashboard content ends-->
+  <!--User profile details ends-->
+{%endblock content%}
