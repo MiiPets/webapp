@@ -46,29 +46,29 @@
                                         <ul class="site-menu js-clone-nav d-none d-lg-block">
                                             <li class="no-children">
                                                 <a href="{% url 'core-home' %}"> Home</a>
-                                            </li>
-                                            <li class="has-children">
-                                                <a href="#">Listings</a>
-                                                <ul class="dropdown">
-                                                    <li class="has-children">
-                                                        <a href="#">MiiSitter Services</a>
-                                                        <ul class="dropdown sub-menu">
-                                                            <li><a href="#">Walker</a></li>
-                                                            <li><a href="#">Boarding</a></li>
-                                                            <li><a href="#">House Sitting</a></li>
-                                                            <li><a href="#">Daycare</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li class="has-children">
-                                                        <a href="#">MiiProvider Services</a>
-                                                        <ul class="dropdown sub-menu">
-                                                            <li><a href="#">Grooming</a></li>
-                                                            <li><a href="#">Trainer</a></li>
-                                                            <li><a href="#">Adoption</a></li>
-                                                        </ul>
-                                                    </li>
-                                                  </ul>
-                                            </li>
+                                                <li class="has-children">
+                                                    <a href="{%url 'listings-all' %}">Listings</a>
+                                                    <ul class="dropdown">
+                                                        <li class="has-children">
+                                                            <a href="#">MiiSitter Services</a>
+                                                            <ul class="dropdown sub-menu">
+                                                                <li><a href="#">Walker</a></li>
+                                                                <li><a href="#">Boarding</a></li>
+                                                                <li><a href="#">House Sitting</a></li>
+                                                                <li><a href="#">Daycare</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <!--
+                                                        <li class="has-children">
+                                                            <a href="#">MiiProvider Services</a>
+                                                            <ul class="dropdown sub-menu">
+                                                                <li><a href="#">Grooming</a></li>
+                                                                <li><a href="#">Trainer</a></li>
+                                                                <li><a href="#">Adoption</a></li>
+                                                            </ul>
+                                                        </li>-->
+                                                      </ul>
+                                                </li>
                                             <li class="has-children">
                                                 <a href="{% url 'core-about' %}">About</a>
                                                 <ul class="dropdown">
@@ -89,7 +89,14 @@
                                                   <a href="{% url 'core-logout' %}">Logout</a>
                                               </li>
                                               <li class="no-children">
+                                                {%if sitter_user %}
+                                                  <a href="{% url 'sitter-profile' %}">Profile</a> </li>
+                                                  <li class="no-children">
+                                                    <a href="{% url 'sitter-dashboard' %}">MiiDashboard</a>
+                                                  </li>
+                                                {%else%}
                                                   <a href="{% url 'profile-profile-owner' %}">Profile</a>
+                                                {%endif%}
                                               </li>
                                             {%else%}
                                               <li class="no-children">
@@ -143,10 +150,17 @@
                       {% endif %}
                       <br>
                         <h1 class="hero-title v2">
-                            Enjoy your freedom  {% if request.user.is_authenticated %} {{user.first_name}} {%endif%}<!-- MAIN MESSAGE SEEN -->
+                            {%if sitter_user%}
+                              Thank you for providing freedom  {% if request.user.is_authenticated %} {{user.first_name}} {%endif%}<!-- MAIN MESSAGE SEEN -->
+                            {%else%}
+                              Enjoy your freedom  {% if request.user.is_authenticated %} {{user.first_name}} {%endif%}<!-- MAIN MESSAGE SEEN -->
+                            {%endif%}
                         </h1>
                         <p class="hero-desc v2">
-                            With Peach of Mind <!-- Just below that -->
+                            {%if sitter_user%}
+                            {%else%}
+                              With Peach of Mind <!-- Just below that -->
+                            {%endif%}
                         </p>
                     </div>
                     <div class="col-md-12 text-center mar-top-10">

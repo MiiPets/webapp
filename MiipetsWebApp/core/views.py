@@ -76,7 +76,21 @@ def home(request):
     Home page view
     """
 
-    return render(request, 'core/home.html')
+    try:
+        if request.user.is_sitter:
+            context= {
+                "title":"Home",
+                'sitter_user':True
+            }
+        else:
+            context= {
+                "title":"Home"
+            }
+    except:
+        context= {
+            "title":"Home"
+        }
+    return render(request, 'core/home.html', context)
 
 
 def about(request):
@@ -86,13 +100,35 @@ def about(request):
 
     total_owners, total_sitters, total_providers, total_pets = get_latest_metrics_for_about()
 
-    context = {
-        "title":"About",
-        "total_miiowners":total_owners,
-        "total_pets":total_pets,
-        "total_miisitters":total_sitters,
-        "total_miiproviders":total_providers,
-        }
+
+    try:
+        if request.user.is_sitter:
+            context = {
+                "title":"About",
+                "total_miiowners":total_owners,
+                "total_pets":total_pets,
+                "total_miisitters":total_sitters,
+                "total_miiproviders":total_providers,
+                "is_sitter":True
+                }
+        else:
+            context = {
+                "title":"About",
+                "total_miiowners":total_owners,
+                "total_pets":total_pets,
+                "total_miisitters":total_sitters,
+                "total_miiproviders":total_providers,
+                "is_sitter":False
+                }
+    except:
+        context = {
+            "title":"About",
+            "total_miiowners":total_owners,
+            "total_pets":total_pets,
+            "total_miisitters":total_sitters,
+            "total_miiproviders":total_providers,
+            "is_sitter":False
+            }
 
     return render(request, 'core/about.html', context)
 
@@ -102,9 +138,23 @@ def contact(request):
     Contact us page view
     """
 
-    context = {
-        "title":"Contact Us"
-        }
+
+    try:
+        if request.user.is_sitter:
+            context = {
+                "title":"Contact Us",
+                "is_sitter":True
+                }
+        else:
+            context = {
+                "title":"Contact Us",
+                "is_sitter":False
+                }
+    except:
+        context = {
+            "title":"Contact Us",
+            "is_sitter":False
+            }
 
     return render(request, 'core/contact.html', context)
 
@@ -114,9 +164,22 @@ def faq(request):
     FAQ us page view
     """
 
-    context = {
-          "title":"FAQ"
-          }
+    try:
+        if request.user.is_sitter:
+            context = {
+                "title":"FAQ",
+                "is_sitter":True
+                }
+        else:
+            context = {
+                "title":"FAQ",
+                "is_sitter":False
+                }
+    except:
+        context = {
+            "title":"FAQ",
+            "is_sitter":False
+            }
 
     return render(request, 'core/faq.html', context)
 
@@ -127,19 +190,24 @@ def register(request):
     as a sitter or owner.
     """
 
-    context = {
-          "title":"register"
-          }
+    try:
+        if request.user.is_sitter:
+            context = {
+                "title":"Register",
+                "is_sitter":True
+                }
+        else:
+            context = {
+                "title":"Register",
+                "is_sitter":False
+                }
+    except:
+        context = {
+            "title":"Register",
+            "is_sitter":False
+            }
 
     return render(request, 'core/register.html', context)
-
-
-def logout_view(request):
-    context = {
-        "title":"Login"
-    }
-
-    return render(request, 'core/login.html', context)
 
 
 def logout_view(request):

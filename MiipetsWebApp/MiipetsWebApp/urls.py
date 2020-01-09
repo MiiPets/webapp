@@ -9,7 +9,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('profile/', include('miiprofile.urls')),
-    path('pets/', include('pets.urls'))
+    path('pets/', include('pets.urls')),
+    path('miidashboard/', include('miisitters.urls')),
+    path('listings/', include('listings.urls'))
 ]
 
 if settings.DEBUG:

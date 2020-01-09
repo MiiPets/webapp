@@ -14,7 +14,6 @@ def owner_profile(request):
 
     pets = Pets.objects.filter(owner = request.user)
 
-
     context = {
         "title": "{} profile".format(request.user.first_name),
         "pets":pets
@@ -27,7 +26,7 @@ def owner_profile(request):
 @miiowner_required
 def edit_owner_profile(request):
     """
-    This view display the profile of the user.
+    This view edits the profile of the user.
     """
 
     if request.method == 'POST':

@@ -29,6 +29,9 @@
                       </div>
                   </div>
               </div>
+              <div class="col-lg-6 col-md-12">
+                  <p>{{user.bio|linebreaks}}</p>
+              </div>
           </div>
       </div>
   </div>
@@ -114,22 +117,22 @@
                     <div class="listing-sidebar">
                         <div class="boxed-widget">
                             <h3><i class="icofont-contact-add"></i>Contact details</h3>
-                            {% if adress %}
+                            {% if user.address %}
                               <div class="address">
                                   <span class="ion-ios-location"></span>
-                                  <p> {{adress}}</p>
+                                  <p> {{user.address}}</p>
                               </div>
                             {%endif%}
-                            {% if phonenumber %}
+                            {% if user.contact_number %}
                               <div class="address">
                                   <span class="ion-ios-telephone"></span>
-                                  <p> {{phonenumber}}</p>
+                                  <p> {{user.contact_number}}</p>
                               </div>
                             {%endif%}
-                            {% if email %}
+                            {% if user.email %}
                               <div class="address">
                                   <span class="ion-ios-email"></span>
-                                  <p> {{email}}</p>
+                                  <p> {{user.email}}</p>
                               </div>
                             {%endif%}
                         </div>

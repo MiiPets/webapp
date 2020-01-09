@@ -9,15 +9,20 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 class UpdateMiiOwnerProfile(forms.ModelForm):
 
     profile_picture = forms.ImageField()
-    #username = forms.CharField()
     #email = forms.EmailField()
     first_name = forms.CharField()
     last_name = forms.CharField()
+    contact_number = forms.CharField()
+    bio = forms.CharField(widget=forms.Textarea)
 
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['profile_picture', 'first_name', 'last_name']
+        fields = ['profile_picture',
+                  'first_name',
+                  'last_name',
+                  'contact_number',
+                  'bio']
 
     def clean_email(self):
         username = self.cleaned_data.get('username')

@@ -14,17 +14,17 @@ class AddPetProfile(forms.ModelForm):
     REPTILE = 'FEED'
     OTHER = 'OTHER'
 
-    SERVICE_CHOICES = [(DOG, 'Dog'),
-                       (CAT, 'Cat'),
-                       (BIRD, 'Bird'),
-                       (REPTILE, 'Reptile'),
-                       (OTHER, 'Other')]
+    BREED_CHOICES = [(DOG, 'Dog'),
+                     (CAT, 'Cat'),
+                     (BIRD, 'Bird'),
+                     (REPTILE, 'Reptile'),
+                     (OTHER, 'Other')]
 
-    type = forms.ChoiceField(choices = SERVICE_CHOICES, required=True)
+    type = forms.ChoiceField(choices = BREED_CHOICES, required=True)
     name = forms.CharField(required=True)
     age = forms.IntegerField()
     breed = forms.CharField(max_length=50, required=True)
-    profile_picture = profile_picture = forms.ImageField()
+    profile_picture = forms.ImageField()
 
     def __init__(self, *args, **kwargs):
          self.user = kwargs.pop('user',None)
@@ -38,7 +38,7 @@ class AddPetProfile(forms.ModelForm):
 
     @transaction.atomic
     def save(self):
-        #user = super().save()
+        
         pet = Pets.objects.create(owner=self.user,
                                   name = self.cleaned_data.get('name'),
                                   type = self.cleaned_data.get('type'),
