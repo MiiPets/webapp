@@ -69,23 +69,14 @@
                                               <a href="{%url 'listings-all' %}" {%if sitter_user %} style = "color:black" {%endif%}>Listings</a>
                                               <ul class="dropdown">
                                                   <li class="has-children">
-                                                      <a href="#">MiiSitter Services</a>
+                                                      <a href="{%url 'listings-all' %}">MiiSitter Services</a>
                                                       <ul class="dropdown sub-menu">
-                                                          <li><a href="#">Walker</a></li>
-                                                          <li><a href="#">Boarding</a></li>
-                                                          <li><a href="#">House Sitting</a></li>
-                                                          <li><a href="#">Daycare</a></li>
+                                                          <li><a href="{%url 'listings-all' %}">Walker</a></li>
+                                                          <li><a href="{%url 'listings-all' %}">Boarding</a></li>
+                                                          <li><a href="{%url 'listings-all' %}">House Sitting</a></li>
+                                                          <li><a href="{%url 'listings-all' %}">Daycare</a></li>
                                                       </ul>
                                                   </li>
-                                                  <!--
-                                                  <li class="has-children">
-                                                      <a href="#">MiiProvider Services</a>
-                                                      <ul class="dropdown sub-menu">
-                                                          <li><a href="#">Grooming</a></li>
-                                                          <li><a href="#">Trainer</a></li>
-                                                          <li><a href="#">Adoption</a></li>
-                                                      </ul>
-                                                  </li>-->
                                                 </ul>
                                           </li>
                                           <li class="has-children">
@@ -97,7 +88,6 @@
                                                       <ul class="dropdown sub-menu">
                                                         <li><a href="{% url 'core-faq' %}#miiowners-faq">MiiOwners</a></li>
                                                         <li><a href="{% url 'core-faq' %}#miisitters-faq">MiiSitters</a></li>
-                                                        <li><a href="{% url 'core-faq' %}#miiproviders-faq">MiiProviders</a></li>
                                                       </ul>
                                                   </li>
                                                   <li><a href="{% url 'core-contact' %}" {%if sitter_user %} style = "color:black" {%endif%}>Contact us</a></li>
@@ -110,7 +100,6 @@
                                             <li class="no-children">
                                                 {%if sitter_user %}
                                                   <a href="{% url 'sitter-profile' %}" style = "color:black">Profile</a>
-                                                  <a href="{% url 'sitter-dashboard' %}" style = "color:black" >MiiDashboard</a>
                                                 {%else%}
                                                   <a href="{% url 'profile-profile-owner' %}">Profile</a>
                                                 {%endif%}
@@ -150,30 +139,6 @@
       </header>
       <!--Header ends-->
 
-      {%if sitter_user %}
-        <br><br><br>
-        <!--Dashboard breadcrumb starts-->
-        <div class="dash-breadcrumb">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="dash-breadcrumb-content">
-                            <div class="dash-breadcrumb-left">
-                                <div class="breadcrumb-menu text-right sm-left">
-                                    <ul>
-                                        <li class="active"><a href="#">See Invoices</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <a class="btn v3" href= {% url 'sitter-add-listing'%} style="background-color: #007A33;"><i class="ion-plus-round" ></i>Add Listing </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Dashboard breadcrumb ends-->
-      {%endif%}
-
       {% if messages %}
         {% for message in messages %}
           <div class=" alert alert-{{message.tags}}">
@@ -210,9 +175,7 @@
                           <h2 class="title">Helpful Links</h2>
                           <ul class="list">
                               <li><a class="link-hov style2" href="{% url 'core-login' %}">Login</a></li>
-                              <li><a class="link-hov style2" href="#">Book</a></li>
-                              <li><a class="link-hov style2" href="#">FAQ</a></li>
-                              <li><a class="link-hov style2" href="#">Privacy policy</a></li>
+                              <li><a class="link-hov style2" href="{% url 'core-faq' %}">FAQ</a></li>
                           </ul>
                       </div>
                   </div>
@@ -225,7 +188,7 @@
                                       <div class="icon">
                                           <i class="ion-ios-location"></i>
                                       </div>
-                                      <div class="text">Bootlegger Century City</div>
+                                      <div class="text">Century City</div>
                                   </div>
                               </li>
                               <li>
@@ -238,9 +201,9 @@
                               </li>
                           </ul>
                           <ul class="social-buttons style2">
-                              <li><a href="#"><i class="ion-social-facebook"></i></a></li>
-                              <li><a href="#"><i class="ion-social-twitter"></i></a></li>
-                              <li><a href="#"><i class="ion-social-instagram"></i></a></li>
+                              <li><a href="https://web.facebook.com/MiiPets-105019651032940/"><i class="ion-social-facebook"></i></a></li>
+                              <li><a href="https://twitter.com/MiiPets"><i class="ion-social-twitter"></i></a></li>
+                              <li><a href="https://www.instagram.com/miipets_pty/"><i class="ion-social-instagram"></i></a></li>
                           </ul>
                       </div>
                   </div>
@@ -251,7 +214,7 @@
           <div class="container">
               <div class="row">
                   <div class="col-md-8 offset-md-2 text-center">
-                      <p>&copy; 2019 MiiPets. All Rights Reserved.</p>
+                      <p>&copy; 20202 MiiPets. All Rights Reserved.</p>
                   </div>
               </div>
           </div>

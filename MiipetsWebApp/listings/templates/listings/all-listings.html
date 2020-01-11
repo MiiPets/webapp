@@ -3,37 +3,15 @@
 {% load static %}
 
 {% block content %}
+  <br><br><br><br><br>
   <!--Locations section starts-->
-  <div class="popular-cities pad-bot-50 section-padding">
-      <div class="container">
-          <div class="row">
-            {%for listing in listings %}
-              <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="popular-item mar-bot-30">
-                  <div class="single-place">
-                    <img class="single-place-image" src="{% if listing.profile_picture %}
-                                                          {{listing.profile_picture.url}}
-                                                         {%else%}
-                                                          {% static '/images/miipets/background/the-lucky-neko-AH7JYgyAlqA-unsplash.jpg' %}
-                                                         {%endif%}"
-                                                         alt="listing-image">
-                    <div class="single-place-content">
-                        <h2 class="single-place-title">
-                            <a href="grid-fullwidth-map.html" style= 'color:#007A33'>{{listing.listing_name}}</a>
-                        </h2>
-                        <ul class="single-place-list">
-                            <li style= 'color:#007A33'><span style= 'color:#007A33'>{{listing.price}}</span></li>
-
-                            <li style= 'color:#007A33'><span style= 'color:#007A33'>{{listing.type}}</span></li>
-                        </ul>
-                        <a class="btn v6 explore-place" href="grid-fullwidth-map.html" style= 'color:#007A33'>Explore</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            {%endfor%}
-          </div>
-      </div>
+  <div class="col-md-12 text-center mar-top-10">
+    <h1>
+        COMING SOON
+    </h1>
+    <p class="hero-desc v1">
+        Sign up now and we will notify you when we are live.
+    </p>
   </div>
   <!--Locations section ends-->
 {%endblock content%}

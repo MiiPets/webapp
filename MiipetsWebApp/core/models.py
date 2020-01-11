@@ -61,7 +61,7 @@ class User(AbstractUser):
     is_sitter = models.BooleanField(default=False)
     email = models.EmailField(max_length=254)
     profile_picture = models.ImageField(upload_to=image_directory_path)
-    contact_number = PhoneNumberField()
+    #contact_number = PhoneNumberField()
     #location = AddressField()
     bio = models.TextField()
     REQUIRED_FIELDS = ['email']

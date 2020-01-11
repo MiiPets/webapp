@@ -50,23 +50,14 @@
                                                     <a href="{%url 'listings-all' %}">Listings</a>
                                                     <ul class="dropdown">
                                                         <li class="has-children">
-                                                            <a href="#">MiiSitter Services</a>
+                                                            <a href="{%url 'listings-all' %}">MiiSitter Services</a>
                                                             <ul class="dropdown sub-menu">
-                                                                <li><a href="#">Walker</a></li>
-                                                                <li><a href="#">Boarding</a></li>
-                                                                <li><a href="#">House Sitting</a></li>
-                                                                <li><a href="#">Daycare</a></li>
+                                                                <li><a href="{%url 'listings-all' %}">Walker</a></li>
+                                                                <li><a href="{%url 'listings-all' %}">Boarding</a></li>
+                                                                <li><a href="{%url 'listings-all' %}">House Sitting</a></li>
+                                                                <li><a href="{%url 'listings-all' %}">Daycare</a></li>
                                                             </ul>
                                                         </li>
-                                                        <!--
-                                                        <li class="has-children">
-                                                            <a href="#">MiiProvider Services</a>
-                                                            <ul class="dropdown sub-menu">
-                                                                <li><a href="#">Grooming</a></li>
-                                                                <li><a href="#">Trainer</a></li>
-                                                                <li><a href="#">Adoption</a></li>
-                                                            </ul>
-                                                        </li>-->
                                                       </ul>
                                                 </li>
                                             <li class="has-children">
@@ -78,7 +69,6 @@
                                                       <ul class="dropdown sub-menu">
                                                         <li><a href="{% url 'core-faq' %}#miiowners-faq">MiiOwners</a></li>
                                                         <li><a href="{% url 'core-faq' %}#miisitters-faq">MiiSitters</a></li>
-                                                        <li><a href="{% url 'core-faq' %}#miiproviders-faq">MiiProviders</a></li>
                                                       </ul>
                                                     </li>
                                                     <li><a href="{% url 'core-contact' %}">Contact us</a></li>
@@ -91,9 +81,6 @@
                                               <li class="no-children">
                                                 {%if sitter_user %}
                                                   <a href="{% url 'sitter-profile' %}">Profile</a> </li>
-                                                  <li class="no-children">
-                                                    <a href="{% url 'sitter-dashboard' %}">MiiDashboard</a>
-                                                  </li>
                                                 {%else%}
                                                   <a href="{% url 'profile-profile-owner' %}">Profile</a>
                                                 {%endif%}
@@ -163,42 +150,14 @@
                             {%endif%}
                         </p>
                     </div>
+                    <br><br><br><br><br><br><br><br><br><br>
                     <div class="col-md-12 text-center mar-top-10">
-                        <form class="hero__form v2">
-                            <div class="row">
-                              <div class="col-lg-3 col-md-12">
-                                  <select class="hero__form-input  custom-select">
-                                      <option>Select Location </option>
-                                      <option>Cape Town Centre</option>
-                                      <option>Century City</option>
-                                      <option>Southern Suburbs</option>
-                                      <option>Northern Suburb</option>
-                                      <option>Los Angeles</option>
-                                      <option>Florida</option>
-                                  </select>
-                              </div>
-                                <div class="col-lg-3 col-md-12">
-                                  <select class="hero__form-input  custom-select">
-                                      <option>Select type of service </option>
-                                      <option>Sitter</option>
-                                      <option>Walker</option>
-                                      <option>Grooming</option>
-                                      <option>Training</option>
-                                  </select>
-                                </div>
-                                <div class="col-lg-2 col-md-12">
-                                  <input class="hero__form-input custom-select" type="text" name="place-event" id="datepicker-from" placeholder="From">
-                                </div>
-                                <div class="col-lg-2 col-md-12">
-                                  <input class="hero__form-input custom-select" type="text" name="place-event" id="datepicker-to" placeholder="To">
-                                </div>
-                                <div class="col-lg-2 col-md-12">
-                                    <div class="submit_btn text-right md-left" >
-                                        <button class="btn v1  mar-right-5" type="submit" style="background-color: #007A33;"><i class="ion-search" aria-hidden="true" style="background-color: #007A33;"></i> Search</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                      <p class="hero-desc v2">
+                           COMING SOON
+                      </p>
+                      <p class="hero-desc v2">
+                          Sign up now and we will notify you when we are live.
+                      </p>
                     </div>
                 </div>
             </div>
@@ -219,11 +178,11 @@
                                 </ul>
                             </div>
                             <div class="col-md-6 col-12">
-                                <ul class="social-buttons style2 text-right">
-                                    <li><a href="#"><i class="ion-social-facebook"></i></a></li>
-                                    <li><a href="#"><i class="ion-social-twitter"></i></a></li>
-                                    <li><a href="#"><i class="ion-social-instagram"></i></a></li>
-                                </ul>
+                              <ul class="social-buttons style2">
+                                  <li><a href="https://web.facebook.com/MiiPets-105019651032940/"><i class="ion-social-facebook"></i></a></li>
+                                  <li><a href="https://twitter.com/MiiPets"><i class="ion-social-twitter"></i></a></li>
+                                  <li><a href="https://www.instagram.com/miipets_pty/"><i class="ion-social-instagram"></i></a></li>
+                              </ul>
                             </div>
                         </div>
                     </div>

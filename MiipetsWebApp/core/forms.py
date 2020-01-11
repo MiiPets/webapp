@@ -62,7 +62,7 @@ class MiiSitterSignUpForm(UserCreationForm):
     email = forms.EmailField(required = True)
     name = forms.CharField(required = True)
     surname = forms.CharField(required = True)
-    phonenumber = forms.CharField(required = True, label = "For example 27000000000")
+    #phonenumber = forms.CharField(required = True, label = "For example 27000000000")
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -76,7 +76,7 @@ class MiiSitterSignUpForm(UserCreationForm):
             raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
         return email
 
-    
+
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)
@@ -86,6 +86,6 @@ class MiiSitterSignUpForm(UserCreationForm):
         user.email = self.cleaned_data.get('email')
         user.save()
         miisitter = MiiSitter.objects.create(user=user)
-        miisitter.contact_number = self.cleaned_data.get('phonenumber')
+        #miisitter.contact_number = self.cleaned_data.get('phonenumber')
         miisitter.save()
         return user

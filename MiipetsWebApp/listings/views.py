@@ -12,17 +12,24 @@ def view_all_listings(request):
 
     listings = SitterServices.objects.all()
 
-    if request.user.is_sitter:
-        context = {
-            "title": "All Listings",
-            "listings":listings,
-            "sitter_user":True
-            }
-    else:
+    try:
+        if request.user.is_sitter:
+            context = {
+                "title": "All Listings",
+                "listings":listings,
+                "sitter_user":True
+                }
+        else:
+            context = {
+                "title": "All Listings",
+                "listings":listings,
+                "sitter_user":False
+                }
+    except:
         context = {
             "title": "All Listings",
             "listings":listings,
             "sitter_user":False
             }
-
+        
     return render(request, 'listings/all-listings.html', context)
