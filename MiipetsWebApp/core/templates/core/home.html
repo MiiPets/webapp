@@ -74,25 +74,6 @@
                                                     <li><a href="{% url 'core-contact' %}">Contact us</a></li>
                                                 </ul>
                                             </li>
-                                            {% if request.user.is_authenticated %}
-                                              <li class="no-children">
-                                                  <a href="{% url 'core-logout' %}">Logout</a>
-                                              </li>
-                                              <li class="no-children">
-                                                {%if sitter_user %}
-                                                  <a href="{% url 'sitter-profile' %}">Profile</a> </li>
-                                                {%else%}
-                                                  <a href="{% url 'profile-profile-owner' %}">Profile</a>
-                                                {%endif%}
-                                              </li>
-                                            {%else%}
-                                              <li class="no-children">
-                                                  <a href="{% url 'core-login' %}">Login</a>
-                                              </li>
-                                              <li class="no-children">
-                                                  <a href="{% url 'core-register' %}">Sign Up</a>
-                                              </li>
-                                            {%endif%}
                                         </ul>
                                     </div>
                                 </nav>
@@ -154,9 +135,6 @@
                     <div class="col-md-12 text-center mar-top-10">
                       <p class="hero-desc v2">
                            COMING SOON
-                      </p>
-                      <p class="hero-desc v2">
-                          Sign up now and we will notify you when we are live.
                       </p>
                     </div>
                 </div>

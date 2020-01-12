@@ -93,25 +93,6 @@
                                                   <li><a href="{% url 'core-contact' %}" {%if sitter_user %} style = "color:black" {%endif%}>Contact us</a></li>
                                               </ul>
                                           </li>
-                                          {% if request.user.is_authenticated %}
-                                            <li class="no-children">
-                                                <a href="{% url 'core-logout' %}" {%if sitter_user %} style = "color:black" {%endif%}>Logout</a>
-                                            </li>
-                                            <li class="no-children">
-                                                {%if sitter_user %}
-                                                  <a href="{% url 'sitter-profile' %}" style = "color:black">Profile</a>
-                                                {%else%}
-                                                  <a href="{% url 'profile-profile-owner' %}">Profile</a>
-                                                {%endif%}
-                                            </li>
-                                          {%else%}
-                                            <li class="no-children">
-                                                <a href="{% url 'core-login' %}" {%if sitter_user %} style = "color:black" {%endif%}>Login</a>
-                                            </li>
-                                            <li class="no-children">
-                                                <a href="{% url 'core-register' %}" {%if sitter_user %} style = "color:black" {%endif%} >Sign Up</a>
-                                            </li>
-                                          {%endif%}
                                       </ul>
                                   </div>
                               </nav>
@@ -174,7 +155,6 @@
                       <div class="footer-content nav">
                           <h2 class="title">Helpful Links</h2>
                           <ul class="list">
-                              <li><a class="link-hov style2" href="{% url 'core-login' %}">Login</a></li>
                               <li><a class="link-hov style2" href="{% url 'core-faq' %}">FAQ</a></li>
                           </ul>
                       </div>
