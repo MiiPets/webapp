@@ -75,7 +75,6 @@ def home(request):
     """
     Home page view
     """
-    data = request.DATA
 
     try:
         if request.user.is_sitter:
@@ -98,7 +97,7 @@ def about(request):
     """
     About page view
     """
-    data = request.DATA
+
     total_owners, total_sitters, total_providers, total_pets = get_latest_metrics_for_about()
 
 
@@ -139,7 +138,6 @@ def contact(request):
     Contact us page view
     """
 
-    data = request.DATA
     try:
         if request.user.is_sitter:
             context = {
@@ -164,7 +162,6 @@ def faq(request):
     """
     FAQ us page view
     """
-    data = request.DATA
     try:
         if request.user.is_sitter:
             context = {
@@ -190,7 +187,6 @@ def register(request):
     View that asked the new user if they want to register
     as a sitter or owner.
     """
-    data = request.DATA
     try:
         if request.user.is_sitter:
             context = {
@@ -212,6 +208,5 @@ def register(request):
 
 
 def logout_view(request):
-    data = request.DATA
     logout(request)
     return redirect('core-home')
