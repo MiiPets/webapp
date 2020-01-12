@@ -9,6 +9,7 @@ from .forms import AddPetProfile
 @login_required(login_url='core-login')
 @miiowner_required
 def add_pet_profile(request):
+    data = request.DATA
     """
     This view allows user to add a pet
     """

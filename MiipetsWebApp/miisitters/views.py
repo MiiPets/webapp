@@ -8,6 +8,7 @@ from .forms import UpdateMiiSitterProfile, AddListing
 @login_required(login_url='core-login')
 @miisitter_required
 def sitter_dashboard(request):
+    data = request.DATA
     """
     This view allows sitter to view dashboard
     """
@@ -25,6 +26,7 @@ def sitter_dashboard(request):
 @login_required(login_url='core-login')
 @miisitter_required
 def sitter_profile(request):
+    data = request.DATA
     """
     This view allows sitter to view dashboard
     """
@@ -39,6 +41,7 @@ def sitter_profile(request):
 @login_required(login_url='core-login')
 @miisitter_required
 def edit_sitter_profile(request):
+    data = request.DATA
     """
     This view edits the profile of the sitter.
     """
@@ -59,6 +62,7 @@ def edit_sitter_profile(request):
 @login_required(login_url='core-login')
 @miisitter_required
 def add_listing(request):
+    data = request.DATA
     """
     This view allows a sitter to add a listing
     """

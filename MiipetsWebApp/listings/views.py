@@ -9,7 +9,7 @@ def view_all_listings(request):
     """
     This view allows everyone to view all current listings
     """
-
+    data = request.DATA
     listings = SitterServices.objects.all()
 
     try:
@@ -31,5 +31,5 @@ def view_all_listings(request):
             "listings":listings,
             "sitter_user":False
             }
-        
+
     return render(request, 'listings/all-listings.html', context)

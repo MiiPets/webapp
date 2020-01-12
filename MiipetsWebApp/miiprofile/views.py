@@ -8,6 +8,7 @@ from .forms import UpdateMiiOwnerProfile
 @login_required(login_url='core-login')
 @miiowner_required
 def owner_profile(request):
+    data = request.DATA
     """
     This view display the profile of the user.
     """
@@ -25,6 +26,7 @@ def owner_profile(request):
 @login_required(login_url='core-login')
 @miiowner_required
 def edit_owner_profile(request):
+    data = request.DATA
     """
     This view edits the profile of the user.
     """
