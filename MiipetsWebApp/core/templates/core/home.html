@@ -47,10 +47,10 @@
                                             <li class="no-children">
                                                 <a href="{% url 'core-home' %}"> Home</a>
                                                 <li class="has-children">
-                                                    <a href="{%url 'listings-all' %}">Listings</a>
+                                                    <a href="{%url 'listings-all' %}">Services</a>
                                                     <ul class="dropdown">
                                                         <li class="has-children">
-                                                            <a href="{%url 'listings-all' %}">MiiSitter Services</a>
+                                                            <a href="#">MiiSitter Services</a>
                                                             <ul class="dropdown sub-menu">
                                                                 <li><a href="{%url 'listings-all' %}">Walker</a></li>
                                                                 <li><a href="{%url 'listings-all' %}">Boarding</a></li>
@@ -74,6 +74,28 @@
                                                     <li><a href="{% url 'core-contact' %}">Contact us</a></li>
                                                 </ul>
                                             </li>
+                                            {% if request.user.is_authenticated %}
+                                              <li class="no-children">
+                                                  <a href="{% url 'core-logout' %}">Logout</a>
+                                              </li>
+                                              <li class="no-children">
+                                                {%if sitter_user %}
+                                                  <a href="{% url 'sitter-profile' %}">Profile</a> </li>
+                                                  <li class="no-children">
+                                                    <a href="{% url 'sitter-dashboard' %}">MiiDashboard</a>
+                                                  </li>
+                                                {%else%}
+                                                  <a href="{% url 'profile-profile-owner' %}">Profile</a>
+                                                {%endif%}
+                                              </li>
+                                            {%else%}
+                                              <li class="no-children">
+                                                  <a href="{% url 'core-login' %}">Login</a>
+                                              </li>
+                                              <li class="no-children">
+                                                  <a href="{% url 'core-register' %}">Sign Up</a>
+                                              </li>
+                                            {%endif%}
                                         </ul>
                                     </div>
                                 </nav>

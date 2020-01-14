@@ -19,10 +19,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SECRET_KEY']
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with DEBUG turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['178.62.93.156', 'www.miipets.net', 'localhost']
+if not DEBUG:
+    ALLOWED_HOSTS = ['miipets.net', 'miipets.com', 'www.miipets.net', 'www.miipets.com']
+else:
+    ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -78,16 +81,24 @@ WSGI_APPLICATION = 'MiipetsWebApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'miipets',
-	'USER': os.environ['MIIUSER'],
-        'PASSWORD': os.environ['MIIPASS'],
-        'HOST': 'localhost',
-        'PORT': '',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'miipets',
+    	'USER': os.environ['MIIUSER'],
+            'PASSWORD': os.environ['MIIPASS'],
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
 
 
 # Password validation
@@ -134,5 +145,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
