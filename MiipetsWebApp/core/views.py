@@ -138,7 +138,6 @@ def contact(request):
     Contact us page view
     """
 
-
     try:
         if request.user.is_sitter:
             context = {
@@ -163,7 +162,6 @@ def faq(request):
     """
     FAQ us page view
     """
-
     try:
         if request.user.is_sitter:
             context = {
@@ -189,7 +187,6 @@ def register(request):
     View that asked the new user if they want to register
     as a sitter or owner.
     """
-
     try:
         if request.user.is_sitter:
             context = {

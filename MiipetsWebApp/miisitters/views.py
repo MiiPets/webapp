@@ -15,9 +15,9 @@ def sitter_dashboard(request):
     context = {
         "title":"Dashboard",
         "sitter_user":True,
-        "total_listings":16,
-        "total_reviews":454,
-        "total_bookings":542
+        "total_listings":0,
+        "total_reviews":0,
+        "total_bookings":0
     }
     return render(request, 'miisitters/sitter-db.html', context)
 
@@ -51,7 +51,7 @@ def edit_sitter_profile(request):
     else:
         form = UpdateMiiSitterProfile(instance = request.user)
 
-    context = {'form':form}
+    context = {'form':form, "sitter_user":True,}
 
     return render(request, 'miisitters/edit-sitter-profile.html', context)
 

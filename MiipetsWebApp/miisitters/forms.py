@@ -13,7 +13,7 @@ class UpdateMiiSitterProfile(forms.ModelForm):
     #email = forms.EmailField()
     first_name = forms.CharField()
     last_name = forms.CharField()
-    contact_number = forms.CharField()
+    #contact_number = forms.CharField()
     bio = forms.CharField(widget=forms.Textarea)
 
 
@@ -24,7 +24,7 @@ class UpdateMiiSitterProfile(forms.ModelForm):
             'first_name',
             'last_name',
             #'email',
-            'contact_number',
+            #'contact_number',
             'bio'
         ]
 
