@@ -16,19 +16,19 @@ def view_all_listings(request):
             context = {
                 "title": "All Listings",
                 "listings":listings,
-                "sitter_user":True
+                #"sitter_user":True
                 }
         else:
             context = {
                 "title": "All Listings",
                 "listings":listings,
-                "sitter_user":False
+                #"sitter_user":False
                 }
     except:
         context = {
             "title": "All Listings",
             "listings":listings,
-            "sitter_user":False
+            #"sitter_user":False
             }
 
     return render(request, 'listings/all-listings.html', context)

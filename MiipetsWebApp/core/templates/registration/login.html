@@ -18,14 +18,6 @@
                               <form id="login-form" action="#" method="post">
                                   {% csrf_token %}
                                   {{ form|crispy }}
-                                  <div class="row mar-top-20">
-                                      <div class="col-md-6 col-12 text-left"></div>
-                                      <div class="col-md-6 col-12 text-right">
-                                          <div class="res-box sm-left">
-                                              <a href="#" tabindex="5" class="forgot-password">Forgot Password?</a>
-                                          </div>
-                                      </div>
-                                  </div>
                                   <div class="res-box text-center mar-top-30">
                                       <button type="submit" class="btn v3"  style="background-color: #027931;"><i class="ion-log-in"></i> Log In</button>
                                   </div>

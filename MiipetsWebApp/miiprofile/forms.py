@@ -12,7 +12,7 @@ class UpdateMiiOwnerProfile(forms.ModelForm):
     #email = forms.EmailField()
     first_name = forms.CharField()
     last_name = forms.CharField()
-    contact_number = forms.CharField()
+    #contact_number = forms.CharField()
     bio = forms.CharField(widget=forms.Textarea)
 
 
@@ -21,7 +21,7 @@ class UpdateMiiOwnerProfile(forms.ModelForm):
         fields = ['profile_picture',
                   'first_name',
                   'last_name',
-                  'contact_number',
+                  #'contact_number',
                   'bio']
 
     def clean_email(self):

@@ -51,7 +51,7 @@ def edit_sitter_profile(request):
     else:
         form = UpdateMiiSitterProfile(instance = request.user)
 
-    context = {'form':form}
+    context = {'form':form, "sitter_user":True,}
 
     return render(request, 'miisitters/edit-sitter-profile.html', context)
 
