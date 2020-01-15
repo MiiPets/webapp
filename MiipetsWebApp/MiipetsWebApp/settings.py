@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with DEBUG turned on in production!
-DEBUG = True
+DEBUG = False
 
 if not DEBUG:
     ALLOWED_HOSTS = ['miipets.net', 'miipets.com', 'www.miipets.net', 'www.miipets.com']
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['www.miipets.com']
 
 
 # Application definition
@@ -81,24 +81,16 @@ WSGI_APPLICATION = 'MiipetsWebApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+DATABASES = {
+	'default': {
+    	'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'miipets',
     	'USER': os.environ['MIIUSER'],
             'PASSWORD': os.environ['MIIPASS'],
             'HOST': 'localhost',
             'PORT': '',
-        }
-    }
+	}
+}
 
 
 # Password validation
@@ -138,12 +130,11 @@ AUTH_USER_MODEL = 'core.User'
 LOGIN_REDIRECT_URL = 'core-home'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
 STATIC_URL = '/static/'
-if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
