@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with DEBUG turned on in production!
-DEBUG = False
+DEBUG = True
 
 if not DEBUG:
     ALLOWED_HOSTS = ['miipets.net', 'miipets.com', 'www.miipets.net', 'www.miipets.com']
 else:
-    ALLOWED_HOSTS = ['www.miipets.com']
+    ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -82,15 +82,18 @@ WSGI_APPLICATION = 'MiipetsWebApp.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-	'default': {
-    	'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'miipets',
-    	'USER': os.environ['MIIUSER'],
-            'PASSWORD': os.environ['MIIPASS'],
-            'HOST': 'localhost',
-            'PORT': '',
-	}
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
+    }
 }
+
+
+EMAIL_HOST = ''
+EMAIL_PORT =
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_SSL = True
 
 
 # Password validation
@@ -134,7 +137,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
