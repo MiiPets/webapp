@@ -8,7 +8,25 @@ from django.views.generic import CreateView
 from .forms import MiiOwnerSignUpForm, MiiSitterSignUpForm
 from .models import User, Metrics
 from .decorators import miiowner_required, miisitter_required
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core import mail
 
+def send_email_sign_up(first_name, email_address, is_sitter=False):
+    """
+    Send email to user after sign up
+    """
+
+    subject = 'Welcome to MiiPets'
+    if is_sitter:
+        html_message = render_to_string('core/sitter_welcome_email.html', {'first_name': first_name})
+    else:
+        html_message = render_to_string('core/owner_welcome_email.html', {'first_name': first_name})
+    plain_message = strip_tags(html_message)
+    from_email = 'info@miipets.com'
+    to = email_address
+
+    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
 
 def get_latest_metrics_for_about():
     """
@@ -47,6 +65,7 @@ class MiiOwnerSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        send_email_sign_up(user.first_name, user.email, False)
         return redirect('core-home')
 
 
@@ -68,6 +87,7 @@ class MiiSitterSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        send_email_sign_up(user.first_name, user.email, True)
         return redirect('core-home')
 
 
@@ -75,7 +95,7 @@ def home(request):
     """
     Home page view
     """
-
+    
     try:
         if request.user.is_sitter:
             context= {
@@ -210,3 +230,8 @@ def register(request):
 def logout_view(request):
     logout(request)
     return redirect('core-home')
+
+
+def test(request):
+    context = {'email_send':True}
+    return render(request, 'core/sitter_welcome_email.html', context)
