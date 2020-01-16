@@ -89,3 +89,12 @@ class MiiSitterSignUpForm(UserCreationForm):
         #miisitter.contact_number = self.cleaned_data.get('phonenumber')
         miisitter.save()
         return user
+
+
+class ContactForm(forms.Form):
+    """
+    Form to be used when contacting MiiPets in the Contact page
+    """
+    from_email = forms.EmailField(required=True)
+    subject = forms.CharField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)
