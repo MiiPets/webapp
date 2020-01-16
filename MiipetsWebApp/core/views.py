@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core import mail
 
+
 def send_email_sign_up(first_name, email_address, is_sitter=False):
     """
     Send email to user after sign up
@@ -23,8 +24,11 @@ def send_email_sign_up(first_name, email_address, is_sitter=False):
     plain_message = strip_tags(html_message)
     from_email = 'info@miipets.com'
     to = email_address
+    try:
+        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    except mail.BadHeaderError:
+        return HttpResponse('Invalid header found.')
 
-    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
 
 def get_latest_metrics_for_about():
     """
@@ -166,9 +170,12 @@ def contact(request):
             subject = form.cleaned_data['subject']
             from_email = form.cleaned_data['from_email']
             message = form.cleaned_data['message']
-            mail.send_mail(subject,
-                           message + "\n FROM: {}".format(from_email),
-                           'info@miipets.com', ['info@miipets.com'])
+            try:
+                mail.send_mail(subject,
+                               message + "\n FROM: {}".format(from_email),
+                               'info@miipets.com', ['info@miipets.com'])
+            except mail.BadHeaderError:
+                return HttpResponse('Invalid header found.')
             send = True
             form = ContactForm()
 
