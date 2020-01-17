@@ -5,9 +5,29 @@ from django.views.generic import View
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from django.views.generic import CreateView
-from .forms import MiiOwnerSignUpForm, MiiSitterSignUpForm
+from .forms import MiiOwnerSignUpForm, MiiSitterSignUpForm, ContactForm
 from .models import User, Metrics
 from .decorators import miiowner_required, miisitter_required
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core import mail
+
+
+def send_email_sign_up(first_name, email_address, is_sitter=False):
+    """
+    Send email to user after sign up
+    """
+
+    subject = 'Welcome to MiiPets'
+    html_message = render_to_string('core/sitter_welcome_email.html',
+                                    {'first_name': first_name, 'is_sitter':is_sitter})
+    plain_message = strip_tags(html_message)
+    from_email = 'info@miipets.com'
+    to = email_address
+    try:
+        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    except mail.BadHeaderError:
+        return HttpResponse('Invalid header found.')
 
 
 def get_latest_metrics_for_about():
@@ -47,6 +67,7 @@ class MiiOwnerSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        send_email_sign_up(user.first_name.upper(), user.email, False)
         return redirect('core-home')
 
 
@@ -68,6 +89,7 @@ class MiiSitterSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        send_email_sign_up(user.first_name.upper(), user.email, True)
         return redirect('core-home')
 
 
@@ -137,25 +159,51 @@ def contact(request):
     """
     Contact us page view
     """
+    send = False
+
+    if request.method == 'GET':
+        form = ContactForm()
+        send = False
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            from_email = form.cleaned_data['from_email']
+            message = form.cleaned_data['message']
+            try:
+                mail.send_mail(subject,
+                               message + "\n FROM: {}".format(from_email),
+                               'info@miipets.com', ['info@miipets.com'])
+            except mail.BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            send = True
+            form = ContactForm()
 
     try:
         if request.user.is_sitter:
             context = {
                 "title":"Contact Us",
-                "is_sitter":True
+                "is_sitter":True,
+                "send":send,
+                "form":form
                 }
         else:
             context = {
                 "title":"Contact Us",
-                "is_sitter":False
+                "is_sitter":False,
+                "send":send,
+                "form":form
                 }
     except:
         context = {
             "title":"Contact Us",
-            "is_sitter":False
+            "is_sitter":False,
+            "send":send,
+            "form":form
             }
 
-    return render(request, 'core/contact.html', context)
+    return render(request, "core/contact.html", context)
+
 
 
 def faq(request):
@@ -210,3 +258,8 @@ def register(request):
 def logout_view(request):
     logout(request)
     return redirect('core-home')
+
+
+def test(request):
+    context = {'email_send':True}
+    return render(request, 'core/sitter_welcome_email.html', context)

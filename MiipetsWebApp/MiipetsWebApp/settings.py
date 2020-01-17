@@ -25,7 +25,7 @@ DEBUG = False
 if not DEBUG:
     ALLOWED_HOSTS = ['miipets.net', 'miipets.com', 'www.miipets.net', 'www.miipets.com']
 else:
-    ALLOWED_HOSTS = ['www.miipets.com']
+    ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -92,6 +92,11 @@ DATABASES = {
 	}
 }
 
+EMAIL_HOST = 'smtpout.secureserver.net'
+EMAIL_PORT = os.environ['MIIEPORT']
+EMAIL_HOST_USER = os.environ['MIIEMAIL']
+EMAIL_HOST_PASSWORD = os.environ['MIIEMAILP']
+EMAIL_USE_SSL = True
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -134,7 +139,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
