@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with DEBUG turned on in production!
-DEBUG = True
+DEBUG = False
 
 if not DEBUG:
     ALLOWED_HOSTS = ['miipets.net', 'miipets.com', 'www.miipets.net', 'www.miipets.com']
@@ -82,19 +82,21 @@ WSGI_APPLICATION = 'MiipetsWebApp.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase',
-    }
+	'default': {
+    	'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'miipets',
+    	'USER': os.environ['MIIUSER'],
+            'PASSWORD': os.environ['MIIPASS'],
+            'HOST': 'localhost',
+            'PORT': '',
+	}
 }
 
-
-EMAIL_HOST = ''
-EMAIL_PORT =
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST = 'smtpout.secureserver.net'
+EMAIL_PORT = os.environ['MIIEPORT']
+EMAIL_HOST_USER = os.environ['MIIEMAIL']
+EMAIL_HOST_PASSWORD = os.environ['MIIEMAILP']
 EMAIL_USE_SSL = True
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
