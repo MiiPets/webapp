@@ -1,7 +1,23 @@
 {%extends "core/base.html"%}
 {%load static%}
 
+
+
 {%block content%}
+<br><br><br>
+  <!--Dashboard breadcrumb starts-->
+  <div class="dash-breadcrumb">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="dash-breadcrumb-content">
+                      <a class="btn v3" href= {% url 'sitter-add-listing'%} style="background-color: #007A33;"><i class="ion-plus-round" ></i>Add Listing </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--Dashboard breadcrumb ends-->
   <!-- Dashboard Statistics starts-->
   <div class="statistic-wrap">
       <div class="container-fluid">

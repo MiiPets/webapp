@@ -49,7 +49,7 @@
     <!--Preloader ends-->
 
     <!--Page Wrapper starts-->
-    <div class="page-wrapper fixed-footer">
+    <div class="page-wrapper">
       {% if email_send %}
         {%else%}
             <!--header starts-->
@@ -81,25 +81,20 @@
                                             <li class="has-children">
                                                 <a href="{%url 'listings-all' %}" {%if sitter_user %} style = "color:black" {%endif%}>Services</a>
                                                 <ul class="dropdown">
-                                                    <li class="has-children">
-                                                        <a href="{%url 'listings-all' %}">MiiSitter Services</a>
-                                                        <ul class="dropdown sub-menu">
-                                                            <li><a href="{%url 'listings-all' %}">Walker</a></li>
-                                                            <li><a href="{%url 'listings-all' %}">Boarding</a></li>
-                                                            <li><a href="{%url 'listings-all' %}">House Sitting</a></li>
-                                                            <li><a href="{%url 'listings-all' %}">Daycare</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <!--
-                                                    <li class="has-children">
-                                                        <a href="#">MiiProvider Services</a>
-                                                        <ul class="dropdown sub-menu">
-                                                            <li><a href="#">Grooming</a></li>
-                                                            <li><a href="#">Trainer</a></li>
-                                                            <li><a href="#">Adoption</a></li>
-                                                        </ul>
-                                                    </li>-->
-                                                  </ul>
+                                                      <li><a href="{% url 'listings' type='Walker' %}">Walker</a></li>
+                                                      <li><a href="{% url 'listings' type='Boarding' %}">Boarding</a></li>
+                                                      <li><a href="{% url 'listings' type='Sitter' %}">House Sitting</a></li>
+                                                      <li><a href="{% url 'listings' type='Daycare' %}">Daycare</a></li>
+                                                  <!--
+                                                  <li class="has-children">
+                                                      <a href="#">MiiProvider Services</a>
+                                                      <ul class="dropdown sub-menu">
+                                                          <li><a href="#">Grooming</a></li>
+                                                          <li><a href="#">Trainer</a></li>
+                                                          <li><a href="#">Adoption</a></li>
+                                                      </ul>
+                                                  </li>-->
+                                              </ul>
                                             </li>
                                             <li class="has-children">
                                                 <a href="{% url 'core-about' %}" {%if sitter_user %} style = "color:black" {%endif%}>About</a>
@@ -110,6 +105,7 @@
                                                         <ul class="dropdown sub-menu">
                                                           <li><a href="{% url 'core-faq' %}#miiowners-faq">MiiOwners</a></li>
                                                           <li><a href="{% url 'core-faq' %}#miisitters-faq">MiiSitters</a></li>
+                                                          <li><a href="{% url 'core-faq' %}#general-faq">General</a></li>
                                                         </ul>
                                                     </li>
                                                     <li><a href="{% url 'core-contact' %}" {%if sitter_user %} style = "color:black" {%endif%}>Contact us</a></li>
@@ -163,24 +159,6 @@
         {%endif%}
 
       <!--Header ends-->
-
-      {%if sitter_user %}
-        <br><br><br>
-        <!--Dashboard breadcrumb starts-->
-        <div class="dash-breadcrumb">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="dash-breadcrumb-content">
-                            <a class="btn v3" href= {% url 'sitter-add-listing'%} style="background-color: #007A33;"><i class="ion-plus-round" ></i>Add Listing </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Dashboard breadcrumb ends-->
-      {%endif%}
-
       {% if messages %}
         {% for message in messages %}
           <div class=" alert alert-{{message.tags}}">
@@ -201,11 +179,10 @@
    {% if email_send %}
       <div class="footer-wrapper no-pad-tb">
    {% else %}
-      <div class="footer-wrapper no-pad-tb footer-fixed v1">
+      <div class="footer-wrapper no-pad-tb ">
    {%endif%}
-     <div class="overlay op-1"></div>
-      <div class="footer-top-area section-padding" >
-          <div class="container">
+      <div class="footer-top-area section-padding"  >
+          <div class="container" >
               <div class="row nav-folderized">
                   <div class="col-lg-3 col-md-12">
                       <div class="footer-logo">
@@ -234,25 +211,25 @@
                           <ul class="list footer-list">
                               <li>
                                   <div class="contact-info">
-                                      <div class="icon">
+                                      <div class="icon" style="color:#555;">
                                           <i class="ion-ios-location"></i>
                                       </div>
-                                      <div class="text">Bootlegger Century City</div>
+                                      <div class="text" style="color:#555;">Century City</div>
                                   </div>
                               </li>
                               <li>
                                   <div class="contact-info">
                                       <div class="icon">
-                                          <i class="ion-email"></i>
+                                          <i class="ion-email" style="color:#555;"></i>
                                       </div>
-                                      <div class="text"><a href="#">info@miipets.com</a></div>
+                                      <div class="text"><a href="#" style="color:#555;">info@miipets.com</a></div>
                                   </div>
                               </li>
                           </ul>
-                          <ul class="social-buttons style2">
-                            <li><a href="https://web.facebook.com/MiiPets-105019651032940/"><i class="ion-social-facebook"></i></a></li>
-                            <li><a href="https://twitter.com/MiiPets"><i class="ion-social-twitter"></i></a></li>
-                            <li><a href="https://www.instagram.com/miipets_pty/"><i class="ion-social-instagram"></i></a></li>
+                          <ul class="social-buttons style2" style="color:#555;">
+                            <li><a href="https://web.facebook.com/MiiPets-105019651032940/"><i class="ion-social-facebook" style="color:#555;"></i></a></li>
+                            <li><a href="https://twitter.com/MiiPets"><i class="ion-social-twitter" style="color:#555;"></i></a></li>
+                            <li><a href="https://www.instagram.com/miipets_pty/"><i class="ion-social-instagram" style="color:#555;"></i></a></li>
                           </ul>
                       </div>
                   </div>

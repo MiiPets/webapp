@@ -122,7 +122,6 @@ def about(request):
 
     total_owners, total_sitters, total_providers, total_pets = get_latest_metrics_for_about()
 
-
     try:
         if request.user.is_sitter:
             context = {
@@ -131,7 +130,7 @@ def about(request):
                 "total_pets":total_pets,
                 "total_miisitters":total_sitters,
                 "total_miiproviders":total_providers,
-                "is_sitter":True
+                "sitter_user":True
                 }
         else:
             context = {
@@ -140,7 +139,6 @@ def about(request):
                 "total_pets":total_pets,
                 "total_miisitters":total_sitters,
                 "total_miiproviders":total_providers,
-                "is_sitter":False
                 }
     except:
         context = {
@@ -149,9 +147,8 @@ def about(request):
             "total_pets":total_pets,
             "total_miisitters":total_sitters,
             "total_miiproviders":total_providers,
-            "is_sitter":False
             }
-
+    print(context)
     return render(request, 'core/about.html', context)
 
 
@@ -179,28 +176,28 @@ def contact(request):
             send = True
             form = ContactForm()
 
+
     try:
         if request.user.is_sitter:
-            context = {
+            print("HERE")
+            context= {
                 "title":"Contact Us",
-                "is_sitter":True,
+                "sitter_user":True,
                 "send":send,
                 "form":form
-                }
+            }
         else:
-            context = {
+            contex={
                 "title":"Contact Us",
-                "is_sitter":False,
                 "send":send,
                 "form":form
-                }
+            }
     except:
-        context = {
+        context= {
             "title":"Contact Us",
-            "is_sitter":False,
             "send":send,
             "form":form
-            }
+        }
 
     return render(request, "core/contact.html", context)
 
@@ -212,20 +209,18 @@ def faq(request):
     """
     try:
         if request.user.is_sitter:
-            context = {
+            context= {
                 "title":"FAQ",
-                "is_sitter":True
-                }
-        else:
-            context = {
-                "title":"FAQ",
-                "is_sitter":False
-                }
-    except:
-        context = {
-            "title":"FAQ",
-            "is_sitter":False
+                'sitter_user':True
             }
+        else:
+            context= {
+                "title":"FAQ"
+            }
+    except:
+        context= {
+            "title":"FAQ"
+        }
 
     return render(request, 'core/faq.html', context)
 
@@ -239,17 +234,17 @@ def register(request):
         if request.user.is_sitter:
             context = {
                 "title":"Register",
-                "is_sitter":True
+                "sitter_user":True
                 }
         else:
             context = {
                 "title":"Register",
-                "is_sitter":False
+                "sitter_user":False
                 }
     except:
         context = {
             "title":"Register",
-            "is_sitter":False
+            "sitter_user":False
             }
 
     return render(request, 'core/register.html', context)
@@ -258,8 +253,3 @@ def register(request):
 def logout_view(request):
     logout(request)
     return redirect('core-home')
-
-
-def test(request):
-    context = {'email_send':True}
-    return render(request, 'core/sitter_welcome_email.html', context)
