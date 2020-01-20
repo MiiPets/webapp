@@ -81,25 +81,20 @@
                                             <li class="has-children">
                                                 <a href="{%url 'listings-all' %}" {%if sitter_user %} style = "color:black" {%endif%}>Services</a>
                                                 <ul class="dropdown">
-                                                    <li class="has-children">
-                                                        <a href="{%url 'listings-all' %}">MiiSitter Services</a>
-                                                        <ul class="dropdown sub-menu">
-                                                            <li><a href="{%url 'listings-all' %}">Walker</a></li>
-                                                            <li><a href="{%url 'listings-all' %}">Boarding</a></li>
-                                                            <li><a href="{%url 'listings-all' %}">House Sitting</a></li>
-                                                            <li><a href="{%url 'listings-all' %}">Daycare</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <!--
-                                                    <li class="has-children">
-                                                        <a href="#">MiiProvider Services</a>
-                                                        <ul class="dropdown sub-menu">
-                                                            <li><a href="#">Grooming</a></li>
-                                                            <li><a href="#">Trainer</a></li>
-                                                            <li><a href="#">Adoption</a></li>
-                                                        </ul>
-                                                    </li>-->
-                                                  </ul>
+                                                      <li><a href="{%url 'listings-all' %}">Walker</a></li>
+                                                      <li><a href="{%url 'listings-all' %}">Boarding</a></li>
+                                                      <li><a href="{%url 'listings-all' %}">House Sitting</a></li>
+                                                      <li><a href="{%url 'listings-all' %}">Daycare</a></li>
+                                                  <!--
+                                                  <li class="has-children">
+                                                      <a href="#">MiiProvider Services</a>
+                                                      <ul class="dropdown sub-menu">
+                                                          <li><a href="#">Grooming</a></li>
+                                                          <li><a href="#">Trainer</a></li>
+                                                          <li><a href="#">Adoption</a></li>
+                                                      </ul>
+                                                  </li>-->
+                                              </ul>
                                             </li>
                                             <li class="has-children">
                                                 <a href="{% url 'core-about' %}" {%if sitter_user %} style = "color:black" {%endif%}>About</a>
@@ -163,24 +158,6 @@
         {%endif%}
 
       <!--Header ends-->
-
-      {%if sitter_user %}
-        <br><br><br>
-        <!--Dashboard breadcrumb starts-->
-        <div class="dash-breadcrumb">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="dash-breadcrumb-content">
-                            <a class="btn v3" href= {% url 'sitter-add-listing'%} style="background-color: #007A33;"><i class="ion-plus-round" ></i>Add Listing </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--Dashboard breadcrumb ends-->
-      {%endif%}
-
       {% if messages %}
         {% for message in messages %}
           <div class=" alert alert-{{message.tags}}">
@@ -237,7 +214,7 @@
                                       <div class="icon">
                                           <i class="ion-ios-location"></i>
                                       </div>
-                                      <div class="text">Bootlegger Century City</div>
+                                      <div class="text">Century City</div>
                                   </div>
                               </li>
                               <li>
