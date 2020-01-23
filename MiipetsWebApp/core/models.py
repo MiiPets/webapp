@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from phonenumber_field.modelfields import PhoneNumberField
 from djmoney.models.fields import MoneyField
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
 
 def image_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
@@ -10,13 +12,22 @@ def image_directory_path(instance, filename):
 
 def image_directory_path_pet(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'pet_profile_pictures/pet_{}/owner_{}/{}'.format(instance.name, instance.owner,filename)
+    return 'pet_profile_pictures/pet_{}/owner_{}/{}'.format(instance.name,
+                                                            instance.owner,
+                                                            filename)
 
 
-def image_directory_path_listing(instance, filename):
+def image_directory_path_service_photos(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'listing_pictures/listing_{}/sitter_{}/{}'.format(instance.listing_name, instance.sitter,filename)
+    return 'listing_pictures/listing_{}/sitter_{}/{}'.format(instance.service.id,
+                                                             instance.service.sitter.id,
+                                                             filename)
 
+def image_directory_path_service(instance, filename):
+    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
+    return 'listing_pictures/listing_{}/sitter_{}/{}'.format(instance.id,
+                                                             instance.sitter.id,
+                                                             filename)
 
 class TimeStampMixin(models.Model):
 
@@ -60,7 +71,10 @@ class User(AbstractUser):
     is_owner = models.BooleanField(default=False)
     is_sitter = models.BooleanField(default=False)
     email = models.EmailField(max_length=254)
-    profile_picture = models.ImageField(upload_to=image_directory_path)
+    profile_picture = ProcessedImageField(upload_to=image_directory_path,
+                                          processors=[ResizeToFill(100, 50)],
+                                          format='JPEG',
+                                          options={'quality': 60})
     #contact_number = PhoneNumberField()
     #location = AddressField()
     bio = models.TextField()
@@ -97,7 +111,10 @@ class Pets(TimeStampMixin):
     age = models.PositiveIntegerField()
     breed = models.CharField(max_length=50)
     type = models.CharField(max_length=50)
-    profile_picture = models.ImageField(upload_to=image_directory_path_pet)
+    profile_picture = ProcessedImageField(upload_to=image_directory_path_pet,
+                                          processors=[ResizeToFill(100, 50)],
+                                          format='JPEG',
+                                          options={'quality': 60})
 
     def __str__(self):
         return ("{} of MiiOwner: {}".format( self.name, self.owner.id))
@@ -109,6 +126,7 @@ class MiiSitter(TimeStampMixin):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    id_number = models.PositiveIntegerField()
 
     def __str__(self):
         return ("MiiSitter ({}), ID: {}".format(self.user.first_name, self.user.id))
@@ -127,23 +145,47 @@ class SitterServices(TimeStampMixin):
     BOARD = 'BOARD'
     SIT = 'SIT'
     DAYCARE = 'DAYCARE'
-    FEED = 'FEED'
 
     SERVICE_CHOICES = [(WALK, 'Walker'),
                        (BOARD, 'Boarding'),
                        (SIT, 'House Sitting'),
-                       (DAYCARE, 'Daycare'),
-                       (FEED, 'Feeder')]
+                       (DAYCARE, 'Daycare')]
 
     sitter = models.ForeignKey(User, on_delete=models.CASCADE)
     listing_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)
     description = models.TextField(null = "No description")
     price = MoneyField(max_digits=14, decimal_places=2, default_currency='ZAR')
-    score = models.FloatField(null=-1)
-    profile_picture = models.ImageField(upload_to=image_directory_path_listing)
+    profile_picture = ProcessedImageField(upload_to=image_directory_path_service,
+                                          processors=[ResizeToFill(100, 50)],
+                                          format='JPEG',
+                                          options={'quality': 100})
+    availible_monday = models.BooleanField(default=False)
+    availible_tuesday = models.BooleanField(default=False)
+    availible_wednesday = models.BooleanField(default=False)
+    availible_thursday = models.BooleanField(default=False)
+    availible_friday = models.BooleanField(default=False)
+    availible_saturday = models.BooleanField(default=False)
+    availible_sunday = models.BooleanField(default=False)
+    time_start_monday = models.PositiveIntegerField()
+    time_start_tuesday = models.PositiveIntegerField()
+    time_start_wednesday = models.PositiveIntegerField()
+    time_start_thursday = models.PositiveIntegerField()
+    time_start_friday = models.PositiveIntegerField()
+    time_start_saturday = models.PositiveIntegerField()
+    time_start_sunday = models.PositiveIntegerField()
+    time_end_monday = models.PositiveIntegerField()
+    time_end_tuesday = models.PositiveIntegerField()
+    time_end_wednesday = models.PositiveIntegerField()
+    time_end_thursday = models.PositiveIntegerField()
+    time_end_friday = models.PositiveIntegerField()
+    time_end_saturday = models.PositiveIntegerField()
+    time_end_sunday = models.PositiveIntegerField()
 
-    REQUIRED_FIELDS = ['listing_name', 'type', 'price']
+    REQUIRED_FIELDS = ['listing_name', 'type', 'price',
+                       "availible_monday", "availible_tuesday","availible_wednesday",
+                       "availible_thursday", "availible_friday", "availible_saturday",
+                       "availible_sunday"]
 
 
     class Meta:
@@ -151,23 +193,74 @@ class SitterServices(TimeStampMixin):
 
 
     def __str__(self):
-        return ("Sitter activity of {} with sitter: {}, with pet name being {}".format(self.type,
-                                                                                        self.sitter.id))
+        return ("{} service, with sitter: {}".format(self.type,
+                                                     self.sitter.id))
 
 
-class SitterBooking(TimeStampMixin):
+class ServicePhotos(TimeStampMixin):
     """
     This model class will store all the data related to the bookings
     related to sitters.
     """
 
-    owner = models.ForeignKey(MiiOwner, on_delete=models.CASCADE)
-    profile_picture = models.ImageField(upload_to=image_directory_path)
+    service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
+    profile_picture = ProcessedImageField(upload_to=image_directory_path_service_photos,
+                                          processors=[ResizeToFill(100, 50)],
+                                          format='JPEG',
+                                          options={'quality': 100})
+
+    def __str__(self):
+        return ("Booking of service {} for user {}".format(self.listing,
+                                                           self.requester))
+
+
+class ServiceBooking(TimeStampMixin):
+    """
+    This model class will store all the data related to the bookings
+    related to sitters.
+    """
+
+    requester = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
     date_start = models.DateField()
     date_end = models.DateField()
+    time_start = models.TimeField(blank=True)
+    time_end = models.TimeField(blank = True)
     approved =  models.BooleanField(default=False)
 
 
     def __str__(self):
-        return ("Booking of {} activity on for owner {}".format(self.activity, self.date_start, self.owner))
+        return ("Booking of service {} for user {}".format(self.listing, self.requester))
+
+
+class ServiceLocation(TimeStampMixin):
+    """
+    The location of the services will be stored here in
+    streed adress that is converted to long lat
+    """
+
+    service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
+    city = models.CharField(max_length=500)
+    province = models.CharField(max_length=500)
+    street_name = models.CharField(max_length=500)
+    street_number = models.PositiveIntegerField()
+    lattitude = models.FloatField()
+    longitude = models.FloatField()
+
+    def __str__(self):
+        return ("Location of service {}".format(self.service.id))
+
+
+class ServiceReviews(TimeStampMixin):
+    """
+    The location of the services will be stored here in
+    streed adress that is converted to long lat
+    """
+
+    service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
+    review_score = models.FloatField()
+    review_text = models.CharField(max_length=10000)
+    reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return ("Review of service {}".format(self.service.id))
