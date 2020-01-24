@@ -5,7 +5,13 @@ from core.models import  MiiSitter, User, SitterServices
 from crispy_forms.helper import FormHelper
 from django.core.files.uploadedfile import SimpleUploadedFile
 from djmoney.forms.fields import MoneyField
+from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+class TimeInput(forms.TimeInput):
+    input_type = 'timeselect'
 
 class UpdateMiiSitterProfile(forms.ModelForm):
 
@@ -46,23 +52,107 @@ class UpdateMiiSitterProfile(forms.ModelForm):
 
 class AddListing(forms.ModelForm):
 
+    widget_time = forms.widgets.DateTimeInput(attrs={'type':'time'})
+    widget_date = forms.widgets.DateTimeInput(attrs={'type':'date'})
+
     WALK = 'WALK'
     BOARD = 'BOARD'
     SIT = 'SIT'
     DAYCARE = 'DAYCARE'
-    FEED = 'FEED'
 
     SERVICE_CHOICES = [(WALK, 'Walking'),
                        (BOARD, 'House Boarding'),
-                       (SIT, 'House Sitting'),
-                       (DAYCARE, 'Daycare'),
-                       (FEED, 'Daily feeding and playing')]
+                       (SIT, 'House Sitting/Feeding'),
+                       (DAYCARE, 'Daycare')]
 
-    listing_name = forms.CharField()
+    NOT_AVAILIBE = 9999
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    FIVE = 5
+    SIX = 6
+    SEVEN = 7
+    EIGHT = 8
+    NINE = 9
+    TEN = 10
+    ELEVEN = 11
+    TWELVE = 12
+    THIRTEEN = 13
+    FOURTEEN = 14
+    FIFTEEN = 15
+    SIXTEEN = 16
+    SEVENTEEN = 17
+    EIGHTEEN = 18
+    NINETEEN = 19
+    TWENTY = 20
+    TWENTYONE = 21
+    TWENTYTWO = 21
+    TWENTYTHREE = 23
+    TWENTYFOUR = 0
+
+    SERVICE_CHOICES = [(WALK, 'Walking'),
+                       (BOARD, 'House Boarding'),
+                       (SIT, 'House Sitting/Feeding'),
+                       (DAYCARE, 'Daycare')]
+
+    TIME_CHOICES = [(NOT_AVAILIBE, 'Not availibe'),
+                    (ONE, '1:00'),
+                    (TWO, '2:00'),
+                    (THREE, '3:00'),
+                    (FOUR, '4:00'),
+                    (FIVE, '5:00'),
+                    (SIX, '6:00'),
+                    (SEVEN, '7:00'),
+                    (EIGHT, '8:00'),
+                    (NINE, '9:00'),
+                    (TEN, '10:00'),
+                    (ELEVEN, '11:00'),
+                    (TWELVE, '12:00'),
+                    (THIRTEEN, '13:00'),
+                    (FOURTEEN, '14:00'),
+                    (FIFTEEN, '15:00'),
+                    (SIXTEEN, '16:00'),
+                    (SEVENTEEN, '17:00'),
+                    (EIGHTEEN, '18:00'),
+                    (NINETEEN, '19:00'),
+                    (TWENTY, '20:00'),
+                    (TWENTYONE, '21:00'),
+                    (TWENTYTWO, '21:00'),
+                    (TWENTYTHREE, '23:00'),
+                    (TWENTYFOUR, '00:00'),]
+
+    service_name = forms.CharField()
     type = forms.ChoiceField(choices = SERVICE_CHOICES, required=True)
     description = forms.CharField(widget=forms.Textarea)
+
     price = MoneyField(default_currency='ZAR')
-    listing_picture = forms.ImageField()
+    main_picture = forms.ImageField()
+    extra_pictures = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+
+    Service_start_date = forms.BooleanField(widget=DateInput())
+    Service_end_date = forms.BooleanField(widget=DateInput())
+
+    Monday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    Monday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+
+    Tuesday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    Tuesday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+
+    Wednesday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    Wednesday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+
+    Thursday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    Thursday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+
+    Friday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    Friday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+
+    Saturday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    Saturday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+
+    Sunday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    Sunday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
 
     def __init__(self, *args, **kwargs):
          self.user = kwargs.pop('user',None)
@@ -70,9 +160,8 @@ class AddListing(forms.ModelForm):
 
 
     class Meta(UserCreationForm.Meta):
-        model = User
+        model = SitterServices
         fields = []
-
 
     @transaction.atomic
     def save(self):

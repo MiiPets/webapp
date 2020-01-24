@@ -5,6 +5,7 @@ from djmoney.models.fields import MoneyField
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 
+
 def image_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
     return 'profile_pictures/user_{}/{}'.format(instance.id, filename)
@@ -127,6 +128,7 @@ class MiiSitter(TimeStampMixin):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     id_number = models.PositiveIntegerField()
+    validated = models.BooleanField(default=False)
 
     def __str__(self):
         return ("MiiSitter ({}), ID: {}".format(self.user.first_name, self.user.id))
@@ -152,7 +154,7 @@ class SitterServices(TimeStampMixin):
                        (DAYCARE, 'Daycare')]
 
     sitter = models.ForeignKey(User, on_delete=models.CASCADE)
-    listing_name = models.CharField(max_length=50)
+    service_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)
     description = models.TextField(null = "No description")
     price = MoneyField(max_digits=14, decimal_places=2, default_currency='ZAR')
@@ -160,13 +162,10 @@ class SitterServices(TimeStampMixin):
                                           processors=[ResizeToFill(100, 50)],
                                           format='JPEG',
                                           options={'quality': 100})
-    availible_monday = models.BooleanField(default=False)
-    availible_tuesday = models.BooleanField(default=False)
-    availible_wednesday = models.BooleanField(default=False)
-    availible_thursday = models.BooleanField(default=False)
-    availible_friday = models.BooleanField(default=False)
-    availible_saturday = models.BooleanField(default=False)
-    availible_sunday = models.BooleanField(default=False)
+
+    date_start = models.DateField()
+    date_end = models.DateField()
+
     time_start_monday = models.PositiveIntegerField()
     time_start_tuesday = models.PositiveIntegerField()
     time_start_wednesday = models.PositiveIntegerField()
