@@ -4,6 +4,38 @@ from django.db import transaction
 from .models import MiiOwner, MiiSitter, User
 from crispy_forms.helper import FormHelper
 
+def check_if_id_is_valid(id_string):
+    '''
+    This function will check if the ID given is valid or not and will return true
+    if it valid and false is it is not.
+
+    Example input:
+        9202204720082
+        1703295010174
+
+    Example output:
+        False
+        True
+    '''
+
+    check_number = int(id_string[-1])
+    sum_ = 0
+
+    # calculating sum
+    for n in range(0,12):
+        d = int(id_string[-2-n])
+
+        if n%2 == 0:
+            sum_ = sum_ +  d*2%9
+        else:
+            sum_ = sum_ + d
+
+    # calculating final check sum
+    check_sum = 10 - sum_%10
+
+    return True if check_sum == check_number else False
+
+
 class MiiOwnerSignUpForm(UserCreationForm):
     """
     This sign up form allows MiiOwners to register on the site
