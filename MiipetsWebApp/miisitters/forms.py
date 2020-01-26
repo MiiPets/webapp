@@ -7,9 +7,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from djmoney.forms.fields import MoneyField
 from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
 from googlemaps import Client as GoogleMaps
+from core.methods import address_to_lat_long
 
-def address_to_lat_long(city, province, area_code, street_name, street_number):
-    pass
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -131,8 +130,10 @@ class AddListing(forms.ModelForm):
     city = forms.CharField(help_text = "Where you will be providing this service?")
     province = forms.CharField()
     area_code = forms.CharField()
-    street_name = forms.CharField(required=False, help_text="Only required for boarding or daycare services",)
-    street_number = forms.CharField(required=False, help_text="Only required for boarding or daycare services",)
+    street_name = forms.CharField(required=False,
+                                  help_text="Only required for boarding or daycare services")
+    street_number = forms.CharField(required=False,
+                                    help_text="Only required for boarding or daycare services")
 
     main_picture = forms.ImageField(required=True)
     extra_pictures = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
@@ -209,6 +210,21 @@ class AddListing(forms.ModelForm):
             background_photos = ServicePhotos.objects.create(service = service,
                                                              profile_picture = file)
 
+        # create the records for location
+        lat, lng = address_to_lat_long(self.cleaned_data.get('city'),
+                                        self.cleaned_data.get('province'),
+                                        self.cleaned_data.get('street_name'),
+                                        self.cleaned_data.get('street_number'),
+                                        self.cleaned_data.get('area_code'))
 
+
+        location = ServiceLocation.objects.create(service = service,
+                                                  city = self.cleaned_data.get('city'),
+                                                  province = self.cleaned_data.get('province'),
+                                                  street_name = self.cleaned_data.get('street_name'),
+                                                  area_code = self.cleaned_data.get('area_code'),
+                                                  street_number = self.cleaned_data.get('street_number'),
+                                                  lattitude = lat,
+                                                  longitude = lng)
 
         return service

@@ -7,6 +7,30 @@ from imagekit.processors import ResizeToFill
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
+def image_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
+    return 'profile_pictures/user_{}/{}'.format(instance.id, filename)
+
+
+def image_directory_path_pet(instance, filename):
+    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
+    return 'pet_profile_pictures/pet_{}/owner_{}/{}'.format(instance.name,
+                                                            instance.owner,
+                                                            filename)
+
+
+def image_directory_path_service_photos(instance, filename):
+    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
+    return 'service_pictures/service_{}/sitter_{}/{}'.format(instance.id,
+                                                             instance.service.sitter.id,
+                                                             filename)
+
+def image_directory_path_service(instance, filename):
+    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
+    return 'service_pictures/service_{}/sitter_{}/{}'.format(instance.id,
+                                                             instance.sitter.id,
+                                                             filename)
+
 class TimeStampMixin(models.Model):
 
     """
@@ -130,7 +154,6 @@ class SitterServices(TimeStampMixin):
                        (SIT, 'House Sitting'),
                        (DAYCARE, 'Daycare')]
 
-    service_id = models.AutoField(primary_key=True)
     sitter = models.ForeignKey(User, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)
@@ -219,11 +242,12 @@ class ServiceLocation(TimeStampMixin):
     service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
     city = models.CharField(max_length=500)
     province = models.CharField(max_length=500)
-    street_name = models.CharField(max_length=500)
+    street_name = models.CharField(max_length=500, default="")
     area_code = models.PositiveIntegerField()
-    street_number = models.PositiveIntegerField()
+    street_number = models.CharField(max_length=500, default="")
     lattitude = models.FloatField()
     longitude = models.FloatField()
+
 
     def __str__(self):
         return ("Location of service {}".format(self.service.id))
