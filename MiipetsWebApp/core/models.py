@@ -4,31 +4,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 from djmoney.models.fields import MoneyField
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
+from django.core.validators import MaxValueValidator, MinValueValidator
 
-
-def image_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'profile_pictures/user_{}/{}'.format(instance.id, filename)
-
-
-def image_directory_path_pet(instance, filename):
-    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'pet_profile_pictures/pet_{}/owner_{}/{}'.format(instance.name,
-                                                            instance.owner,
-                                                            filename)
-
-
-def image_directory_path_service_photos(instance, filename):
-    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'listing_pictures/listing_{}/sitter_{}/{}'.format(instance.service.id,
-                                                             instance.service.sitter.id,
-                                                             filename)
-
-def image_directory_path_service(instance, filename):
-    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'listing_pictures/listing_{}/sitter_{}/{}'.format(instance.id,
-                                                             instance.sitter.id,
-                                                             filename)
 
 class TimeStampMixin(models.Model):
 
@@ -73,7 +50,7 @@ class User(AbstractUser):
     is_sitter = models.BooleanField(default=False)
     email = models.EmailField(max_length=254)
     profile_picture = ProcessedImageField(upload_to=image_directory_path,
-                                          processors=[ResizeToFill(100, 50)],
+                                          processors=[ResizeToFill(400, 400)],
                                           format='JPEG',
                                           options={'quality': 60})
     #contact_number = PhoneNumberField()
@@ -113,7 +90,7 @@ class Pets(TimeStampMixin):
     breed = models.CharField(max_length=50)
     type = models.CharField(max_length=50)
     profile_picture = ProcessedImageField(upload_to=image_directory_path_pet,
-                                          processors=[ResizeToFill(100, 50)],
+                                          processors=[ResizeToFill(400, 400)],
                                           format='JPEG',
                                           options={'quality': 60})
 
@@ -127,7 +104,7 @@ class MiiSitter(TimeStampMixin):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    id_number = models.PositiveIntegerField()
+    #id_number = models.PositiveIntegerField()
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -153,13 +130,14 @@ class SitterServices(TimeStampMixin):
                        (SIT, 'House Sitting'),
                        (DAYCARE, 'Daycare')]
 
+    service_id = models.AutoField(primary_key=True)
     sitter = models.ForeignKey(User, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)
     description = models.TextField(null = "No description")
-    price = MoneyField(max_digits=14, decimal_places=2, default_currency='ZAR')
+    price = models.PositiveIntegerField(default=10, validators=[MinValueValidator(10)])
     profile_picture = ProcessedImageField(upload_to=image_directory_path_service,
-                                          processors=[ResizeToFill(100, 50)],
+                                          processors=[ResizeToFill(400, 400)],
                                           format='JPEG',
                                           options={'quality': 100})
 
@@ -204,7 +182,7 @@ class ServicePhotos(TimeStampMixin):
 
     service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
     profile_picture = ProcessedImageField(upload_to=image_directory_path_service_photos,
-                                          processors=[ResizeToFill(100, 50)],
+                                          processors=[ResizeToFill(400, 400)],
                                           format='JPEG',
                                           options={'quality': 100})
 
@@ -242,6 +220,7 @@ class ServiceLocation(TimeStampMixin):
     city = models.CharField(max_length=500)
     province = models.CharField(max_length=500)
     street_name = models.CharField(max_length=500)
+    area_code = models.PositiveIntegerField()
     street_number = models.PositiveIntegerField()
     lattitude = models.FloatField()
     longitude = models.FloatField()

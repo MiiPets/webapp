@@ -1,17 +1,23 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
-from core.models import  MiiSitter, User, SitterServices
+from core.models import  MiiSitter, User, SitterServices, ServicePhotos, ServiceLocation
 from crispy_forms.helper import FormHelper
 from django.core.files.uploadedfile import SimpleUploadedFile
 from djmoney.forms.fields import MoneyField
 from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
+from googlemaps import Client as GoogleMaps
+
+def address_to_lat_long(city, province, area_code, street_name, street_number):
+    pass
 
 class DateInput(forms.DateInput):
     input_type = 'date'
 
+
 class TimeInput(forms.TimeInput):
     input_type = 'timeselect'
+
 
 class UpdateMiiSitterProfile(forms.ModelForm):
 
@@ -96,7 +102,7 @@ class AddListing(forms.ModelForm):
                        (SIT, 'House Sitting/Feeding'),
                        (DAYCARE, 'Daycare')]
 
-    TIME_CHOICES = [(NOT_AVAILIBE, 'Not availibe'),
+    TIME_CHOICES = [(NOT_AVAILIBE, 'Not availibe on this day'),
                     (ONE, '1:00'),
                     (TWO, '2:00'),
                     (THREE, '3:00'),
@@ -122,37 +128,39 @@ class AddListing(forms.ModelForm):
                     (TWENTYTHREE, '23:00'),
                     (TWENTYFOUR, '00:00'),]
 
-    service_name = forms.CharField()
-    type = forms.ChoiceField(choices = SERVICE_CHOICES, required=True)
-    description = forms.CharField(widget=forms.Textarea)
+    city = forms.CharField(help_text = "Where you will be providing this service?")
+    province = forms.CharField()
+    area_code = forms.CharField()
+    street_name = forms.CharField(required=False, help_text="Only required for boarding or daycare services",)
+    street_number = forms.CharField(required=False, help_text="Only required for boarding or daycare services",)
 
-    price = MoneyField(default_currency='ZAR')
-    main_picture = forms.ImageField()
-    extra_pictures = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    main_picture = forms.ImageField(required=True)
+    extra_pictures = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
+                                     required=False)
 
-    Service_start_date = forms.BooleanField(widget=DateInput())
-    Service_end_date = forms.BooleanField(widget=DateInput())
+    service_start_date = forms.DateField(widget=DateInput(), required=True)
+    service_end_date = forms.DateField(widget=DateInput(), required=True)
 
-    Monday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
-    Monday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    monday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    monday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
 
-    Tuesday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
-    Tuesday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    tuesday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    tuesday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
 
-    Wednesday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
-    Wednesday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    wednesday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    wednesday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
 
-    Thursday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
-    Thursday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    thursday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    thursday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
 
-    Friday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
-    Friday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    friday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    friday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
 
-    Saturday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
-    Saturday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    saturday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    saturday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
 
-    Sunday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
-    Sunday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    sunday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
+    sunday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
 
     def __init__(self, *args, **kwargs):
          self.user = kwargs.pop('user',None)
@@ -161,15 +169,46 @@ class AddListing(forms.ModelForm):
 
     class Meta(UserCreationForm.Meta):
         model = SitterServices
-        fields = []
+        model2 = User
+        fields = ["service_name",
+                  "type",
+                  "description",
+                  "price"]
+
 
     @transaction.atomic
-    def save(self):
+    def save(self, request):
+        service = super().save(commit=False)
 
-        service = SitterServices.objects.create(sitter=self.user,
-                                                profile_picture = self.cleaned_data.get('listing_picture'),
-                                                listing_name = self.cleaned_data.get('listing_name'),
-                                                type = self.cleaned_data.get('type'),
-                                                description = self.cleaned_data.get('description'),
-                                                price = self.cleaned_data.get('price'))
+        service.sitter = self.user
+        service.profile_picture = self.cleaned_data.get('main_picture')
+        service.service_name = self.cleaned_data.get('service_name')
+        service.type = self.cleaned_data.get('type')
+        service.description = self.cleaned_data.get('description')
+        service.price = self.cleaned_data.get('price')
+        service.date_start= self.cleaned_data.get('service_start_date')
+        service.date_end= self.cleaned_data.get('service_end_date')
+        service.time_start_monday= self.cleaned_data.get('monday_start_time')
+        service.time_start_tuesday= self.cleaned_data.get('tuesday_start_time')
+        service.time_start_wednesday= self.cleaned_data.get('wednesday_start_time')
+        service.time_start_thursday= self.cleaned_data.get('thursday_start_time')
+        service.time_start_friday= self.cleaned_data.get('friday_start_time')
+        service.time_start_saturday= self.cleaned_data.get('saturday_start_time')
+        service.time_start_sunday= self.cleaned_data.get('sunday_start_time')
+        service.time_end_monday= self.cleaned_data.get('monday_end_time')
+        service.time_end_tuesday= self.cleaned_data.get('tuesday_end_time')
+        service.time_end_wednesday= self.cleaned_data.get('wednesday_end_time')
+        service.time_end_thursday= self.cleaned_data.get('thursday_end_time')
+        service.time_end_friday= self.cleaned_data.get('friday_end_time')
+        service.time_end_saturday= self.cleaned_data.get('saturday_end_time')
+        service.time_end_sunday= self.cleaned_data.get('sunday_end_time')
+        service.save()
+
+        # create the records for extra pictures
+        for file in request.FILES.getlist('extra_pictures'):
+            background_photos = ServicePhotos.objects.create(service = service,
+                                                             profile_picture = file)
+
+
+
         return service
