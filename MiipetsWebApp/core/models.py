@@ -21,13 +21,13 @@ def image_directory_path_pet(instance, filename):
 
 def image_directory_path_service_photos(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'service_pictures/service_{}/sitter_{}/{}'.format(instance.id,
+    return 'service_pictures/service_{}/sitter_{}/{}'.format(instance.service_name,
                                                              instance.service.sitter.id,
                                                              filename)
 
 def image_directory_path_service(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'service_pictures/service_{}/sitter_{}/{}'.format(instance.id,
+    return 'service_pictures/service_{}/sitter_{}/{}'.format(instance.service_name,
                                                              instance.sitter.id,
                                                              filename)
 

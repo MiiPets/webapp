@@ -18,7 +18,11 @@ def address_to_lat_long(city, province, street_name, street_number, area_code):
     geocode_result = gmaps.geocode(f'{city} {province} {street_name} {street_number} {area_code}')
 
     # fetch from json
-    lat = geocode_result[0]["geometry"]["location"]["lat"]
-    lng = geocode_result[0]["geometry"]["location"]["lng"]
+    try:
+        lat = geocode_result[0]["geometry"]["location"]["lat"]
+        lng = geocode_result[0]["geometry"]["location"]["lng"]
+    except:
+        lat=0
+        lng=0
 
     return lat, lng
