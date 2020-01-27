@@ -11,7 +11,7 @@ urlpatterns = [
     path('profile/', include('miiprofile.urls')),
     path('pets/', include('pets.urls')),
     path('miidashboard/', include('miisitters.urls')),
-    path('listings/', include('listings.urls'))
+    path('services/', include('services.urls'))
 ]
 
 if settings.DEBUG:
