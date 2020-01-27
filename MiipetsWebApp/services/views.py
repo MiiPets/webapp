@@ -64,28 +64,29 @@ def view_services(request, type):
 
 
 def view_single_service(request, service_id):
-    sitter
-    service_name
-    type
-    description
-    price
-    profile_picture
-    date_start
-    date_end
-    time_start_monday
-    time_start_tuesday
-    time_start_wednesday
-    time_start_thursday
-    time_start_friday
-    time_start_saturday
-    time_start_sunday
-    time_end_monday
-    time_end_tuesday
-    time_end_wednesday
-    time_end_thursday
-    time_end_friday
-    time_end_saturday
-    time_end_sunday
+    
+    # sitter
+    # service_name
+    # type
+    # description
+    # price
+    # profile_picture
+    # date_start
+    # date_end
+    # time_start_monday
+    # time_start_tuesday
+    # time_start_wednesday
+    # time_start_thursday
+    # time_start_friday
+    # time_start_saturday
+    # time_start_sunday
+    # time_end_monday
+    # time_end_tuesday
+    # time_end_wednesday
+    # time_end_thursday
+    # time_end_friday
+    # time_end_saturday
+    # time_end_sunday
 
     service = SitterServices.objects.get(id=service_id)
     print(service)
