@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from core.decorators import miiowner_required
-from core.models import User, Pets, SitterServices
+from core.models import User, Pets, SitterServices, ServicePhotos
+from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
 
 
@@ -30,7 +31,7 @@ def view_all_services(request):
             "sitter_user":False
             }
 
-    return render(request, 'listings/all-listings.html', context)
+    return render(request, 'services/all-services.html', context)
 
 def view_services(request, type):
     """
@@ -59,12 +60,12 @@ def view_services(request, type):
             "sitter_user":False
             }
 
-    return render(request, 'listings/single-type-listings.html', context)
+    return render(request, 'services/single-type-services.html', context)
 
 
 
 def view_single_service(request, service_id):
-    
+
     # sitter
     # service_name
     # type
@@ -87,37 +88,124 @@ def view_single_service(request, service_id):
     # time_end_friday
     # time_end_saturday
     # time_end_sunday
+    #city
+    #province
+    #street_name
+    #area_code
+    #street_number
+    #lattitude
+    #longitude
 
     service = SitterServices.objects.get(id=service_id)
-    print(service)
+    photos = ServicePhotos.objects.filter(service=service)
+    location = ServiceLocation.objects.get(service=service)
 
+    type_converter = {"BOARD":"Boarding",
+                      "SIT": "House Sitter/Feeder",
+                      "WALK":"Walker",
+                      "DAYCARE":"Daycare"}
+
+    time_converter = {'9999':"Not availibe",
+                      '1':"01:00",
+                      '2':"02:00",
+                      "3":"03:00",
+                      "4":"04:00",
+                      "5":"05:00",
+                      "7":"06:00",
+                      "6":"07:00",
+                      "8":"08:00",
+                      "9":"09:00",
+                      "10":"10:00",
+                      "11":"11:00",
+                      "12":"12:00",
+                      "13":"13:00",
+                      "14":"14:00",
+                      "15":"15:00",
+                      "16":"16:00",
+                      "17":"17:00",
+                      "18":"18:00",
+                      "19":"19:00",
+                      "20":"20:00",
+                      "21":"21:00",
+                      "22":"22:00",
+                      "23":"23:00",
+                      "0":"00:00"}
     try:
         if request.user.is_sitter:
             context = {
-                "title": service.type,
+                "title": "Single pet service",
                 "sitter_user":True,
-                'type':service.type,
+                'type':type_converter[service.type],
                 "service_name":service.service_name,
                 "service_description":service.description,
                 'price':service.price,
+                'photos':photos,
+                'location':location.city+", "+location.province,
+                'monday_start_time':time_converter[str(service.time_start_monday)],
+                'tuesday_start_time':time_converter[str(service.time_start_tuesday)],
+                'wednesday_start_time':time_converter[str(service.time_start_wednesday)],
+                'thursday_start_time':time_converter[str(service.time_start_thursday)],
+                'friday_start_time':time_converter[str(service.time_start_friday)],
+                'saturday_start_time':time_converter[str(service.time_start_saturday)],
+                'sunday_start_time':time_converter[str(service.time_start_sunday)],
+                'monday_end_time':time_converter[str(service.time_end_monday)],
+                'tuesday_end_time':time_converter[str(service.time_end_tuesday)],
+                'wednesday_end_time':time_converter[str(service.time_end_wednesday)],
+                'thursday_end_time':time_converter[str(service.time_end_thursday)],
+                'friday_end_time':time_converter[str(service.time_end_friday)],
+                'saturday_end_time':time_converter[str(service.time_end_saturday)],
+                'sunday_end_time':time_converter[str(service.time_end_sunday)],
                 }
         else:
             context = {
-                "title": service.type,
+                "title": "Single pet service",
                 "sitter_user":False,
                 'type':service.type,
                 "service_name":service.service_name,
                 "service_description":service.description,
                 'price':service.price,
+                'photos':photos,
+                'location':location.city+", "+location.province,
+                'monday_start_time':time_converter[str(service.time_start_monday)],
+                'tuesday_start_time':time_converter[str(service.time_start_tuesday)],
+                'wednesday_start_time':time_converter[str(service.time_start_wednesday)],
+                'thursday_start_time':time_converter[str(service.time_start_thursday)],
+                'friday_start_time':time_converter[str(service.time_start_friday)],
+                'saturday_start_time':time_converter[str(service.time_start_saturday)],
+                'sunday_start_time':time_converter[str(service.time_start_sunday)],
+                'monday_end_time':time_converter[str(service.time_end_monday)],
+                'tuesday_end_time':time_converter[str(service.time_end_tuesday)],
+                'wednesday_end_time':time_converter[str(service.time_end_wednesday)],
+                'thursday_end_time':time_converter[str(service.time_end_thursday)],
+                'friday_end_time':time_converter[str(service.time_end_friday)],
+                'saturday_end_time':time_converter[str(service.time_end_saturday)],
+                'sunday_end_time':time_converter[str(service.time_end_sunday)],
                 }
     except:
         context = {
-                "title": service.type,
+                "title": "Single pet service",
                 "sitter_user":False,
                 'type':service.type,
                 "service_name":service.service_name,
                 "service_description":service.description,
                 'price':service.price,
+                'photos':photos,
+                'location':location.city+", "+location.province,
+                'monday_start_time':time_converter[str(service.time_start_monday)],
+                'tuesday_start_time':time_converter[str(service.time_start_tuesday)],
+                'wednesday_start_time':time_converter[str(service.time_start_wednesday)],
+                'thursday_start_time':time_converter[str(service.time_start_thursday)],
+                'friday_start_time':time_converter[str(service.time_start_friday)],
+                'saturday_start_time':time_converter[str(service.time_start_saturday)],
+                'sunday_start_time':time_converter[str(service.time_start_sunday)],
+                'monday_end_time':time_converter[str(service.time_end_monday)],
+                'tuesday_end_time':time_converter[str(service.time_end_tuesday)],
+                'wednesday_end_time':time_converter[str(service.time_end_wednesday)],
+                'thursday_end_time':time_converter[str(service.time_end_thursday)],
+                'friday_end_time':time_converter[str(service.time_end_friday)],
+                'saturday_end_time':time_converter[str(service.time_end_saturday)],
+                'sunday_end_time':time_converter[str(service.time_end_sunday)],
             }
 
+    print(context)
     return render(request, 'services/single-service.html', context)
