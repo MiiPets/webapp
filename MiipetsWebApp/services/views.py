@@ -9,25 +9,22 @@ from django.db.models import Q
 
 def view_all_services(request):
     """
-    This view allows everyone to view all current listings
+    This view allows everyone to view all current services
     """
     try:
         if request.user.is_sitter:
             context = {
-                "title": "All Listings",
-                #"listings":listings,
+                "title": "All Services",
                 "sitter_user":True
                 }
         else:
             context = {
-                "title": "All Listings",
-                #"listings":listings,
+                "title": "All Services",
                 "sitter_user":False
                 }
     except:
         context = {
-            "title": "All Listings",
-            #"listings":listings,
+            "title": "All Services",
             "sitter_user":False
             }
 
@@ -35,29 +32,48 @@ def view_all_services(request):
 
 def view_services(request, type):
     """
-    This view allows everyone to view all current listings
+    This view allows everyone to view all current Services
     """
+
+    # get all services with type requested
+
+    type_dictionary = {"walker":"WALK"}
+
+    services = SitterServices.objects.filter(type=type_dictionary[type])
+    ids = [service.id for service in services]
+    locations = ServiceLocation.objects.filter(id__in=ids)
+    services = zip(services, locations)
+    # similar_services = SitterServices.objects.filter(
+    #                   Q(type=service.type) &
+    #                   (Q(price__lte=service.price*1.2) &  Q(price__gte=service.price*0.8)) &
+    #                   ~Q(id = service.id)
+    #                   )
+    #
+    # photos = ServicePhotos.objects.filter(service=service)
+    # location = ServiceLocation.objects.get(service=service)
+    # sitter = User.objects.get(id=service.sitter.id)
+
     try:
         if request.user.is_sitter:
             context = {
                 "title": type,
                 "type":type.upper(),
-                #"listings":listings,
-                "sitter_user":True
+                "sitter_user":True,
+                "services":services
                 }
         else:
             context = {
                 "title": type,
-                #"listings":listings,
                 "type":type.upper(),
-                "sitter_user":False
+                "sitter_user":False,
+                "services":services
                 }
     except:
         context = {
             "title": type,
-            #"listings":listings,
             "type":type.upper(),
-            "sitter_user":False
+            "sitter_user":False,
+            "services":services
             }
 
     return render(request, 'services/single-type-services.html', context)
@@ -65,36 +81,6 @@ def view_services(request, type):
 
 
 def view_single_service(request, service_id):
-
-    # sitter
-    # service_name
-    # type
-    # description
-    # price
-    # profile_picture
-    # date_start
-    # date_end
-    # time_start_monday
-    # time_start_tuesday
-    # time_start_wednesday
-    # time_start_thursday
-    # time_start_friday
-    # time_start_saturday
-    # time_start_sunday
-    # time_end_monday
-    # time_end_tuesday
-    # time_end_wednesday
-    # time_end_thursday
-    # time_end_friday
-    # time_end_saturday
-    # time_end_sunday
-    #city
-    #province
-    #street_name
-    #area_code
-    #street_number
-    #lattitude
-    #longitude
 
     service = SitterServices.objects.get(id=service_id)
     similar_services = SitterServices.objects.filter(

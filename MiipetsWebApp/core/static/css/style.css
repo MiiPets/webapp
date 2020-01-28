@@ -95,7 +95,7 @@ h6 {
 }
 
 .form-control {
-    border-radius: 0
+    border-radius: 2%
 }
 
 .form-control:focus {
@@ -1036,7 +1036,7 @@ ul.list-inline li {
     height: 35px;
     border: 1px solid transparent;
     display: inline-block;
-    border-radius: 50%;
+     50%;
     text-align: center;
     line-height: 35px;
     cursor: pointer;
