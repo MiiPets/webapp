@@ -5,7 +5,7 @@ from core.decorators import miiowner_required
 from core.models import User, Pets, SitterServices, ServicePhotos
 from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
-
+from django.db.models import Q
 
 def view_all_services(request):
     """
@@ -97,8 +97,15 @@ def view_single_service(request, service_id):
     #longitude
 
     service = SitterServices.objects.get(id=service_id)
+    similar_services = SitterServices.objects.filter(
+                      Q(type=service.type) &
+                      (Q(price__lte=service.price*1.2) &  Q(price__gte=service.price*0.8)) &
+                      ~Q(id = service.id)
+                      )
+
     photos = ServicePhotos.objects.filter(service=service)
     location = ServiceLocation.objects.get(service=service)
+    sitter = User.objects.get(id=service.sitter.id)
 
     type_converter = {"BOARD":"Boarding",
                       "SIT": "House Sitter/Feeder",
@@ -134,6 +141,8 @@ def view_single_service(request, service_id):
         if request.user.is_sitter:
             context = {
                 "title": "Single pet service",
+                "sitter":sitter,
+                "similar_services":similar_services,
                 "sitter_user":True,
                 'type':type_converter[service.type],
                 "service_name":service.service_name,
@@ -159,6 +168,8 @@ def view_single_service(request, service_id):
         else:
             context = {
                 "title": "Single pet service",
+                "sitter":sitter,
+                "similar_services":similar_services,
                 "sitter_user":False,
                 'type':service.type,
                 "service_name":service.service_name,
@@ -184,6 +195,8 @@ def view_single_service(request, service_id):
     except:
         context = {
                 "title": "Single pet service",
+                "sitter":sitter,
+                "similar_services":similar_services,
                 "sitter_user":False,
                 'type':service.type,
                 "service_name":service.service_name,

@@ -30,7 +30,7 @@
                                   <span class="ion-android-star"></span>
                                   <span class="ion-android-star"></span>
                                   <span class="ion-android-star-half"></span>
-                                  <a href="#">(31 Reviews)</a>
+                                  <a href="#">(4 Reviews)</a>
                               </div> -->
                           </div>
                       </div>
@@ -137,7 +137,7 @@
                               </ul>
                           </div>
                       </div>
-                      <div id="add_review" class="list-details-section mar-top-10">
+                      <!-- <div id="add_review" class="list-details-section mar-top-10">
                           <h4>Add Review</h4>
                           <form class="contact-form" id="leave-review">
                               <h4 class="contact-form__title">
@@ -178,9 +178,9 @@
                                   </div>
                               </div>
                               <textarea class="contact-form__textarea" name="comment" id="comment" placeholder="Comment"></textarea>
-                              <input class="btn v1" type="submit" name="submit-contact" id="submit_contact" value="Submit">
+                              <input class="btn v1" type="submit" name="submit-contact" id="submit_contact" value="Submit" style="background-color: #007A33;">
                           </form>
-                      </div>
+                      </div> -->
                   </div>
                   <!--Listing Details ends-->
                   <!--Similar Listing starts-->
@@ -190,14 +190,15 @@
                       </div>
                       <div class="swiper-container similar-list-wrap">
                           <div class="swiper-wrapper">
+                            {% for similar in similar_services %}
                               <div class="swiper-slide similar-item">
-                                  <img src="images/single-listing/restaurent-listing-1.jpg" class="img-fluid" alt="...">
+                                  <img src="{{similar.profile_picture.url}}" class="img-fluid" alt="...">
                                   <div class="similar-title-box">
-                                      <h5><a href="#">Atelier Crenn</a></h5>
-                                      <p><span class="price-amt">$89</span>/Avg</p>
+                                      <h5><a href="{% url 'services-single' service_id=similar.id %}">{{similar.service_name}}</a></h5>
+                                      <p><span class="price-amt">R{{similar.price}} per {%if similar.type == 'WALK' or similar.type == 'SIT' %} hour {%else%} day {%endif%}</span></p>
                                   </div>
                                   <div class="customer-review">
-                                      <div class="rating-summary">
+                                      <!-- <div class="rating-summary">
                                           <div class="rating-result" title="60%">
                                               <ul class="product-rating">
                                                   <li><i class="ion-android-star"></i></li>
@@ -207,10 +208,10 @@
                                                   <li><i class="ion-android-star-half"></i></li>
                                               </ul>
                                           </div>
-                                      </div>
-                                      <p><i class="ion-ios-location"></i> 3125 Fillmore Street, San Francisco, USA</p>
+                                      </div> -->
                                   </div>
                               </div>
+                            {%endfor%}
                           </div>
                       </div>
                       <div class="slider-btn v3 similar-next"><i class="ion-arrow-right-c"></i></div>
@@ -353,18 +354,17 @@
                       </div>
                       <div class="sidebar-widget follow">
                           <div class="follow-img">
-                              <img src="images/clients/reviewer-1.png" class="img-fluid" alt="#">
-                              <h6>Christine Evans</h6>
-                              <span>New York</span>
+                              <img src="{{sitter.profile_picture.url}}" class="img-fluid" alt="#">
+                              <h6>{{sitter.first_name}} {{sitter.last_name}}</h6>
                           </div>
                           <ul class="social-counts">
                               <li>
-                                  <h6>26</h6>
-                                  <span>Score</span>
+                                  <h6>4.3</h6>
+                                  <span>Average review score</span>
                               </li>
                               <li>
                                   <h6>326</h6>
-                                  <span>Bookings</span>
+                                  <span>Bookings completed</span>
                               </li>
                           </ul>
                           <div class="text-center mar-bot-25">
