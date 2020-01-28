@@ -35,8 +35,12 @@ def view_services(request, type):
     This view allows everyone to view all current Services
     """
 
-    # get all services with type requested
+    # get input data
+    if request.method == "PUT":
+        type = request.GET['service_type_input']
 
+
+    # get all services with type requested
     type_dictionary = {"Walker":"WALK",
                        'Boarding' :'BOARD',
                        'Sitter' :'SIT',
