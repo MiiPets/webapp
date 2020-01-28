@@ -37,21 +37,24 @@ def view_services(request, type):
 
     # get all services with type requested
 
-    type_dictionary = {"walker":"WALK"}
+    type_dictionary = {"Walker":"WALK",
+                       'Boarding' :'BOARD',
+                       'Sitter' :'SIT',
+                       'Daycare' :'DAYCARE'}
 
     services = SitterServices.objects.filter(type=type_dictionary[type])
     ids = [service.id for service in services]
     locations = ServiceLocation.objects.filter(id__in=ids)
     services = zip(services, locations)
-    # similar_services = SitterServices.objects.filter(
-    #                   Q(type=service.type) &
-    #                   (Q(price__lte=service.price*1.2) &  Q(price__gte=service.price*0.8)) &
-    #                   ~Q(id = service.id)
-    #                   )
-    #
-    # photos = ServicePhotos.objects.filter(service=service)
-    # location = ServiceLocation.objects.get(service=service)
-    # sitter = User.objects.get(id=service.sitter.id)
+        # similar_services = SitterServices.objects.filter(
+        #                   Q(type=service.type) &
+        #                   (Q(price__lte=service.price*1.2) &  Q(price__gte=service.price*0.8)) &
+        #                   ~Q(id = service.id)
+        #                   )
+        #
+        # photos = ServicePhotos.objects.filter(service=service)
+        # location = ServiceLocation.objects.get(service=service)
+        # sitter = User.objects.get(id=service.sitter.id)
 
     try:
         if request.user.is_sitter:
