@@ -5,9 +5,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('all-listing/', listing_views.view_all_listings, name='listings-all'),
-    path('listings/<str:type>', listing_views.view_listings, name='listings')
-    #path('single-listing/<int:service_id>', listing_views.view_single_listings, name='listings-single'),
+    path('all-services/', listing_views.view_all_services, name='services-all'),
+    path('services/<str:type>', listing_views.view_services, name='services'),
+    path('single-service/<int:service_id>', listing_views.view_single_service, name='services-single'),
 ]
 
 if settings.DEBUG:

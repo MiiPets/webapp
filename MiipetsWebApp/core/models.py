@@ -21,7 +21,7 @@ def image_directory_path_pet(instance, filename):
 
 def image_directory_path_service_photos(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'service_pictures/service_{}/sitter_{}/{}'.format(instance.service_name,
+    return 'service_pictures/service_{}/sitter_{}/{}'.format(instance.service.service_name,
                                                              instance.service.sitter.id,
                                                              filename)
 
@@ -182,10 +182,7 @@ class SitterServices(TimeStampMixin):
     time_end_saturday = models.PositiveIntegerField()
     time_end_sunday = models.PositiveIntegerField()
 
-    REQUIRED_FIELDS = ['listing_name', 'type', 'price',
-                       "availible_monday", "availible_tuesday","availible_wednesday",
-                       "availible_thursday", "availible_friday", "availible_saturday",
-                       "availible_sunday"]
+    REQUIRED_FIELDS = ['service_name', 'type', 'price']
 
 
     class Meta:
@@ -205,13 +202,13 @@ class ServicePhotos(TimeStampMixin):
 
     service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
     profile_picture = ProcessedImageField(upload_to=image_directory_path_service_photos,
-                                          processors=[ResizeToFill(400, 400)],
+                                          processors=[ResizeToFill(800, 800)],
                                           format='JPEG',
-                                          options={'quality': 100})
+                                          options={'quality': 200})
 
-    def __str__(self):
-        return ("Booking of service {} for user {}".format(self.listing,
-                                                           self.requester))
+    # def __str__(self):
+    #     return ("Photos of service {} for user {}".format(self.service,
+    #                                                        self.requester))
 
 
 class ServiceBooking(TimeStampMixin):
@@ -229,8 +226,8 @@ class ServiceBooking(TimeStampMixin):
     approved =  models.BooleanField(default=False)
 
 
-    def __str__(self):
-        return ("Booking of service {} for user {}".format(self.listing, self.requester))
+    # def __str__(self):
+    #     return ("Booking of service {} for user {}".format(self.listing, self.requester))
 
 
 class ServiceLocation(TimeStampMixin):
@@ -249,8 +246,8 @@ class ServiceLocation(TimeStampMixin):
     longitude = models.FloatField()
 
 
-    def __str__(self):
-        return ("Location of service {}".format(self.service.id))
+    # def __str__(self):
+    #     return ("Location of service {}".format(self.service.id))
 
 
 class ServiceReviews(TimeStampMixin):

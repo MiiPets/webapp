@@ -22,15 +22,15 @@
                                    {{type}}
                                  </a>
                                </p>
-                              <h2>{{listing_name}}</h2>
-                              <p><i class="ion-ios-location"></i>{{list_address}}</p>
+                              <h2>{{service_name}}</h2>
+                              <p><i class="ion-ios-location" style="color: #007A33;"></i>{{location}}</p>
                               <!-- <div class="list-ratings">
                                   <span class="ion-android-star"></span>
                                   <span class="ion-android-star"></span>
                                   <span class="ion-android-star"></span>
                                   <span class="ion-android-star"></span>
                                   <span class="ion-android-star-half"></span>
-                                  <a href="#">(31 Reviews)</a>
+                                  <a href="#">(4 Reviews)</a>
                               </div> -->
                           </div>
                       </div>
@@ -71,7 +71,7 @@
                       <div id="overview" class="list-details-section">
                          <h4>Overview</h4>
                           <div class="overview-content">
-                              <p class="mar-bot-10">{{listing_description}}</p>
+                              <p class="mar-bot-10">{{service_description}}</p>
                           </div>
                       </div>
                       <div id="gallery" class="list-details-section">
@@ -81,7 +81,7 @@
                               <!--Slides-->
                               <div class="carousel-inner" role="listbox">
                                   <div class="carousel-item active">
-                                      <img class="d-block w-100" src="images/single-listing/restaurant-1.jpg" alt="slide">
+                                      <!-- <img class="d-block w-100" src="images/single-listing/restaurant-1.jpg" alt="slide"> -->
                                   </div>
                               </div>
                               <!--Controls starts-->
@@ -95,16 +95,18 @@
                               </a>
                               <!--Controls ends-->
                               <ol class="carousel-indicators  list-gallery-thumb">
+                                {%for photo in photos%}
                                   <li data-target="#carousel-thumb" data-slide-to="0">
-                                    <img class="img-fluid d-block w-100" src="images/single-listing/restaurant-1.jpg">
+                                    <img class="img-fluid d-block w-100" style="width:400%" src="{{photo.profile_picture.url}}">
                                   </li>
+                                {%endfor%}
                               </ol>
                           </div>
                           <!--/.Carousel Wrapper-->
                       </div>
                       <div id="price" class="list-details-section mar-top-80">
                         <h4>Pricing</h4>
-                        <h6>R{{price}} per slot</h6>
+                        <h6>R{{price}} per {%if type == 'WALK' or type == 'SIT' %} hour {%else%} day {%endif%}</h6>
                       </div>
                       <div id="reviews" class="list-details-section mar-top-10">
                           <h4>Reviews <span>({{number_of_reviews}})</span></h4>
@@ -135,7 +137,7 @@
                               </ul>
                           </div>
                       </div>
-                      <div id="add_review" class="list-details-section mar-top-10">
+                      <!-- <div id="add_review" class="list-details-section mar-top-10">
                           <h4>Add Review</h4>
                           <form class="contact-form" id="leave-review">
                               <h4 class="contact-form__title">
@@ -176,26 +178,27 @@
                                   </div>
                               </div>
                               <textarea class="contact-form__textarea" name="comment" id="comment" placeholder="Comment"></textarea>
-                              <input class="btn v1" type="submit" name="submit-contact" id="submit_contact" value="Submit">
+                              <input class="btn v1" type="submit" name="submit-contact" id="submit_contact" value="Submit" style="background-color: #007A33;">
                           </form>
-                      </div>
+                      </div> -->
                   </div>
                   <!--Listing Details ends-->
                   <!--Similar Listing starts-->
                   <div class="similar-listing">
                       <div class="similar-listing-title">
-                          <h3>Similar Listings</h3>
+                          <h3>Similar Services</h3>
                       </div>
                       <div class="swiper-container similar-list-wrap">
                           <div class="swiper-wrapper">
+                            {% for similar in similar_services %}
                               <div class="swiper-slide similar-item">
-                                  <img src="images/single-listing/restaurent-listing-1.jpg" class="img-fluid" alt="...">
+                                  <img src="{{similar.profile_picture.url}}" class="img-fluid" alt="...">
                                   <div class="similar-title-box">
-                                      <h5><a href="#">Atelier Crenn</a></h5>
-                                      <p><span class="price-amt">$89</span>/Avg</p>
+                                      <h5><a href="{% url 'services-single' service_id=similar.id %}">{{similar.service_name}}</a></h5>
+                                      <p><span class="price-amt">R{{similar.price}} per {%if similar.type == 'WALK' or similar.type == 'SIT' %} hour {%else%} day {%endif%}</span></p>
                                   </div>
                                   <div class="customer-review">
-                                      <div class="rating-summary">
+                                      <!-- <div class="rating-summary">
                                           <div class="rating-result" title="60%">
                                               <ul class="product-rating">
                                                   <li><i class="ion-android-star"></i></li>
@@ -205,10 +208,10 @@
                                                   <li><i class="ion-android-star-half"></i></li>
                                               </ul>
                                           </div>
-                                      </div>
-                                      <p><i class="ion-ios-location"></i> 3125 Fillmore Street, San Francisco, USA</p>
+                                      </div> -->
                                   </div>
                               </div>
+                            {%endfor%}
                           </div>
                       </div>
                       <div class="slider-btn v3 similar-next"><i class="ion-arrow-right-c"></i></div>
@@ -273,49 +276,77 @@
                       <div class="sidebar-widget">
                           <div class="business-time">
                               <div class="business-title">
-                                  <h6><i class="ion-android-alarm-clock"></i> Business Hours</h6>
+                                  <h6><i class="ion-android-alarm-clock"  style="color: #007A33;"></i> Business Hours</h6>
                               </div>
                               <ul class="business-hours">
-                                  <li class="business-open">
+                                  <li class="business-open {%if saturday_start_time == 'Not availibe' or saturday_end_time == 'Not availibe'%} trend-closed {%endif%}">
                                       <span class="day">Saturday</span>
                                       <div class="atbd_open_close_time">
-                                          <span class="time">11:00 am</span> - <span class="time">06:00 pm</span>
+                                          {%if saturday_start_time == 'Not availibe' or saturday_end_time == 'Not availibe'%}
+                                            <span class="time">Not availibe</span>
+                                          {%else%}
+                                            <span class="time">{{saturday_start_time}}</span> - <span class="time">{{saturday_end_time}}</span>
+                                          {%endif%}
                                       </div>
                                   </li>
-                                  <li class="business-open trend-closed">
+                                  <li class="business-open {%if sunday_start_time == 'Not availibe' or sunday_end_time == 'Not availibe'%} trend-closed {%endif%}">
                                       <span class="day">Sunday</span>
                                       <div class="atbd_open_close_time">
-                                          <span class="time">Closed</span>
+                                        {%if sunday_start_time == 'Not availibe' or sunday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{sunday_start_time}}</span> - <span class="time">{{sunday_end_time}}</span>
+                                        {%endif%}
                                       </div>
                                   </li>
-                                  <li class="business-open">
+                                  <li class="business-open {%if monday_start_time == 'Not availibe' or monday_end_time == 'Not availibe'%} trend-closed {%endif%}">
                                       <span class="day">Monday</span>
                                       <div class="atbd_open_close_time">
-                                          <span class="time">10:00 am</span> - <span class="time">06:00 pm</span>
+                                        {%if monday_start_time == 'Not availibe' or monday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{monday_start_time}}</span> - <span class="time">{{monday_end_time}}</span>
+                                        {%endif%}
                                       </div>
                                   </li>
-                                  <li class="business-open">
+                                  <li class="business-open {%if tuesday_start_time == 'Not availibe' or tuesday_end_time == 'Not availibe'%} trend-closed {%endif%}">
                                       <span class="day">Tuesday</span>
                                       <div class="atbd_open_close_time">
-                                          <span class="time">10:00 am</span> - <span class="time">06:30 pm</span>
+                                        {%if tuesday_start_time == 'Not availibe' or tuesday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{tuesday_start_time}}</span> - <span class="time">{{tuesday_end_time}}</span>
+                                        {%endif%}
                                       </div>
                                   </li>
-                                  <li class="business-open">
+                                  <li class="business-open {%if wednesday_start_time == 'Not availibe' or wednesday_end_time == 'Not availibe'%} trend-closed {%endif%}">
                                       <span class="day">Wednesday</span>
                                       <div class="atbd_open_close_time">
-                                          <span class="time">09:00 am</span> - <span class="time">05:00 pm</span>
+                                        {%if wednesday_start_time == 'Not availibe' or wednesday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{wednesday_start_time}}</span> - <span class="time">{{wednesday_end_time}}</span>
+                                        {%endif%}
                                       </div>
                                   </li>
-                                  <li class="business-open">
+                                  <li class="business-open {%if thursday_start_time == 'Not availibe' or thursday_end_time == 'Not availibe'%} trend-closed {%endif%}">
                                       <span class="day">Thursday</span>
                                       <div class="atbd_open_close_time">
-                                          <span class="time">10:00 am</span> - <span class="time">07:00 pm</span>
+                                        {%if thursday_start_time == 'Not availibe' or thursday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{thursday_start_time}}</span> - <span class="time">{{thursday_end_time}}</span>
+                                        {%endif%}
                                       </div>
                                   </li>
-                                  <li class="business-open">
+                                  <li class="business-open {%if friday_start_time == 'Not availibe' or friday_end_time == 'Not availibe'%} trend-closed {%endif%}">
                                       <span class="day">Friday</span>
                                       <div class="atbd_open_close_time">
-                                          <span class="time">11:00 am</span> - <span class="time">06:00 pm</span>
+                                        {%if friday_start_time == 'Not availibe' or friday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{friday_start_time}}</span> - <span class="time">{{friday_end_time}}</span>
+                                        {%endif%}
                                       </div>
                                   </li>
                               </ul>
@@ -323,18 +354,17 @@
                       </div>
                       <div class="sidebar-widget follow">
                           <div class="follow-img">
-                              <img src="images/clients/reviewer-1.png" class="img-fluid" alt="#">
-                              <h6>Christine Evans</h6>
-                              <span>New York</span>
+                              <img src="{{sitter.profile_picture.url}}" class="img-fluid" alt="#">
+                              <h6>{{sitter.first_name}} {{sitter.last_name}}</h6>
                           </div>
                           <ul class="social-counts">
                               <li>
-                                  <h6>26</h6>
-                                  <span>Score</span>
+                                  <h6>4.3</h6>
+                                  <span>Average review score</span>
                               </li>
                               <li>
                                   <h6>326</h6>
-                                  <span>Bookings</span>
+                                  <span>Bookings completed</span>
                               </li>
                           </ul>
                           <div class="text-center mar-bot-25">
