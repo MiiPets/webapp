@@ -85,23 +85,19 @@ def filter_on_location(services, searched_location):
 
     # get location data of services
     ids = [service.id for service in services]
-    locations = ServiceLocation.objects.filter(id__in=ids).values("lattitude" , "longitude")
-    locations_return = ServiceLocation.objects.filter(id__in=ids)
+    locations = ServiceLocation.objects.filter(id__in=ids)
 
     # create coordinate sets
-    lat_long_sets = [(location['lattitude'], location['longitude']) for location in locations]
+    lat_long_sets = [(location.lattitude, location.longitude) for location in locations]
     # get distances
     distances = [geopy.distance.vincenty((lat_search, lng_search), location).km for location in lat_long_sets]
 
     # order services by distance rather than not giving anything
     sorted_indexes = sorted(range(len(distances)),key=distances.__getitem__)
-    # distances, services = zip(*sorted(zip(distances, services)))
-    # distances, locations_return = zip(*sorted(zip(distances, locations_return)))
-
 
     # # get passed values
     services = [services[index] for index in sorted_indexes ]
     # id_passed = [ids_loc[index] for index in passed_indexes ]
-    locations =  [locations_return[index] for index in sorted_indexes ]
+    locations =  [locations[index] for index in sorted_indexes ]
 
     return services, locations
