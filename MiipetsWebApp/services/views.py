@@ -6,7 +6,7 @@ from core.models import User, Pets, SitterServices, ServicePhotos
 from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
 from django.db.models import Q
-from core.methods import sort_out_dates, filter_on_location
+from core.methods import sort_out_dates#, filter_on_location
 
 
 def view_all_services(request):
@@ -63,7 +63,7 @@ def view_services(request, type):
 
 
         #filter on location
-        services = filter_on_location(services, request.GET['location_input'])
+        #services = filter_on_location(services, request.GET['location_input'])
 
         # get additional information services to fill page
         ids = [service.id for service in services]

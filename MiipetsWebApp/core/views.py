@@ -13,7 +13,7 @@ from django.utils.html import strip_tags
 from django.core import mail
 from django.conf import settings
 
-
+    
 def send_email_sign_up(first_name, email_address, is_sitter=False):
     """
     Send email to user after sign up

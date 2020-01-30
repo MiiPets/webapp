@@ -4,6 +4,12 @@ from geopy.distance import geodesic
 from django.conf import settings
 from datetime import datetime, timedelta
 
+def filter_on_location(services, searched_location):
+    """
+    This function will filter the current services and only return the services
+    that are within a certian radius of the given location.
+    """
+    pass
 
 def sort_out_dates(start_date, end_date):
     """
@@ -16,21 +22,32 @@ def sort_out_dates(start_date, end_date):
     If start date after end date, rotate
     If start date or end date before today, then apply first logic
 
-    Input: YYYY-MM-DD, YYYY-MM-DD
-    Ouput: YYYY-MM-DD, YYYY-MM-DD
+    Input: MM-DD-YYYY, MM-DD-YYYY
+    Ouput: MM-DD-YYYY, MM-DD-YYYY
     """
 
-    today = datetime.today().strftime('%Y-%m-%d')
+    today = datetime.date(datetime.today())
 
     if not start_date:
         start_date = today
+    else:
+        month_s,day_s,year_s = start_date.split('/')
+        start_date = datetime(int(year_s), int(month_s), int(day_s))
 
     if not end_date:
-        end_date = datetime.strptime(start_date, '%Y-%m-%d') + timedelta(7)
-        end_date = end_date.strftime('%Y-%m-%d')
+        end_date = start_date + timedelta(7)
+    else:
+        month_e,day_e,year_e = end_date.split('/')
+        end_date = datetime(int(year_e), int(month_e), int(day_e))
 
-    if datetime.strptime(start_date, '%Y-%m-%d') > datetime.strptime(end_date, '%Y-%m-%d'):
+    if start_date > end_date:
         start_date, end_date = end_date, start_date
+
+    try:
+        start_date = datetime.strptime(str(start_date), "%Y-%m-%d %H:%M:%S")
+        end_date = datetime.strptime(str(end_date), "%Y-%m-%d %H:%M:%S")
+    except:
+        pass
 
     return start_date, end_date
 
