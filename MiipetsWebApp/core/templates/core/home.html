@@ -176,29 +176,29 @@
                     </div>
 
                     <div class="col-md-12 text-center mar-top-10">
-                        <form class="hero__form v2" method = 'PUT' action = "{% url 'services' type='Walker' %}">
+                        <form class="hero__form v2" method = 'GET' action = "{% url 'services' type='Placeholder' %}">
                             <div class="row">
+                                <div class="col-lg-3 col-md-12">
+                                  <input class="hero__form-input custom-select" type="text" name="location_input" id="place-event" placeholder="Where do you want this service?">
+                                </div>
                                 <div class="col-lg-3 col-md-12">
                                       <select class="hero__form-input  custom-select" name = "service_type_input">
                                           <option>Select type of service</option>
                                           <option>Sitter/Feeder</option>
-                                          <option>Walker</option>
+                                          <option >Walker</option>
                                           <option>Boarding</option>
                                           <option>Daycare</option>
                                       </select>
                                 </div>
-                                <div class="col-lg-3 col-md-12">
-                                  <input class="hero__form-input custom-select" type="text" name="location_input" id="place-event" placeholder="Where do you want this service?">
-                                </div>
                                 <div class="col-lg-2 col-md-12">
-                                  <input class="hero__form-input custom-select" type="text" name="date_begin_input" id="datepicker-from" placeholder="From">
+                                  <input class="hero__form-input custom-select" type="text" name="date_begin_input"  id="datepicker-from" placeholder="From">
                                 </div>
                                 <div class="col-lg-2 col-md-12">
                                   <input class="hero__form-input custom-select" type="text" name="date_end_input" id="datepicker-to" placeholder="To">
                                 </div>
                                 <div class="col-lg-2 col-md-12">
                                     <div class="submit_btn text-right md-left">
-                                        <button class="btn v3  mar-right-5" type="submit"><i class="ion-search" aria-hidden="true"></i> Search</button>
+                                        <button class="btn v3  mar-right-5" type="submit" style="background-color: #007A33;"><i class="ion-search" aria-hidden="true"></i> Search</button>
                                     </div>
                                 </div>
                             </div>
