@@ -3,13 +3,10 @@ from datetime import datetime
 from geopy.distance import geodesic
 from django.conf import settings
 from datetime import datetime, timedelta
+from core.models import ServiceLocation, ServiceReviews
+import geopy.distance
+import numpy as np
 
-def filter_on_location(services, searched_location):
-    """
-    This function will filter the current services and only return the services
-    that are within a certian radius of the given location.
-    """
-    pass
 
 def sort_out_dates(start_date, end_date):
     """
@@ -51,7 +48,7 @@ def sort_out_dates(start_date, end_date):
 
     return start_date, end_date
 
-def address_to_lat_long(city, province, street_name, street_number, area_code):
+def address_to_lat_long(full_addres='', city="", province="", street_name="", street_number='', area_code=''):
     """
     This function takes in the address details and returns the lattitude and longitude
     of the adress using the google maps API from Goodle cloud.
@@ -59,11 +56,13 @@ def address_to_lat_long(city, province, street_name, street_number, area_code):
     Input example: 'Secunda', 'Mpumalanga', 'Grobler Street', '13', '2302'
     Output example: 17022.23, 1233.34
     """
-
     gmaps = googlemaps.Client(key=settings.GOOGLE_API_KEY)
 
     # fetch long lat
-    geocode_result = gmaps.geocode(f'{city} {province} {street_name} {street_number} {area_code}')
+    if full_addres:
+        geocode_result = gmaps.geocode(full_addres)
+    else:
+        geocode_result = gmaps.geocode(f'{city} {province} {street_name} {street_number} {area_code}')
 
     # fetch from json
     try:
@@ -74,3 +73,35 @@ def address_to_lat_long(city, province, street_name, street_number, area_code):
         lng=0
 
     return lat, lng
+
+
+def filter_on_location(services, searched_location):
+    """
+    This function will filter the current services and only return the services
+    that are within a certian radius of the given location.
+    """
+
+    lat_search, lng_search = address_to_lat_long(searched_location)
+
+    # get location data of services
+    ids = [service.id for service in services]
+    locations = ServiceLocation.objects.filter(id__in=ids).values("lattitude" , "longitude")
+    locations_return = ServiceLocation.objects.filter(id__in=ids)
+
+    # create coordinate sets
+    lat_long_sets = [(location['lattitude'], location['longitude']) for location in locations]
+    # get distances
+    distances = [geopy.distance.vincenty((lat_search, lng_search), location).km for location in lat_long_sets]
+
+    # order services by distance rather than not giving anything
+    sorted_indexes = sorted(range(len(distances)),key=distances.__getitem__)
+    # distances, services = zip(*sorted(zip(distances, services)))
+    # distances, locations_return = zip(*sorted(zip(distances, locations_return)))
+
+
+    # # get passed values
+    services = [services[index] for index in sorted_indexes ]
+    # id_passed = [ids_loc[index] for index in passed_indexes ]
+    locations =  [locations_return[index] for index in sorted_indexes ]
+
+    return services, locations
