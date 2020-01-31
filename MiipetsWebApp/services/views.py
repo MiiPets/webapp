@@ -6,6 +6,8 @@ from core.models import User, Pets, SitterServices, ServicePhotos
 from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
 from django.db.models import Q
+from core.methods import sort_out_dates, filter_on_location
+
 
 def view_all_services(request):
     """
@@ -30,55 +32,96 @@ def view_all_services(request):
 
     return render(request, 'services/all-services.html', context)
 
+
 def view_services(request, type):
     """
     This view allows everyone to view all current Services
     """
 
     # get all services with type requested
-
     type_dictionary = {"Walker":"WALK",
                        'Boarding' :'BOARD',
                        'Sitter' :'SIT',
                        'Daycare' :'DAYCARE'}
 
-    services = SitterServices.objects.filter(type=type_dictionary[type])
-    ids = [service.id for service in services]
-    locations = ServiceLocation.objects.filter(id__in=ids)
-    services = zip(services, locations)
-        # similar_services = SitterServices.objects.filter(
-        #                   Q(type=service.type) &
-        #                   (Q(price__lte=service.price*1.2) &  Q(price__gte=service.price*0.8)) &
-        #                   ~Q(id = service.id)
-        #                   )
-        #
-        # photos = ServicePhotos.objects.filter(service=service)
-        # location = ServiceLocation.objects.get(service=service)
-        # sitter = User.objects.get(id=service.sitter.id)
+    if request.method=="GET":
+        #check if type correct for filtering
+        try:
+            if request.GET['service_type_input'] in type_dictionary.keys():
+                type = [type_dictionary[request.GET['service_type_input']]]
+            else:
+                type = type_dictionary.values()
+        except:
+            type = [type_dictionary[type]]
 
-    try:
-        if request.user.is_sitter:
+        #check if dates are correct
+        try:
+            start_date, end_date = sort_out_dates(request.GET['date_begin_input'], request.GET['date_end_input'])
+        except:
+            start_date, end_date = sort_out_dates('', '')
+
+        try:
+            price_start = request.GET['price_start']
+            price_end = request.GET['price_end']
+
+            if price_start > price_end:
+                price_start, price_end = price_end, price_start
+
+            if not price_start:
+                price_start = 0
+                price_end = 99999999
+        except:
+            price_start = 0
+            price_end = 99999999
+
+        #get relevant services not based on location
+        services = SitterServices.objects.filter(Q(type__in=type)&
+                                                 Q(date_start__lte=start_date)&
+                                                 Q(date_end__gte=end_date)&
+                                                 Q(price__range=[price_start, price_end]))
+
+
+        #filter on location
+        try:
+            location_input = request.GET['location_input']
+            services,locations = filter_on_location(services, location_input)
+        except:
+            location_input = ""
+            ids = [service.id for service in services]
+            locations = ServiceLocation.objects.filter(id__in=ids)
+
+        if not location_input:
+            location_input = "Location"
+
+        services = zip(services, locations)
+
+        try:
+            if request.user.is_sitter:
+                context = {
+                    "title": "View pet services",
+                    "type":"Services",
+                    "sitter_user":True,
+                    "services":services,
+                    "location_input":location_input
+                    }
+            else:
+                context = {
+                    "title": "View pet services",
+                    "type":"Services",
+                    "sitter_user":False,
+                    "services":services,
+                    "location_input":location_input
+                    }
+        except:
             context = {
-                "title": type,
-                "type":type.upper(),
-                "sitter_user":True,
-                "services":services
-                }
-        else:
-            context = {
-                "title": type,
-                "type":type.upper(),
+                "title": "View pet services",
+                "type":"Services",
                 "sitter_user":False,
-                "services":services
+                "services":services,
+                "location_input":location_input
                 }
-    except:
-        context = {
-            "title": type,
-            "type":type.upper(),
-            "sitter_user":False,
-            "services":services
-            }
 
+    print(context)
     return render(request, 'services/single-type-services.html', context)
 
 

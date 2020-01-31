@@ -11,8 +11,9 @@ from .decorators import miiowner_required, miisitter_required
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core import mail
+from django.conf import settings
 
-
+    
 def send_email_sign_up(first_name, email_address, is_sitter=False):
     """
     Send email to user after sign up
@@ -102,15 +103,18 @@ def home(request):
         if request.user.is_sitter:
             context= {
                 "title":"Home",
-                'sitter_user':True
+                'sitter_user':True,
+                "google_api":str(settings.GOOGLE_API_KEY),
             }
         else:
             context= {
-                "title":"Home"
+                "title":"Home",
+                "google_api":str(settings.GOOGLE_API_KEY),
             }
     except:
         context= {
-            "title":"Home"
+            "title":"Home",
+            "google_api":str(settings.GOOGLE_API_KEY),
         }
     return render(request, 'core/home.html', context)
 
