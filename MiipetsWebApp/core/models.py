@@ -157,12 +157,18 @@ class SitterServices(TimeStampMixin):
     sitter = models.ForeignKey(User, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)
+    dogs_allowed = models.BooleanField(default=False)
+    cats_allowed = models.BooleanField(default=False)
+    birds_allowed = models.BooleanField(default=False)
+    reptiles_allowed = models.BooleanField(default=False)
+    other_pets_allowed = models.BooleanField(default=False)
     description = models.TextField(null = "No description")
     price = models.PositiveIntegerField(default=10, validators=[MinValueValidator(10)])
     profile_picture = ProcessedImageField(upload_to=image_directory_path_service,
                                           processors=[ResizeToFill(400, 400)],
                                           format='JPEG',
                                           options={'quality': 100})
+    pet_type = models.CharField(max_length=50)
 
     date_start = models.DateField()
     date_end = models.DateField()
@@ -182,7 +188,8 @@ class SitterServices(TimeStampMixin):
     time_end_saturday = models.PositiveIntegerField()
     time_end_sunday = models.PositiveIntegerField()
 
-    REQUIRED_FIELDS = ['service_name', 'type', 'price']
+
+    REQUIRED_FIELDS = ['service_name', 'type', 'price', 'pet_type']
 
 
     class Meta:

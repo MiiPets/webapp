@@ -7,45 +7,61 @@
   <div class="col-md-12 text-center">
       <form class="hero__form v1" method = 'GET' action = "{% url 'services' type='Placeholder' %}">
           <div class="row">
-              <div class="col-lg-2col-md-12">
-                <input class="hero__form-input custom-select" type="text" name="location_input" autocomplete="off" id="place-event" placeholder="{{location_input}}">
-              </div>
-              <div class="col-lg-2 col-md-12">
-                    <select class="hero__form-input  custom-select" name = "service_type_input">
-                        <option>Type of service</option>
-                        <option>Sitter/Feeder</option>
-                        <option >Walker</option>
-                        <option>Boarding</option>
-                        <option>Daycare</option>
-                    </select>
-              </div>
-              <div class="col-lg-1 col-md-12">
-                <input class="hero__form-input custom-select" type="text" name="date_begin_input" autocomplete="off" id="datepicker-from" placeholder="From">
-              </div>
-              <div class="col-lg-1 col-md-12">
-                <input class="hero__form-input custom-select" type="text" name="date_end_input" autocomplete="off" id="datepicker-to" placeholder="To">
-              </div>
-              <div class="col-lg-1 col-md-12">
-                <input class="hero__form-input custom-select" type="number" name="price_start" id="place-event" placeholder="Min Price">
-              </div>
-              <div class="col-lg-1 col-md-12">
-                <input class="hero__form-input custom-select" type="number" name="price_end" id="place-event" placeholder="Max Price">
-              </div>
-              <div class="col-lg-2 col-md-12">
-                    <select class="hero__form-input  custom-select" name = "review_score">
-                        <option>Review score</option>
-                        <option>1+</option>
-                        <option>2+</option>
-                        <option>3+</option>
-                        <option>4+</option>
-                    </select>
-              </div>
-              <div class="col-lg-1 col-md-12">
-                  <div class="submit_btn text-right md-left">
-                      <button class="btn v3  mar-right-5" type="submit" style="background-color: #007A33;"><i class="ion-search" aria-hidden="true"></i> Submit</button>
+                <div class="col-lg-4 col-md-12">
+                  <input class="hero__form-input custom-select" type="text" name="location_input" autocomplete="off" id="place-event" placeholder="{{location_input}}">
+                </div>
+                <div class="col-lg-2 col-md-12">
+                      <select class="hero__form-input  custom-select" name = "service_type_input">
+                          <option>Type of service</option>
+                          <option>Sitter/Feeder</option>
+                          <option >Walker</option>
+                          <option>Boarding</option>
+                          <option>Daycare</option>
+                      </select>
+                </div>
+                <div class="col-lg-1 col-md-12">
+                  <input class="hero__form-input custom-select" type="text" name="date_end_input" autocomplete="off" id="datepicker-from" placeholder="From">
+                </div>
+                <div class="col-lg-1 col-md-12">
+                  <input class="hero__form-input custom-select" type="text" name="date_end_input" autocomplete="off" id="datepicker-to" placeholder="To">
+                </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-2 col-md-12">
+                    <input class="hero__form-input custom-select" type="number" name="price_start" id="place-event" placeholder="Min Price">
+                  </div>
+                  <div class="col-lg-2 col-md-12">
+                    <input class="hero__form-input custom-select" type="number" name="price_end" id="place-event" placeholder="Max Price">
+                  </div>
+                  <div class="col-lg-2 col-md-12">
+                        <select class="hero__form-input  custom-select" name = "review_score">
+                            <option>Review score</option>
+                            <option>1+</option>
+                            <option>2+</option>
+                            <option>3+</option>
+                            <option>4+</option>
+                        </select>
+                  </div>
+                  <div class="col-lg-2 col-md-12">
+                        <select class="hero__form-input  custom-select" name = "pet_type">
+                            <option>All Pets</option>
+                            <option>Cat</option>
+                            <option>Dog</option>
+                            <option>Bird</option>
+                            <option>Reptile</option>
+                            <option>Other</option>
+                        </select>
                   </div>
               </div>
-          </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-1 col-md-12">
+                    <div class="submit_btn text-right md-left">
+                        <button class="btn v3  mar-right-5" type="submit" style="background-color: #007A33;"><i class="ion-search" aria-hidden="true"></i>Filter</button>
+                    </div>
+                </div>
+              </div>
       </form>
   </div>
 
@@ -90,6 +106,36 @@
                               <i class="ion-card"  style="color: #007A33;"></i>
                               <p>R{{service.price}} per {%if service.type == 'WALK' or service.type == 'SIT' %} hour {%else%} day {%endif%}</p>
                             </li>
+                            {%if service.dogs_allowed%}
+                            <li>
+                              <i class="icofont-dog-alt"  style="color: #007A33;"></i>
+                              <p> Dogs Allowed</p>
+                            </li>
+                            {%endif%}
+                            {%if service.cats_allowed%}
+                            <li>
+                              <i class="icofont-cat-alt-3"  style="color: #007A33;"></i>
+                              <p> Cats Allowed</p>
+                            </li>
+                            {%endif%}
+                            {%if service.birds_allowed%}
+                            <li>
+                              <i class="icofont-bird-alt"  style="color: #007A33;"></i>
+                              <p> Birds Allowed</p>
+                            </li>
+                            {%endif%}
+                            {%if service.reptiles_allowed%}
+                            <li>
+                              <i class="icofont-frog"  style="color: #007A33;"></i>
+                              <p> Reptiles Allowed</p>
+                            </li>
+                            {%endif%}
+                            {%if service.other_pets_allowed%}
+                            <li>
+                              <i class="icofont-fish-4"  style="color: #007A33;"></i>
+                              <p> Other Pets Allowed</p>
+                            </li>
+                            {%endif%}
                         </ul>
                         <div class="trending-bottom mar-top-15 pad-bot-30">
                             <div class="trend-left float-left">

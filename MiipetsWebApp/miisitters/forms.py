@@ -55,20 +55,22 @@ class UpdateMiiSitterProfile(forms.ModelForm):
         return user
 
 
-class AddListing(forms.ModelForm):
+class AddService(forms.ModelForm):
 
     widget_time = forms.widgets.DateTimeInput(attrs={'type':'time'})
     widget_date = forms.widgets.DateTimeInput(attrs={'type':'date'})
 
-    WALK = 'WALK'
-    BOARD = 'BOARD'
-    SIT = 'SIT'
-    DAYCARE = 'DAYCARE'
+    DOG = 'DOG'
+    CAT = 'CAT'
+    BIRD = 'DAYCARE'
+    REPTILE = 'FEED'
+    OTHER = 'OTHER'
 
-    SERVICE_CHOICES = [(WALK, 'Walking'),
-                       (BOARD, 'House Boarding'),
-                       (SIT, 'House Sitting/Feeding'),
-                       (DAYCARE, 'Daycare')]
+    BREED_CHOICES = [(DOG, 'Dog'),
+                     (CAT, 'Cat'),
+                     (BIRD, 'Bird'),
+                     (REPTILE, 'Reptile'),
+                     (OTHER, 'Other')]
 
     NOT_AVAILIBE = 9999
     ONE = 1
@@ -95,11 +97,6 @@ class AddListing(forms.ModelForm):
     TWENTYTWO = 21
     TWENTYTHREE = 23
     TWENTYFOUR = 0
-
-    SERVICE_CHOICES = [(WALK, 'Walking'),
-                       (BOARD, 'House Boarding'),
-                       (SIT, 'House Sitting/Feeding'),
-                       (DAYCARE, 'Daycare')]
 
     TIME_CHOICES = [(NOT_AVAILIBE, 'Not availibe on this day'),
                     (ONE, '1:00'),
@@ -165,7 +162,7 @@ class AddListing(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
          self.user = kwargs.pop('user',None)
-         super(AddListing, self).__init__(*args, **kwargs)
+         super(AddService, self).__init__(*args, **kwargs)
 
 
     class Meta(UserCreationForm.Meta):
@@ -174,7 +171,12 @@ class AddListing(forms.ModelForm):
         fields = ["service_name",
                   "type",
                   "description",
-                  "price"]
+                  "price",
+                  "dogs_allowed",
+                  "cats_allowed",
+                  "birds_allowed",
+                  "reptiles_allowed",
+                  "other_pets_allowed"]
 
 
     @transaction.atomic

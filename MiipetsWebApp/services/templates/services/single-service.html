@@ -21,6 +21,7 @@
                                 <a href="#" class="btn v6" style="background-color: #007A33;">
                                    {{type}}
                                  </a>
+
                                </p>
                               <h2>{{service_name}}</h2>
                               <p><i class="ion-ios-location" style="color: #007A33;"></i>{{location}}</p>
@@ -32,6 +33,33 @@
                                   <span class="ion-android-star-half"></span>
                                   <a href="#">(4 Reviews)</a>
                               </div> -->
+                              <ul>
+                                {%if service.dogs_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-dog-alt"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                                {%if service.cats_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-cat-alt-3"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                                {%if service.birds_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-bird-alt"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                                {%if service.reptiles_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-frog"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                                {%if service.other_pets_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-fish-4"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                              </ul>
                           </div>
                       </div>
                       <div class="col-lg-6 col-md-5 col-sm-12">
@@ -73,6 +101,7 @@
                           <div class="overview-content">
                               <p class="mar-bot-10">{{service_description}}</p>
                           </div>
+
                       </div>
                       <div id="gallery" class="list-details-section">
                           <h4>Gallery</h4>

@@ -74,12 +74,64 @@ def view_services(request, type):
             price_start = 0
             price_end = 99999999
 
-        #get relevant services not based on location
-        services = SitterServices.objects.filter(Q(type__in=type)&
-                                                 Q(date_start__lte=start_date)&
-                                                 Q(date_end__gte=end_date)&
-                                                 Q(price__range=[price_start, price_end]))
+        # checking for pet type
+        try:
+            pet_type = request.GET['pet_type']
+        except:
+            pet_type = "All Pets"
 
+        want_dog = True
+        want_cat = True
+        want_bird = True
+        want_reptile = True
+        want_other = True
+
+        if pet_type == "Dog":
+            want_cat = False
+            want_bird = False
+            want_reptile = False
+            want_other = False
+        elif pet_type == "Cat":
+            want_dog = False
+            want_bird = False
+            want_reptile = False
+            want_other = False
+        elif pet_type == "Bird":
+            want_cat = False
+            want_dog = False
+            want_reptile = False
+            want_other = False
+        elif pet_type == "Reptile":
+            want_dog = False
+            want_cat = False
+            want_bird = False
+            want_other = False
+        elif pet_type == "Other":
+            want_dog = False
+            want_cat = False
+            want_bird = False
+            want_reptile = False
+
+        print(want_dog,want_cat,want_bird,want_reptile,want_other)
+
+
+
+        #get relevant services not based on location
+        if pet_type == "All Pets":
+            services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(date_start__lte=start_date)&
+                                                     Q(date_end__gte=end_date)&
+                                                     Q(price__range=[price_start, price_end]))
+        else:
+            services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(date_start__lte=start_date)&
+                                                     Q(date_end__gte=end_date)&
+                                                     Q(price__range=[price_start, price_end])&
+                                                     Q(dogs_allowed=want_dog)&
+                                                     Q(cats_allowed=want_cat)&
+                                                     Q(birds_allowed=want_bird)&
+                                                     Q(reptiles_allowed=want_reptile)&
+                                                     Q(other_pets_allowed=want_other))
 
         #filter on location
         try:
@@ -121,7 +173,6 @@ def view_services(request, type):
                 "location_input":location_input
                 }
 
-    print(context)
     return render(request, 'services/single-type-services.html', context)
 
 
@@ -181,6 +232,7 @@ def view_single_service(request, service_id):
                 "service_description":service.description,
                 'price':service.price,
                 'photos':photos,
+                'service':service,
                 'location':location.city+", "+location.province,
                 'monday_start_time':time_converter[str(service.time_start_monday)],
                 'tuesday_start_time':time_converter[str(service.time_start_tuesday)],
@@ -208,6 +260,7 @@ def view_single_service(request, service_id):
                 "service_description":service.description,
                 'price':service.price,
                 'photos':photos,
+                'service':service,
                 'location':location.city+", "+location.province,
                 'monday_start_time':time_converter[str(service.time_start_monday)],
                 'tuesday_start_time':time_converter[str(service.time_start_tuesday)],
@@ -235,6 +288,7 @@ def view_single_service(request, service_id):
                 "service_description":service.description,
                 'price':service.price,
                 'photos':photos,
+                'service':service,
                 'location':location.city+", "+location.province,
                 'monday_start_time':time_converter[str(service.time_start_monday)],
                 'tuesday_start_time':time_converter[str(service.time_start_tuesday)],
@@ -252,5 +306,4 @@ def view_single_service(request, service_id):
                 'sunday_end_time':time_converter[str(service.time_end_sunday)],
             }
 
-    print(context)
     return render(request, 'services/single-service.html', context)
