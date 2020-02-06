@@ -8,6 +8,8 @@ urlpatterns = [
     path('all-services/', service_views.view_all_services, name='services-all'),
     path('services/<str:type>', service_views.view_services, name='services'),
     path('single-service/<int:service_id>', service_views.view_single_service, name='services-single'),
+    path('ajax/load-timeslots/<int:service_id>', service_views.load_timeslots, name='ajax_load_time'),
+    path('booking_confirmation/', service_views.booking_confirmation, name='services-booking-confirmation'),
 ]
 
 if settings.DEBUG:

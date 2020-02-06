@@ -48,7 +48,8 @@ def sort_out_dates(start_date, end_date):
 
     return start_date, end_date
 
-def address_to_lat_long(full_addres='', city="", province="", street_name="", street_number='', area_code=''):
+def address_to_lat_long(full_addres='', city="", province="",
+                         street_name="", street_number='', area_code=''):
     """
     This function takes in the address details and returns the lattitude and longitude
     of the adress using the google maps API from Goodle cloud.
@@ -101,3 +102,72 @@ def filter_on_location(services, searched_location):
     locations =  [locations[index] for index in sorted_indexes ]
 
     return services, locations
+
+
+def return_day_of_week_from_date(date_string):
+    """
+    Function to return the day of the week from the given date string.
+
+    Input format: YYYY-MM-DD
+    Output: "Monday"
+    """
+
+    return datetime.strptime(date_string, '%Y-%m-%d').strftime('%A')
+
+
+def calculate_number_of_days(date_string):
+    """
+    Function to calculate the number of days between dates given
+
+    Input format: YYYY-MM-DD, YYYY-MM--D
+    Output: 2
+    """
+
+    start_date, end_date = sort_out_dates(start_date, end_date)
+    return end_date - start_date
+
+def get_options_of_timeslots(taken_slots, time_start, time_end):
+    """
+    This function will take the booked time slots and the times
+    between when the service is open for. It will then return a list of lists
+    containing possible timeslots that can be fed into the drop down list on booking
+    page.
+
+    Input: [2,4,5], 1, 8
+    returns: [[1, "01:00-02:00"], [3, "03:00-04:00"],[6, "06:00-07:00"],[7, "07:00-08:00"]]
+    """
+
+    time_to_interval_converter = {
+        1:"01:00-02:00",
+        2:"02:00-02:00",
+        3:"03:00-04:00",
+        4:"04:00-05:00",
+        5:"05:00-06:00",
+        6:"06:00-07:00",
+        7:"07:00-08:00",
+        8:"08:00-09:00",
+        9:"09:00-10:00",
+        10:"10:00-11:00",
+        11:"11:00-12:00",
+        12:"12:00-13:00",
+        13:"13:00-14:00",
+        14:"14:00-15:00",
+        15:"15:00-16:00",
+        16:"16:00-17:00",
+        17:"17:00-18:00",
+        18:"18:00-19:00",
+        19:"19:00-20:00",
+        20:"20:00-21:00",
+        21:"21:00-22:00",
+        22:"22:00-23:00",
+        23:"23:00-00:00"
+    }
+
+    if time_end == 0:
+        time_end = 24
+
+    time_operates = list(range(time_start, time_end+1))
+    availibe_intervals = [x for x in time_operates if x not in taken_slots]
+    options = [[x, time_to_interval_converter[x]] for x in availibe_intervals ]
+
+    return options

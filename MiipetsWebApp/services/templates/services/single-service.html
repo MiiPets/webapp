@@ -252,55 +252,13 @@
                   <div class="listing-sidebar">
                       <div class="sidebar-widget info">
                           <h3><i class="ion-android-calendar"></i>Booking</h3>
-                          <div class="row">
-                              <div class="col-md-12 mar-bot-15">
-                                  <div id="datepicker-from" class="input-group date" data-date-format="dd-mm-yyyy">
-                                      <input class="form-control" type="text" placeholder="Select date">
-                                      <span class="input-group-addon"><i class="icofont-ui-calendar"></i></span>
-                                  </div>
-                              </div>
-                              <div class="col-md-12 mar-bot-15">
-                                  <div class="time-slots">
-                                      <div class="nice-select filter-input mar-top-0" tabindex="0"><span>Choose time slot...</span>
-                                          <ul class="list">
-                                              <li class="option selected focus">
-                                                  <p>10:00 am - 10:30 am</p>
-                                                  <span>3 table available</span>
-                                              </li>
-                                              <li class="option">
-                                                  <p>11:00 am - 12:30 am</p>
-                                                  <span>1 table available</span>
-                                              </li>
-                                              <li class="option">
-                                                  <p>1:00 pm - 2:30 am</p>
-                                                  <span>2 table available</span>
-                                              </li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="col-md-6 mar-bot-15">
-                                  <div class="book-amount">
-                                      <label>Number of pets</label>
-                                      <div class="input-group">
-                                          <span class="input-group-btn">
-                                              <button type="button" class="quantity-left-minus btn">
-                                                  <span class="ion-minus"></span>
-                                              </button>
-                                          </span>
-                                          <input type="text" class="form-control input-number" value="1">
-                                          <span class="input-group-btn">
-                                              <button type="button" class="quantity-right-plus btn">
-                                                  <span class="ion-plus"></span>
-                                              </button>
-                                          </span>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="book-btn text-center">
-                              <a href="booking.html" style="background-color: #007A33;"> Request To Book</a>
-                          </div>
+                          <form enctype="multipart/form-data" method="post" id="bookingForm" data-timeslots-url="{% url 'ajax_load_time' service_id=service.id %}">
+                            {% csrf_token %}
+                            {{form|crispy}}
+                            <div class="res-box text-center mar-top-30">
+                                <button type="submit" class="btn v3" style="background-color: #007A33;"><i class="ion-log-in" ></i>Book now</button>
+                            </div>
+                          </form>
                       </div>
                       <div class="sidebar-widget">
                           <div class="business-time">
@@ -406,4 +364,27 @@
       </div>
   </div>
   <!--Listing Details Info ends-->
+
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+
+    $("#id_start_date").change(function () {
+      var url = $("#bookingForm").attr("data-timeslots-url");
+      var date = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'date': date
+        },
+        success: function (data) {
+          $(".nice-select .current").html("Please choose a time slot")
+          $(".nice-select .list").html(data);
+        }
+      });
+
+    });
+  </script>
 {%endblock content%}

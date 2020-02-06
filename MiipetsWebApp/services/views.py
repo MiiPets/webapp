@@ -6,8 +6,8 @@ from core.models import User, Pets, SitterServices, ServicePhotos
 from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
 from django.db.models import Q
-from core.methods import sort_out_dates, filter_on_location
-
+from core.methods import sort_out_dates, filter_on_location, return_day_of_week_from_date, get_options_of_timeslots
+from .forms import BookService
 
 def view_all_services(request):
     """
@@ -176,15 +176,13 @@ def view_services(request, type):
     return render(request, 'services/single-type-services.html', context)
 
 
-
 def view_single_service(request, service_id):
 
     service = SitterServices.objects.get(id=service_id)
     similar_services = SitterServices.objects.filter(
-                      Q(type=service.type) &
-                      (Q(price__lte=service.price*1.2) &  Q(price__gte=service.price*0.8)) &
-                      ~Q(id = service.id)
-                      )
+                          Q(type=service.type) &
+                          (Q(price__lte=service.price*1.2) &  Q(price__gte=service.price*0.8)) &
+                          ~Q(id = service.id))
 
     photos = ServicePhotos.objects.filter(service=service)
     location = ServiceLocation.objects.get(service=service)
@@ -220,6 +218,15 @@ def view_single_service(request, service_id):
                       "22":"22:00",
                       "23":"23:00",
                       "0":"00:00"}
+
+    if request.method == 'POST':
+        form = BookService(request.POST, user = request.user, service = service)
+        if form.is_valid():
+            form.save()
+            return redirect('services-booking-confirmation')
+    else:
+        form = BookService(user = request.user, service = service)
+
     try:
         if request.user.is_sitter:
             context = {
@@ -248,6 +255,7 @@ def view_single_service(request, service_id):
                 'friday_end_time':time_converter[str(service.time_end_friday)],
                 'saturday_end_time':time_converter[str(service.time_end_saturday)],
                 'sunday_end_time':time_converter[str(service.time_end_sunday)],
+                'form':form
                 }
         else:
             context = {
@@ -276,6 +284,7 @@ def view_single_service(request, service_id):
                 'friday_end_time':time_converter[str(service.time_end_friday)],
                 'saturday_end_time':time_converter[str(service.time_end_saturday)],
                 'sunday_end_time':time_converter[str(service.time_end_sunday)],
+                'form':form
                 }
     except:
         context = {
@@ -304,6 +313,54 @@ def view_single_service(request, service_id):
                 'friday_end_time':time_converter[str(service.time_end_friday)],
                 'saturday_end_time':time_converter[str(service.time_end_saturday)],
                 'sunday_end_time':time_converter[str(service.time_end_sunday)],
+                'form':form
             }
 
     return render(request, 'services/single-service.html', context)
+
+
+def load_timeslots(request, service_id):
+    date = request.GET.get('date')
+    service = SitterServices.objects.get(id=service_id)
+    day_of_week = return_day_of_week_from_date(date)
+
+    print(service)
+    if day_of_week == "Monday":
+        time_start = service.time_start_monday
+        time_end = service.time_end_monday
+    elif day_of_week == "Tuesday":
+        time_start = service.time_start_tuesday
+        time_end = service.time_end_tuesday
+    elif day_of_week == "Wednesday":
+        time_start = service.time_start_wednesday
+        time_end = service.time_end_wednesday
+    elif day_of_week == "Thursday":
+        time_start = service.time_start_thursday
+        time_end = service.time_end_thursday
+    elif day_of_week == "Friday":
+        time_start = service.time_start_friday
+        time_end = service.time_end_friday
+    elif day_of_week == "Saturday":
+        time_start = service.time_start_saturday
+        time_end = service.time_end_saturday
+    elif day_of_week == "Sunday":
+        time_start = service.time_start_sunday
+        time_end = service.time_end_sunday
+
+    if time_start == 9999:
+        return render(request,
+                      'services/time_slots_options.html',
+                       {'timeslots': [[9999, "Not availibe on {}".format(day_of_week)]]})
+
+
+    taken_slots = ServiceBooking.objects.filter(Q(service=service) &
+                                                Q(start_date = date)).values_list('time_slot', flat=True)
+
+    list_of_options = get_options_of_timeslots(list(set(taken_slots)),
+                                               time_start,
+                                               time_end)
+    
+    return render(request, 'services/time_slots_options.html', {'timeslots': list_of_options})
+
+def booking_confirmation(request):
+    pass
