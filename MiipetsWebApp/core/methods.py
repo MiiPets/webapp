@@ -115,7 +115,7 @@ def return_day_of_week_from_date(date_string):
     return datetime.strptime(date_string, '%Y-%m-%d').strftime('%A')
 
 
-def calculate_number_of_days(date_string):
+def calculate_number_of_days(start_date, end_date):
     """
     Function to calculate the number of days between dates given
 
@@ -123,7 +123,8 @@ def calculate_number_of_days(date_string):
     Output: 2
     """
 
-    start_date, end_date = sort_out_dates(start_date, end_date)
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
     return end_date - start_date
 
 def get_options_of_timeslots(taken_slots, time_start, time_end):

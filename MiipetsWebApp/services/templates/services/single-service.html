@@ -252,7 +252,7 @@
                   <div class="listing-sidebar">
                       <div class="sidebar-widget info">
                           <h3><i class="ion-android-calendar"></i>Booking</h3>
-                          <form enctype="multipart/form-data" method="post" id="bookingForm" data-timeslots-url="{% url 'ajax_load_time' service_id=service.id %}">
+                          <form method="post" id="bookingForm" data-timeslots-url="{% url 'ajax_load_time' service_id=service.id %}">
                             {% csrf_token %}
                             {{form|crispy}}
                             <div class="res-box text-center mar-top-30">

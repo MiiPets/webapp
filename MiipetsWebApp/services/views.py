@@ -176,6 +176,7 @@ def view_services(request, type):
     return render(request, 'services/single-type-services.html', context)
 
 
+@login_required(login_url='core-login')
 def view_single_service(request, service_id):
 
     service = SitterServices.objects.get(id=service_id)
@@ -221,6 +222,8 @@ def view_single_service(request, service_id):
 
     if request.method == 'POST':
         form = BookService(request.POST, user = request.user, service = service)
+        print("HERE")
+        print(form)
         if form.is_valid():
             form.save()
             return redirect('services-booking-confirmation')
@@ -359,8 +362,8 @@ def load_timeslots(request, service_id):
     list_of_options = get_options_of_timeslots(list(set(taken_slots)),
                                                time_start,
                                                time_end)
-    
+
     return render(request, 'services/time_slots_options.html', {'timeslots': list_of_options})
 
 def booking_confirmation(request):
-    pass
+    return render(request, 'services/booking_confirmation.html')
