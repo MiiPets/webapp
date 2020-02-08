@@ -6,7 +6,7 @@ from crispy_forms.helper import FormHelper
 from django.core.files.uploadedfile import SimpleUploadedFile
 from djmoney.forms.fields import MoneyField
 from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
-from core.methods import calculate_number_of_days, return_day_of_week_from_date
+from core.methods import calculate_number_of_days, return_day_of_week_from_date, make_sure_start_before_end_date
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -16,14 +16,14 @@ class BookService(forms.ModelForm):
 
     class Meta():
         model = ServiceBooking
-        fields = ['start_date', 'end_date', 'time_slot']
+        fields = ['start_date', 'end_date', 'time_slot', 'number_of_pets']
 
     def __init__(self, *args, **kwargs):
          self.user = kwargs.pop('user',None)
          self.service = kwargs.pop('service', None)
          super(BookService, self).__init__(*args, **kwargs)
 
-         TIME_CHOICES = [(9999, "Please choose a date first"),
+         TIME_CHOICES = [(9999, "Please choose a date/number of pets first"),
                          (1,"01:00-02:00"),
                          (2,"02:00-02:00"),
                          (3,"03:00-04:00"),
@@ -47,27 +47,38 @@ class BookService(forms.ModelForm):
                          (21,"21:00-22:00"),
                          (22,"22:00-23:00"),
                          (23,"23:00-00:00")]
+
          self.fields['start_date'] = forms.DateField(widget=DateInput(), required=True)
+         self.fields["number_of_pets"] = forms.IntegerField(required=True)
+
          if self.service.type != 'WALK':
             self.fields['end_date'] = forms.DateField(widget=DateInput(),
                                                       required=True)
-            self.fields['time_slot'] = forms.ChoiceField(choices =forms.HiddenInput(),
-                                                          required=False)
+            self.fields['time_slot'] = forms.ChoiceField(choices =TIME_CHOICES,
+                                                         required=False,
+                                                         widget = forms.HiddenInput(),)
          else:
             self.fields['end_date'] = forms.CharField(widget = forms.HiddenInput(),
                                                       required = False)
-            self.fields['time_slot'] = forms.ChoiceField(choices =TIME_CHOICES, required=False)
+            self.fields['time_slot'] = forms.ChoiceField(choices =TIME_CHOICES, required=True)
+
 
 
     @transaction.atomic
     def save(self):
         booking = super().save(commit=False)
 
+        if self.service.type != "WALK":
+            start_date, end_date = make_sure_start_before_end_date(self.cleaned_data.get('start_date'),
+                                                                   self.cleaned_data.get('end_date'))
+        else:
+            start_date = self.cleaned_data.get('start_date')
+
         booking.requester = self.user
         booking.service = self.service
-        booking.start_date = self.cleaned_data.get('start_date')
+        booking.start_date = start_date
         if self.service.type != "WALK":
-            booking.end_date = self.cleaned_data.get('end_date')
+            booking.end_date = end_date
         else:
             booking.end_date = '1900-01-01'
 
@@ -82,11 +93,13 @@ class BookService(forms.ModelForm):
         booking.notified_owner_of_sitter_response = False
         booking.sitter_confirmed = False
         booking.invoice_sent = False
+        booking.number_of_pets = self.cleaned_data.get('number_of_pets')
+
         if self.service.type == "WALK":
             number_of_days = 1
         else:
             number_of_days = calculate_number_of_days(self.cleaned_data.get('start_date'),
-                                                      self.cleaned_data.get('end_date') )
+                                                      self.cleaned_data.get('end_date'))
         booking.price = self.service.price * number_of_days
         booking.price_in_cents = self.service.price * number_of_days * 100
         booking.save()

@@ -122,17 +122,31 @@ def calculate_number_of_days(start_date, end_date):
     Input format: YYYY-MM-DD, YYYY-MM--D
     Output: 2
     """
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+    delta = end_date - start_date
+
+    return delta.days
+
+
+def make_sure_start_before_end_date(start_date, end_date):
+    '''
+    Function to ensure the start date is before the end date
+    '''
 
     if start_date > end_date:
         start_date, end_date = end_date, start_date
-    return end_date - start_date
 
-def get_options_of_timeslots(taken_slots, time_start, time_end):
+    return start_date, end_date
+
+
+def get_options_of_timeslots_walk_sit(taken_slots, time_start, time_end):
     """
     This function will take the booked time slots and the times
     between when the service is open for. It will then return a list of lists
     containing possible timeslots that can be fed into the drop down list on booking
-    page.
+    page. When booking for daycare or boarding, will check number of pets as
+    well
 
     Input: [2,4,5], 1, 8
     returns: [[1, "01:00-02:00"], [3, "03:00-04:00"],[6, "06:00-07:00"],[7, "07:00-08:00"]]
@@ -170,5 +184,62 @@ def get_options_of_timeslots(taken_slots, time_start, time_end):
     time_operates = list(range(time_start, time_end+1))
     availibe_intervals = [x for x in time_operates if x not in taken_slots]
     options = [[x, time_to_interval_converter[x]] for x in availibe_intervals ]
+
+    return options
+
+
+def get_options_of_timeslots_board_daycare (taken_dates, number_of_pets, requested_pets,
+                                            maximum_pets, date_start, date_end):
+
+    """
+    This function will take the booked time slots and the times
+    between when the service is open for as well as not to much pets.
+    It will then return a list of lists containing possible timeslots
+    that can be fed into the drop down list on booking page.
+
+    Input: [2,4,5], 1, 4, 7 9
+    returns: [[1, "01:00-02:00"], [3, "03:00-04:00"],[6, "06:00-07:00"],[7, "07:00-08:00"]]
+    """
+
+    time_to_interval_converter = {
+        1:"01:00-02:00",
+        2:"02:00-02:00",
+        3:"03:00-04:00",
+        4:"04:00-05:00",
+        5:"05:00-06:00",
+        6:"06:00-07:00",
+        7:"07:00-08:00",
+        8:"08:00-09:00",
+        9:"09:00-10:00",
+        10:"10:00-11:00",
+        11:"11:00-12:00",
+        12:"12:00-13:00",
+        13:"13:00-14:00",
+        14:"14:00-15:00",
+        15:"15:00-16:00",
+        16:"16:00-17:00",
+        17:"17:00-18:00",
+        18:"18:00-19:00",
+        19:"19:00-20:00",
+        20:"20:00-21:00",
+        21:"21:00-22:00",
+        22:"22:00-23:00",
+        23:"23:00-00:00"
+    }
+
+    if time_end == 0:
+        time_end = 24
+
+    time_operates = list(range(time_start, time_end+1))
+    pet_in_slot = {slot:0 for slot in time_operates}
+
+    for taken_slot, pet in zip(taken_slots,number_of_pets):
+        pet_in_slot[taken_slot].append(pet)
+
+    for slot in pet_in_slot.keys():
+        pet_in_slot[slot] = sum(pet_in_slot[slot])
+
+    time_slots_availible = [slot for slot in pet_in_slot.keys() if pet_in_slot[slot]+requested_pets <= maximum_pets]
+    options = [[x, time_to_interval_converter[x]] for x in time_slots_availible ]
 
     return options

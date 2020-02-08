@@ -6,7 +6,8 @@ from core.models import User, Pets, SitterServices, ServicePhotos
 from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
 from django.db.models import Q
-from core.methods import sort_out_dates, filter_on_location, return_day_of_week_from_date, get_options_of_timeslots
+from core.methods import sort_out_dates, filter_on_location, return_day_of_week_from_date
+from core.methods import  get_options_of_timeslots_walk_sit, get_options_of_timeslots_board_daycare
 from .forms import BookService
 
 def view_all_services(request):
@@ -111,9 +112,6 @@ def view_services(request, type):
             want_cat = False
             want_bird = False
             want_reptile = False
-
-        print(want_dog,want_cat,want_bird,want_reptile,want_other)
-
 
 
         #get relevant services not based on location
@@ -222,8 +220,6 @@ def view_single_service(request, service_id):
 
     if request.method == 'POST':
         form = BookService(request.POST, user = request.user, service = service)
-        print("HERE")
-        print(form)
         if form.is_valid():
             form.save()
             return redirect('services-booking-confirmation')
@@ -324,10 +320,10 @@ def view_single_service(request, service_id):
 
 def load_timeslots(request, service_id):
     date = request.GET.get('date')
+    booked_pets = request.GET.get('booked_pets')
     service = SitterServices.objects.get(id=service_id)
     day_of_week = return_day_of_week_from_date(date)
 
-    print(service)
     if day_of_week == "Monday":
         time_start = service.time_start_monday
         time_end = service.time_end_monday
@@ -356,12 +352,18 @@ def load_timeslots(request, service_id):
                        {'timeslots': [[9999, "Not availibe on {}".format(day_of_week)]]})
 
 
-    taken_slots = ServiceBooking.objects.filter(Q(service=service) &
-                                                Q(start_date = date)).values_list('time_slot', flat=True)
+    bookings = ServiceBooking.objects.filter(Q(service=service) &
+                                             Q(start_date = date)).values_list('time_slot',
+                                                                               'number_of_pets')
+    bookings = list(set(bookings))
 
-    list_of_options = get_options_of_timeslots(list(set(taken_slots)),
-                                               time_start,
-                                               time_end)
+    #get time_slots
+    taken_slots = [x[0] for x in bookings]
+    number_of_pets = [x[1] for x in bookings]
+
+    list_of_options = get_options_of_timeslots_walk_sit(taken_slots,
+                                                        time_start,
+                                                        time_end)
 
     return render(request, 'services/time_slots_options.html', {'timeslots': list_of_options})
 

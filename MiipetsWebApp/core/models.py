@@ -169,7 +169,7 @@ class SitterServices(TimeStampMixin):
                                           format='JPEG',
                                           options={'quality': 100})
     pet_type = models.CharField(max_length=50)
-
+    maximum_number_of_pets = models.PositiveIntegerField(default=5, validators=[MaxValueValidator(12)])
     date_start = models.DateField()
     date_end = models.DateField()
 
@@ -236,6 +236,7 @@ class ServiceBooking(TimeStampMixin):
     invoice_sent = models.BooleanField(default=False)
     price = models.PositiveIntegerField(default=10, validators=[MinValueValidator(10)])
     price_in_cents = models.PositiveIntegerField(default=10, validators=[MinValueValidator(10)])
+    number_of_pets = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return ("Booking of service {} for user {}".format(self.service, self.requester))

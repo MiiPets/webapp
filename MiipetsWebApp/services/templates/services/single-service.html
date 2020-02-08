@@ -373,11 +373,13 @@
     $("#id_start_date").change(function () {
       var url = $("#bookingForm").attr("data-timeslots-url");
       var date = $(this).val();
+      var booked_pets = $("#id_number_of_pets").val();
 
       $.ajax({
         url: url,
         data: {
           'date': date
+          'booked_pets':booked_pets
         },
         success: function (data) {
           $(".nice-select .current").html("Please choose a time slot")
