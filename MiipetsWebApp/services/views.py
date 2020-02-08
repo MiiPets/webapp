@@ -221,8 +221,8 @@ def view_single_service(request, service_id):
     if request.method == 'POST':
         form = BookService(request.POST, user = request.user, service = service)
         if form.is_valid():
-            form.save()
-            return redirect('services-booking-confirmation')
+            booking = form.save()
+            return redirect('services-booking-confirmation', service_id = service.id, booking_id = booking.id)
     else:
         form = BookService(user = request.user, service = service)
 
@@ -367,5 +367,11 @@ def load_timeslots(request, service_id):
 
     return render(request, 'services/time_slots_options.html', {'timeslots': list_of_options})
 
-def booking_confirmation(request):
-    return render(request, 'services/booking_confirmation.html')
+
+@login_required(login_url='core-login')
+def booking_confirmation(request, service_id, booking_id):
+
+    #send email to sitter
+    print(service_id, booking_id)
+
+    return render(request, 'services/booking_confirmation.html', {"user":request.user})

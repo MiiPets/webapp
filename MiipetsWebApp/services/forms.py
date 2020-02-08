@@ -16,14 +16,14 @@ class BookService(forms.ModelForm):
 
     class Meta():
         model = ServiceBooking
-        fields = ['start_date', 'end_date', 'time_slot', 'number_of_pets']
+        fields = ['start_date', 'end_date', 'number_of_pets', 'time_slot']
 
     def __init__(self, *args, **kwargs):
          self.user = kwargs.pop('user',None)
          self.service = kwargs.pop('service', None)
          super(BookService, self).__init__(*args, **kwargs)
 
-         TIME_CHOICES = [(9999, "Please choose a date/number of pets first"),
+         TIME_CHOICES = [(9999, "Please fill in other values first"),
                          (1,"01:00-02:00"),
                          (2,"02:00-02:00"),
                          (3,"03:00-04:00"),
