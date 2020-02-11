@@ -9,6 +9,10 @@ from django.db.models import Q
 from core.methods import sort_out_dates, filter_on_location, return_day_of_week_from_date
 from core.methods import  get_options_of_timeslots_walk_sit, get_options_of_timeslots_board_daycare
 from .forms import BookService
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core import mail
+from django.conf import settings
 
 def view_all_services(request):
     """
@@ -368,10 +372,177 @@ def load_timeslots(request, service_id):
     return render(request, 'services/time_slots_options.html', {'timeslots': list_of_options})
 
 
+def send_sitter_confirmation_email(service, booking, user, email_address):
+    """
+    Send email to sitter after owner makes a booking
+    """
+
+    time_to_interval_converter = {
+        9999:"Whole day",
+        1:"01:00-02:00",
+        2:"02:00-02:00",
+        3:"03:00-04:00",
+        4:"04:00-05:00",
+        5:"05:00-06:00",
+        6:"06:00-07:00",
+        7:"07:00-08:00",
+        8:"08:00-09:00",
+        9:"09:00-10:00",
+        10:"10:00-11:00",
+        11:"11:00-12:00",
+        12:"12:00-13:00",
+        13:"13:00-14:00",
+        14:"14:00-15:00",
+        15:"15:00-16:00",
+        16:"16:00-17:00",
+        17:"17:00-18:00",
+        18:"18:00-19:00",
+        19:"19:00-20:00",
+        20:"20:00-21:00",
+        21:"21:00-22:00",
+        22:"22:00-23:00",
+        23:"23:00-00:00"
+    }
+
+    #creating context data
+    timeslot = time_to_interval_converter[booking.time_slot]
+
+    context = {
+        "service":service,
+        "booking":booking,
+        "owner":user,
+        "timeslot":timeslot
+    }
+
+    subject = 'You have a booking with MiiPets!'
+    html_message = render_to_string('services/notify_sitter_booking_email.html',
+                                    context)
+    plain_message = strip_tags(html_message)
+    from_email = 'info@miipets.com'
+    to = email_address
+    try:
+        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    except mail.BadHeaderError:
+        return HttpResponse('Invalid header found.')
+
+
+def send_owner_confirmation_email(service, booking, sitter_answer):
+    """
+    Send email to owner after sitter confirms
+    """
+
+    time_to_interval_converter = {
+        9999:"Whole day",
+        1:"01:00-02:00",
+        2:"02:00-02:00",
+        3:"03:00-04:00",
+        4:"04:00-05:00",
+        5:"05:00-06:00",
+        6:"06:00-07:00",
+        7:"07:00-08:00",
+        8:"08:00-09:00",
+        9:"09:00-10:00",
+        10:"10:00-11:00",
+        11:"11:00-12:00",
+        12:"12:00-13:00",
+        13:"13:00-14:00",
+        14:"14:00-15:00",
+        15:"15:00-16:00",
+        16:"16:00-17:00",
+        17:"17:00-18:00",
+        18:"18:00-19:00",
+        19:"19:00-20:00",
+        20:"20:00-21:00",
+        21:"21:00-22:00",
+        22:"22:00-23:00",
+        23:"23:00-00:00"
+    }
+
+    #creating context data
+    timeslot = time_to_interval_converter[booking.time_slot]
+
+    context = {
+        "service":service,
+        "booking":booking,
+        "owner":booking.requester,
+        "timeslot":timeslot
+    }
+
+    if booking.sitter_answer:
+        subject = 'Your MiiSitter has accepted your booking!'
+    else:
+        subject = 'Your MiiSitter has responded to your booking'
+
+    html_message = render_to_string('services/notify_owner_booking_email.html',
+                                    context)
+    plain_message = strip_tags(html_message)
+    from_email = 'info@miipets.com'
+    to = booking.requester.email
+    try:
+        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    except mail.BadHeaderError:
+        return HttpResponse('Invalid header found.')
+
+
 @login_required(login_url='core-login')
 def booking_confirmation(request, service_id, booking_id):
 
-    #send email to sitter
-    print(service_id, booking_id)
+
+    booking = ServiceBooking.objects.get(id=booking_id)
+    service = SitterServices.objects.get(id=service_id)
+
+    # send email to sitter
+    #if booking.notified_sitter == False:
+    # try:
+    send_sitter_confirmation_email(service, booking, request.user, service.sitter.email)
+    print("SITTER NOTIFIED")
+    booking.notified_sitter = True
+    booking.save(update_fields=['notified_sitter'])
+    # except:
+    #     print("Sitter notification email did not work")
 
     return render(request, 'services/booking_confirmation.html', {"user":request.user})
+
+
+@login_required(login_url='core-login')
+def sitter_confirmation(request, service_id, booking_id, sitter_answer):
+
+    booking = ServiceBooking.objects.get(id=booking_id)
+    service = SitterServices.objects.get(id=service_id)
+
+    sitter_answer_converter = {
+        0:False,
+        1:True
+    }
+
+    if booking.sitter_confirmed:
+        # sitter has already answered and can not change now
+        pass
+    else:
+        booking.sitter_confirmed = True
+        booking.sitter_answer = sitter_answer_converter[sitter_answer]
+
+        #send owner email notifying of sitter answer
+        try:
+            send_owner_confirmation_email(service,
+                                          booking,
+                                          sitter_answer)
+            booking.notified_owner_of_sitter_response = True
+        except:
+            print("Could not send email to owner")
+
+        #update booking details
+        booking.save(update_fields=['sitter_confirmed',
+                                    'sitter_answer',
+                                    'notified_owner_of_sitter_response'])
+
+    return render(request, 'services/booking_confirmation_sitter.html', {"user":request.user, "sitter_answer":sitter_answer})
+
+
+@login_required(login_url='core-login')
+def owner_payment(request, service_id, booking_id):
+
+    booking = ServiceBooking.objects.get(id=booking_id)
+    service = SitterServices.objects.get(id=service_id)
+
+    return render(request, 'services/payment_owner.html', {"user":request.user})

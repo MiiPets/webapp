@@ -228,15 +228,16 @@ class ServiceBooking(TimeStampMixin):
     start_date = models.DateField()
     end_date = models.DateField()
     time_slot = models.PositiveIntegerField()
-    approved =  models.BooleanField(default=False)
     notified_sitter = models.BooleanField(default=False)
     sitter_answer = models.BooleanField(default = False)
     notified_owner_of_sitter_response = models.BooleanField(default=False)
     sitter_confirmed = models.BooleanField(default=False)
+    owner_payed = models.BooleanField(default=False)
     invoice_sent = models.BooleanField(default=False)
     price = models.PositiveIntegerField(default=10, validators=[MinValueValidator(10)])
     price_in_cents = models.PositiveIntegerField(default=10, validators=[MinValueValidator(10)])
     number_of_pets = models.PositiveIntegerField(default=1)
+    reason_for_not_being_able = models.CharField(default = "", max_length=500)
 
     def __str__(self):
         return ("Booking of service {} for user {}".format(self.service, self.requester))
