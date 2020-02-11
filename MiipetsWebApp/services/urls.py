@@ -11,6 +11,7 @@ urlpatterns = [
     path('ajax/load-timeslots/<int:service_id>', service_views.load_timeslots, name='ajax_load_time'),
     path('booking_confirmation/<int:service_id>/<int:booking_id>', service_views.booking_confirmation, name='services-booking-confirmation'),
     path('sitter_confirmation/<int:service_id>/<int:booking_id>/<int:sitter_answer>', service_views.sitter_confirmation, name='services-sitter-confirmation'),
+    path('owner_payment/<int:booking_id>', service_views.owner_payment, name='services-owner-payment'),
 ]
 
 if settings.DEBUG:

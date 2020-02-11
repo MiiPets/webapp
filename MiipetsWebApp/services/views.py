@@ -492,14 +492,14 @@ def booking_confirmation(request, service_id, booking_id):
     service = SitterServices.objects.get(id=service_id)
 
     # send email to sitter
-    #if booking.notified_sitter == False:
-    # try:
-    send_sitter_confirmation_email(service, booking, request.user, service.sitter.email)
-    print("SITTER NOTIFIED")
-    booking.notified_sitter = True
-    booking.save(update_fields=['notified_sitter'])
-    # except:
-    #     print("Sitter notification email did not work")
+    if booking.notified_sitter == False:
+        try:
+            send_sitter_confirmation_email(service, booking, request.user, service.sitter.email)
+            print("SITTER NOTIFIED")
+            booking.notified_sitter = True
+            booking.save(update_fields=['notified_sitter'])
+        except:
+            print("Sitter notification email did not work")
 
     return render(request, 'services/booking_confirmation.html', {"user":request.user})
 

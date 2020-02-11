@@ -239,12 +239,18 @@
                                      <tr>
                                          <td valign="top" style="text-align: center; padding: 60px 0 10px 20px;">
                                              <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 30px; line-height: 36px; color: #0; font-weight: bold;">
-                                               {{service.sitter.first_name}} HAS CONFIRMED YOUR BOOKING
+                                               {% if booking.sitter_answer %}
+                                                {{service.sitter.first_name}} HAS CONFIRMED YOUR BOOKING
+                                               {% else %}
+                                                {{service.sitter.first_name}} HAS UNFORTUNATELY DECLINED YOUR BOOKING
+                                               {%endif%}
                                              </h1>
                                              <br>
-                                             <h4 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #0; font-weight: bold;">
-                                               YOU CAN NOW ENJOY FREEDOM WITH PEACE OF MIND
-                                             </h4>
+                                             {% if booking.sitter_answer %}
+                                               <h4 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #0; font-weight: bold;">
+                                                 YOU CAN NOW ENJOY FREEDOM WITH PEACE OF MIND
+                                               </h4>
+                                             {%endif%}
                                          </td>
                                      </tr>
                                      <tr>
@@ -387,13 +393,13 @@
                                         <tr>
                                            {%if booking.sitter_answer %}
                                               <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                  <a href="https://www.miipets.com/contact/" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
+                                                  <a href="http://127.0.0.1:8000{% url 'services-owner-payment' booking_id=booking.id %}" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
                                                       <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;Pay Now&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                   </a>
                                               </td>
                                             {%else%}
                                               <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                  <a href="https://www.miipets.com/contact/" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
+                                                  <a href="http://127.0.0.1:8000{% url 'services' booking_id=booking.type %}" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
                                                       <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;Search other services&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                   </a>
                                               </td>
