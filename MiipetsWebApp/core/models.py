@@ -154,6 +154,7 @@ class SitterServices(TimeStampMixin):
                        (SIT, 'House Sitting'),
                        (DAYCARE, 'Daycare')]
 
+    allowed_to_show = models.BooleanField(default = False) # we first need to approve it
     sitter = models.ForeignKey(User, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)

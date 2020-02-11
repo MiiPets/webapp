@@ -61,7 +61,8 @@ def view_services(request, type):
 
         #check if dates are correct
         try:
-            start_date, end_date = sort_out_dates(request.GET['date_begin_input'], request.GET['date_end_input'])
+            start_date, end_date = sort_out_dates(request.GET['date_begin_input'],
+                                                  request.GET['date_end_input'])
         except:
             start_date, end_date = sort_out_dates('', '')
 
@@ -121,11 +122,13 @@ def view_services(request, type):
         #get relevant services not based on location
         if pet_type == "All Pets":
             services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(allowed_to_show=True)&
                                                      Q(date_start__lte=start_date)&
                                                      Q(date_end__gte=end_date)&
                                                      Q(price__range=[price_start, price_end]))
         else:
             services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(allowed_to_show=True)&
                                                      Q(date_start__lte=start_date)&
                                                      Q(date_end__gte=end_date)&
                                                      Q(price__range=[price_start, price_end])&
@@ -184,6 +187,7 @@ def view_single_service(request, service_id):
     service = SitterServices.objects.get(id=service_id)
     similar_services = SitterServices.objects.filter(
                           Q(type=service.type) &
+                          Q(allowed_to_show=True)&
                           (Q(price__lte=service.price*1.2) &  Q(price__gte=service.price*0.8)) &
                           ~Q(id = service.id))
 
@@ -357,6 +361,7 @@ def load_timeslots(request, service_id):
 
 
     bookings = ServiceBooking.objects.filter(Q(service=service) &
+                                             Q(allowed_to_show=True)&
                                              Q(start_date = date)).values_list('time_slot',
                                                                                'number_of_pets')
     bookings = list(set(bookings))
