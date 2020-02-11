@@ -157,13 +157,19 @@ class SitterServices(TimeStampMixin):
     sitter = models.ForeignKey(User, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)
+    dogs_allowed = models.BooleanField(default=False)
+    cats_allowed = models.BooleanField(default=False)
+    birds_allowed = models.BooleanField(default=False)
+    reptiles_allowed = models.BooleanField(default=False)
+    other_pets_allowed = models.BooleanField(default=False)
     description = models.TextField(null = "No description")
     price = models.PositiveIntegerField(default=10, validators=[MinValueValidator(10)])
     profile_picture = ProcessedImageField(upload_to=image_directory_path_service,
                                           processors=[ResizeToFill(400, 400)],
                                           format='JPEG',
                                           options={'quality': 100})
-
+    pet_type = models.CharField(max_length=50)
+    maximum_number_of_pets = models.PositiveIntegerField(default=5, validators=[MaxValueValidator(12)])
     date_start = models.DateField()
     date_end = models.DateField()
 
@@ -182,7 +188,8 @@ class SitterServices(TimeStampMixin):
     time_end_saturday = models.PositiveIntegerField()
     time_end_sunday = models.PositiveIntegerField()
 
-    REQUIRED_FIELDS = ['service_name', 'type', 'price']
+
+    REQUIRED_FIELDS = ['service_name', 'type', 'price', 'pet_type']
 
 
     class Meta:
@@ -206,9 +213,8 @@ class ServicePhotos(TimeStampMixin):
                                           format='JPEG',
                                           options={'quality': 200})
 
-    # def __str__(self):
-    #     return ("Photos of service {} for user {}".format(self.service,
-    #                                                        self.requester))
+    def __str__(self):
+        return ("Photos of service {}".format(self.service))
 
 
 class ServiceBooking(TimeStampMixin):
@@ -218,16 +224,23 @@ class ServiceBooking(TimeStampMixin):
     """
 
     requester = models.ForeignKey(User, on_delete=models.CASCADE)
-    listing = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
-    date_start = models.DateField()
-    date_end = models.DateField()
-    time_start = models.TimeField(blank=True)
-    time_end = models.TimeField(blank = True)
-    approved =  models.BooleanField(default=False)
+    service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    time_slot = models.PositiveIntegerField()
+    notified_sitter = models.BooleanField(default=False)
+    sitter_answer = models.BooleanField(default = False)
+    notified_owner_of_sitter_response = models.BooleanField(default=False)
+    sitter_confirmed = models.BooleanField(default=False)
+    owner_payed = models.BooleanField(default=False)
+    invoice_sent = models.BooleanField(default=False)
+    price = models.PositiveIntegerField(default=10, validators=[MinValueValidator(10)])
+    price_in_cents = models.PositiveIntegerField(default=10, validators=[MinValueValidator(10)])
+    number_of_pets = models.PositiveIntegerField(default=1)
+    reason_for_not_being_able = models.CharField(default = "", max_length=500)
 
-
-    # def __str__(self):
-    #     return ("Booking of service {} for user {}".format(self.listing, self.requester))
+    def __str__(self):
+        return ("Booking of service {} for user {}".format(self.service, self.requester))
 
 
 class ServiceLocation(TimeStampMixin):

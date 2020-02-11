@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from core.decorators import miisitter_required
 from core.models import User, Pets
-from .forms import UpdateMiiSitterProfile, AddListing
+from .forms import UpdateMiiSitterProfile, AddService
 import datetime
 
 @login_required(login_url='core-login')
@@ -59,19 +59,19 @@ def edit_sitter_profile(request):
 
 @login_required(login_url='core-login')
 @miisitter_required
-def add_listing(request):
+def add_service(request):
     """
     This view allows a sitter to add a listing
     """
 
     if request.method == 'POST':
-        form = AddListing(request.POST, request.FILES, user = request.user)
+        form = AddService(request.POST, request.FILES, user = request.user)
 
         if form.is_valid():
             form.save(request)
             return redirect('sitter-profile')
     else:
-        form = AddListing(user = request.user)
+        form = AddService(user = request.user)
 
     context = {
         'form':form,
@@ -79,4 +79,4 @@ def add_listing(request):
         "sitter_user":True
         }
 
-    return render(request, 'miisitters/sitter-add-listing.html', context)
+    return render(request, 'miisitters/sitter-add-service.html', context)
