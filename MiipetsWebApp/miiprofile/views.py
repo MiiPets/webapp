@@ -41,3 +41,19 @@ def edit_owner_profile(request):
     context = {'form':form}
 
     return render(request, 'miiprofile/edit-profile.html', context)
+
+
+@login_required(login_url='core-login')
+def view_owner_profile(request, owner_id):
+    """
+    This view edits the profile of the user.
+    """
+
+    owner = User.objects.get(id=owner_id)
+
+    context = {
+        "owner":owner,
+        "sitter_user":True
+    }
+
+    return render(request, 'miiprofile/sitter-profile-view-owner.html', context)

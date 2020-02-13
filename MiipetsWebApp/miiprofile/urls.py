@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', profile_views.owner_profile, name='profile-profile-owner'),
     path('edit-profile/', profile_views.edit_owner_profile, name='profile-edit-owner'),
+    path('view-miiowner-profile/<int:owner_id>', profile_views.view_owner_profile, name='sitter-view-owner-profile'),
 ]
 
 if settings.DEBUG:
