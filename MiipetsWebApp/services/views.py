@@ -14,6 +14,7 @@ from django.utils.html import strip_tags
 from django.core import mail
 from django.conf import settings
 
+
 def view_all_services(request):
     """
     This view allows everyone to view all current services

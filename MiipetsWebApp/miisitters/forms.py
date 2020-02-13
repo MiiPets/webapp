@@ -24,9 +24,14 @@ class UpdateMiiSitterProfile(forms.ModelForm):
     #email = forms.EmailField()
     first_name = forms.CharField()
     last_name = forms.CharField()
+    merchant_id = forms.CharField()
+    id_number = forms.CharField()
     #contact_number = forms.CharField()
     bio = forms.CharField(widget=forms.Textarea)
 
+    def __init__(self, *args, **kwargs):
+         self.user = kwargs.pop('user',None)
+         super(UpdateMiiSitterProfile, self).__init__(*args, **kwargs)
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -50,7 +55,13 @@ class UpdateMiiSitterProfile(forms.ModelForm):
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)
+
         user.profile_picture = self.cleaned_data.get('profile_picture')
+
+        sitter = MiiSitter.objects.get(user=self.user)
+        sitter.merchant_id = self.cleaned_data.get('merchant_id')
+        sitter.id_number = self.cleaned_data.get('id_number')
+        sitter.save(update_fields=['merchant_id', 'id_number'])
         user.save()
         return user
 

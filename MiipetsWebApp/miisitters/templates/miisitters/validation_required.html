@@ -1,0 +1,21 @@
+{%extends "core/base.html"%}
+{%load static%}
+{% load crispy_forms_tags %}
+
+{%block content%}
+        <!--Booking confirmation starts-->
+        <div class="list-details-section section-padding add_list mar-top-40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="booking-confirmation-page">
+                            <h2 class="margin-top-30">You are almost there!</h2>
+                            <p>We are still reviewing your profile and will notify you as soon as we have finished.</p>
+                            <p>In the meantime, you can still edit your profile <a href="{%url 'sitter-edit-profile'%}">here</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Booking confirmation ends-->
+{%endblock content%}
