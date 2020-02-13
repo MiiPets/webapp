@@ -14,6 +14,9 @@ urlpatterns = [
     path('register/', core_views.register, name='core-register'),
     path('register/owner/', core_views.MiiOwnerSignUpView.as_view(), name='core-owner-register'),
     path('register/sitter/', core_views.MiiSitterSignUpView.as_view(), name='core-sitter-register'),
+    path('terms-and-conditions/', core_views.terms_and_conditions, name='core-tcs'),
+    path('privacy/', core_views.privacy, name='core-privacy'),
+    path('agree-to-terms/', core_views.agree_to_terms, name='core-agree-to-terms'),
 ]
 
 if settings.DEBUG:

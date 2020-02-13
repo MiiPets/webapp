@@ -83,3 +83,19 @@ def sitter_id_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, l
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap
+
+
+def agreed_terms_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='core-login'):
+    '''
+    Decorator for views that checks that the logged in user is a sitter
+    that has been vetted by the miipets team. If not, will redirect them
+    to page saying they are not vetted yet.
+    '''
+    def wrap(request, *args, **kwargs):
+        if request.user.accepted_tcs and request.user.accepted_privacy:
+            return function(request, *args, **kwargs)
+        else:
+            return redirect('core-agree-to-terms')
+    wrap.__doc__ = function.__doc__
+    wrap.__name__ = function.__name__
+    return wrap

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
-from core.decorators import miisitter_required, validation_required
+from core.decorators import miisitter_required, validation_required, agreed_terms_required
 from core.decorators import merchant_id_required, sitter_id_required
 from core.models import User, Pets, MiiSitter, SitterServices
 from .forms import UpdateMiiSitterProfile, AddService
@@ -9,6 +9,7 @@ import datetime
 
 @login_required(login_url='core-login')
 @miisitter_required
+@agreed_terms_required
 def sitter_dashboard(request):
     """
     This view allows sitter to view dashboard
@@ -26,6 +27,7 @@ def sitter_dashboard(request):
 
 @login_required(login_url='core-login')
 @miisitter_required
+@agreed_terms_required
 def sitter_profile(request):
     """
     This view allows sitter to view dashboard
@@ -41,6 +43,7 @@ def sitter_profile(request):
 
 @login_required(login_url='core-login')
 @miisitter_required
+@agreed_terms_required
 def edit_sitter_profile(request):
     """
     This view edits the profile of the sitter.
@@ -69,6 +72,7 @@ def edit_sitter_profile(request):
 @validation_required
 @merchant_id_required
 @sitter_id_required
+@agreed_terms_required
 def add_service(request):
     """
     This view allows a sitter to add a listing

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
-from core.decorators import miiowner_required
+from core.decorators import miiowner_required, agreed_terms_required
 from core.models import User, Pets, SitterServices, ServicePhotos
 from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
@@ -186,6 +186,7 @@ def view_services(request, type):
 
 
 @login_required(login_url='core-login')
+@agreed_terms_required
 def view_single_service(request, service_id):
 
     service = SitterServices.objects.get(id=service_id)
@@ -547,7 +548,7 @@ def sitter_confirmation(request, service_id, booking_id, sitter_answer):
 
     return render(request, 'services/booking_confirmation_sitter.html', {"user":request.user, "sitter_answer":sitter_answer})
 
-
+@agreed_terms_required
 def view_sitter_profile(request, sitter_id):
     """
     When a someone clicks on the service sitter
@@ -581,6 +582,7 @@ def view_sitter_profile(request, sitter_id):
 
 
 @login_required(login_url='core-login')
+@agreed_terms_required
 def owner_payment(request, service_id, booking_id):
 
     booking = ServiceBooking.objects.get(id=booking_id)

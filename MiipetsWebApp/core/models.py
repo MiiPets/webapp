@@ -78,8 +78,10 @@ class User(AbstractUser):
                                           format='JPEG',
                                           options={'quality': 60})
     bio = models.TextField()
-    REQUIRED_FIELDS = ['email']
+    accepted_tcs = models.BooleanField(default=False)
+    accepted_privacy = models.BooleanField(default=False)
 
+    REQUIRED_FIELDS = ['email']
     def __str__(self):
         return ("User: {}, ID:{}".format(self.first_name, self.id))
 
@@ -92,7 +94,6 @@ class MiiOwner(TimeStampMixin):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    #profile_picture = models.ImageField(upload_to=image_directory_path)
 
     def __str__(self):
         return ("MiiOwner: {}, ID: {}".format(self.user.first_name, self.user.id))
