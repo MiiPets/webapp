@@ -9,34 +9,26 @@
               <div class="col-lg-6 col-md-12">
                   <div class="user-titlebar">
                       <div class="user-avatar">
-                        {% if user.profile_picture %}
-                          <a href = "{% url 'sitter-edit-profile' %}"><img src="{{user.profile_picture.url}}" alt=""></a>
+                        {% if sitter.profile_picture %}
+                          <img src="{{sitter.profile_picture.url}}" alt="">
                         {%else%}
-                          <a href = "{% url 'sitter-edit-profile' %}"><img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt=""></a>
+                          <img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt="">
                         {%endif%}
                       </div>
                       <div class="user-name">
-                          <h4>{{user.first_name}} {{user.last_name}}</h4>
-                          <ul>
-                            <li>
-                              <a class="link-hov style2" href="{% url 'sitter-add-service' %}">Add Service</a>
-                            </li>
-                            <li>
-                              <a class="link-hov style2" href="{% url 'sitter-edit-profile' %}">Edit Profile</a>
-                            </li>
-                          <ul>
+                          <h4>{{sitter.first_name}} {{sitter.last_name}}</h4>
                       </div>
                   </div>
               </div>
               <div class="col-lg-6 col-md-12">
-                  <p>{{user.bio|linebreaks}}</p>
+                  <p>{{sitter.bio|linebreaks}}</p>
               </div>
           </div>
       </div>
   </div>
-  <!--User Profile ends-->
-  <!--User profile details starts-->
-  <div class="list-details-section section-padding mar-top-20">
+  <!--sitter Profile ends-->
+  <!--sitter profile details starts-->
+  <div class="list-details-section section-padding mar-top-40">
       <div class="container">
           <div class="row">
               <div class="col-lg-7 col-md-12">
@@ -75,22 +67,22 @@
                     <div class="listing-sidebar">
                         <div class="boxed-widget">
                             <h3><i class="icofont-contact-add"></i>Contact details</h3>
-                            {% if user.address %}
+                            {% if sitter.address %}
                               <div class="address">
                                   <span class="ion-ios-location"></span>
-                                  <p> {{user.address}}</p>
+                                  <p> {{sitter.address}}</p>
                               </div>
                             {%endif%}
-                            {% if user.contact_number %}
+                            {% if sitter.contact_number %}
                               <div class="address">
                                   <span class="ion-ios-telephone"></span>
-                                  <p> {{user.contact_number}}</p>
+                                  <p> {{sitter.contact_number}}</p>
                               </div>
                             {%endif%}
-                            {% if user.email %}
+                            {% if sitter.email %}
                               <div class="address">
                                   <span class="ion-ios-email"></span>
-                                  <p> {{user.email}}</p>
+                                  <p> {{sitter.email}}</p>
                               </div>
                             {%endif%}
                         </div>

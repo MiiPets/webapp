@@ -545,6 +545,38 @@ def sitter_confirmation(request, service_id, booking_id, sitter_answer):
     return render(request, 'services/booking_confirmation_sitter.html', {"user":request.user, "sitter_answer":sitter_answer})
 
 
+def view_sitter_profile(request, sitter_id):
+    """
+    When a someone clicks on the service sitter
+    link they will be taken to this profile page
+    where there is no option to edit profile
+    """
+    sitter = User.objects.get(id=sitter_id)
+    services = SitterServices.objects.filter(sitter=sitter)
+
+    try:
+        if request.user.is_sitter:
+            context = {
+                "services":services,
+                "sitter":sitter,
+                "sitter_user":True,
+            }
+        else:
+            context = {
+                "services":services,
+                "sitter":sitter,
+                "sitter_user":False,
+            }
+    except:
+        context = {
+            "services":services,
+            "sitter":sitter,
+            "sitter_user":False,
+        }
+
+    return render(request, 'services/view_sitter_profile.html', context)
+
+
 @login_required(login_url='core-login')
 def owner_payment(request, service_id, booking_id):
 

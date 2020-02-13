@@ -263,7 +263,7 @@
                       <div class="sidebar-widget">
                           <div class="business-time">
                               <div class="business-title">
-                                  <h6><i class="ion-android-alarm-clock"  style="color: #007A33;"></i> Business Hours</h6>
+                                  <h6><i class="ion-android-alarm-clock"  style="color: #007A33;"></i> {{sitter.first_name}}'s Hours</h6>
                               </div>
                               <ul class="business-hours">
                                   <li class="business-open {%if saturday_start_time == 'Not availibe' or saturday_end_time == 'Not availibe'%} trend-closed {%endif%}">
@@ -355,7 +355,7 @@
                               </li>
                           </ul>
                           <div class="text-center mar-bot-25">
-                              <a href="#" class="btn v3" style="background-color: #007A33;"><i class="icofont-eye-alt"></i> View profile</a>
+                              <a href="{% url 'services-view-miisitter' sitter_id=sitter.id%}" class="btn v3" style="background-color: #007A33;"><i class="icofont-eye-alt"></i> View profile</a>
                           </div>
                       </div>
                   </div>

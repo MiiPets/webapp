@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from core.decorators import miisitter_required, validation_required
 from core.decorators import merchant_id_required, sitter_id_required
-from core.models import User, Pets, MiiSitter
+from core.models import User, Pets, MiiSitter, SitterServices
 from .forms import UpdateMiiSitterProfile, AddService
 import datetime
 
@@ -30,10 +30,11 @@ def sitter_profile(request):
     """
     This view allows sitter to view dashboard
     """
-
+    services = SitterServices.objects.filter(sitter=request.user)
     context = {
         "title": "Sitter Profile",
         "sitter_user":True,
+        'services':services
     }
     return render(request, 'miisitters/sitter-profile.html', context)
 
