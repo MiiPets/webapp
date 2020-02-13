@@ -50,6 +50,7 @@ def validation_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, 
     wrap.__name__ = function.__name__
     return wrap
 
+
 def merchant_id_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='core-login'):
     '''
     Decorator for views that checks that the logged in user is a sitter
@@ -65,6 +66,7 @@ def merchant_id_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME,
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap
+
 
 def sitter_id_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='core-login'):
     '''

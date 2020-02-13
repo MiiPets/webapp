@@ -100,4 +100,4 @@ def vetting_sitter(request):
     services yet
     """
 
-    return render(request, 'miisitters/validation_required.html')
+    return render(request, 'miisitters/validation_required.html', {"sitter_user":True})
