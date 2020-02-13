@@ -50,10 +50,12 @@ def view_owner_profile(request, owner_id):
     """
 
     owner = User.objects.get(id=owner_id)
+    pets = Pets.objects.filter(owner=owner)
 
     context = {
         "owner":owner,
-        "sitter_user":True
+        "sitter_user":True,
+        "pets":pets
     }
 
     return render(request, 'miiprofile/sitter-profile-view-owner.html', context)

@@ -58,7 +58,10 @@ def view_services(request, type):
             else:
                 type = type_dictionary.values()
         except:
-            type = [type_dictionary[type]]
+            try:
+                type = [type_dictionary[type]]
+            except:
+                type = [type]
 
         #check if dates are correct
         try:
