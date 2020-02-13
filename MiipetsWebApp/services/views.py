@@ -14,6 +14,7 @@ from django.utils.html import strip_tags
 from django.core import mail
 from django.conf import settings
 
+
 def view_all_services(request):
     """
     This view allows everyone to view all current services
@@ -57,11 +58,15 @@ def view_services(request, type):
             else:
                 type = type_dictionary.values()
         except:
-            type = [type_dictionary[type]]
+            try:
+                type = [type_dictionary[type]]
+            except:
+                type = [type]
 
         #check if dates are correct
         try:
-            start_date, end_date = sort_out_dates(request.GET['date_begin_input'], request.GET['date_end_input'])
+            start_date, end_date = sort_out_dates(request.GET['date_begin_input'],
+                                                  request.GET['date_end_input'])
         except:
             start_date, end_date = sort_out_dates('', '')
 
@@ -121,11 +126,13 @@ def view_services(request, type):
         #get relevant services not based on location
         if pet_type == "All Pets":
             services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(allowed_to_show=True)&
                                                      Q(date_start__lte=start_date)&
                                                      Q(date_end__gte=end_date)&
                                                      Q(price__range=[price_start, price_end]))
         else:
             services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(allowed_to_show=True)&
                                                      Q(date_start__lte=start_date)&
                                                      Q(date_end__gte=end_date)&
                                                      Q(price__range=[price_start, price_end])&
@@ -184,6 +191,7 @@ def view_single_service(request, service_id):
     service = SitterServices.objects.get(id=service_id)
     similar_services = SitterServices.objects.filter(
                           Q(type=service.type) &
+                          Q(allowed_to_show=True)&
                           (Q(price__lte=service.price*1.2) &  Q(price__gte=service.price*0.8)) &
                           ~Q(id = service.id))
 
@@ -357,6 +365,7 @@ def load_timeslots(request, service_id):
 
 
     bookings = ServiceBooking.objects.filter(Q(service=service) &
+                                             Q(allowed_to_show=True)&
                                              Q(start_date = date)).values_list('time_slot',
                                                                                'number_of_pets')
     bookings = list(set(bookings))
@@ -537,6 +546,38 @@ def sitter_confirmation(request, service_id, booking_id, sitter_answer):
                                     'notified_owner_of_sitter_response'])
 
     return render(request, 'services/booking_confirmation_sitter.html', {"user":request.user, "sitter_answer":sitter_answer})
+
+
+def view_sitter_profile(request, sitter_id):
+    """
+    When a someone clicks on the service sitter
+    link they will be taken to this profile page
+    where there is no option to edit profile
+    """
+    sitter = User.objects.get(id=sitter_id)
+    services = SitterServices.objects.filter(sitter=sitter)
+
+    try:
+        if request.user.is_sitter:
+            context = {
+                "services":services,
+                "sitter":sitter,
+                "sitter_user":True,
+            }
+        else:
+            context = {
+                "services":services,
+                "sitter":sitter,
+                "sitter_user":False,
+            }
+    except:
+        context = {
+            "services":services,
+            "sitter":sitter,
+            "sitter_user":False,
+        }
+
+    return render(request, 'services/view_sitter_profile.html', context)
 
 
 @login_required(login_url='core-login')

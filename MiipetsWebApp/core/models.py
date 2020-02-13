@@ -77,8 +77,6 @@ class User(AbstractUser):
                                           processors=[ResizeToFill(400, 400)],
                                           format='JPEG',
                                           options={'quality': 60})
-    #contact_number = PhoneNumberField()
-    #location = AddressField()
     bio = models.TextField()
     REQUIRED_FIELDS = ['email']
 
@@ -128,7 +126,8 @@ class MiiSitter(TimeStampMixin):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    #id_number = models.PositiveIntegerField()
+    merchant_id = models.CharField(max_length=40, default="")
+    id_number = models.PositiveIntegerField(default=0)
     validated = models.BooleanField(default=False)
 
     def __str__(self):
@@ -154,6 +153,7 @@ class SitterServices(TimeStampMixin):
                        (SIT, 'House Sitting'),
                        (DAYCARE, 'Daycare')]
 
+    allowed_to_show = models.BooleanField(default = False) # we first need to approve it
     sitter = models.ForeignKey(User, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)
@@ -168,7 +168,6 @@ class SitterServices(TimeStampMixin):
                                           processors=[ResizeToFill(400, 400)],
                                           format='JPEG',
                                           options={'quality': 100})
-    pet_type = models.CharField(max_length=50)
     maximum_number_of_pets = models.PositiveIntegerField(default=5, validators=[MaxValueValidator(12)])
     date_start = models.DateField()
     date_end = models.DateField()
