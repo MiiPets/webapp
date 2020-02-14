@@ -6,7 +6,8 @@ from datetime import datetime, timedelta
 from core.models import ServiceLocation, ServiceReviews
 import geopy.distance
 import numpy as np
-
+import hashlib
+import urllib.parse
 
 def sort_out_dates(start_date, end_date):
     """
@@ -243,3 +244,28 @@ def get_options_of_timeslots_board_daycare (taken_dates, number_of_pets, request
     options = [[x, time_to_interval_converter[x]] for x in time_slots_availible ]
 
     return options
+
+
+def create_signature(list_of_values):
+
+    """
+    Required to create hash function for Payfast payments
+    """
+
+    CHECKOUT_SIGNATURE_IGNORED_WHITESPACE = ''.join([
+    ' ',
+    '\t',
+    '\n',
+    '\r',
+    '\x0b',  # \N{LINE TABULATION} (Python 2 does not know this Unicode character name)
+
+    # XXX: trim() strips '\0', but it's not clear whether to actually strip it here.
+    # We can't really test it, since the endpoint seems to refuse any requests with null values.
+    # '\0',
+    ])
+
+    signature_string = urllib.parse.urlencode(list_of_values)
+    signature = hashlib.md5(signature_string.strip(CHECKOUT_SIGNATURE_IGNORED_WHITESPACE).encode()).hexdigest()
+    print(signature_string)
+    print(signature)
+    return signature
