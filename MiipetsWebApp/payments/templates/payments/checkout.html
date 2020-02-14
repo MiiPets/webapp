@@ -1,0 +1,86 @@
+{%extends "core/base.html"%}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!--Invoice starts-->
+<div class="payment_receipt section-padding bg-grey mar-top-10">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="payment_receipt--wrapper">
+                    <div class="payment_receipt--contents">
+                        <h2 class="atbd_thank_you">Thank you for booking with MiiPets!</h2>
+                        <div class="atbd_payment_instructions">
+                            <p>When clicking the Pay Now button below, we will take you to PayFast
+                               where you will complete your payment. When you are finished, they will
+                               redirect you back to us.</p>
+                            <br>
+                            <h4>Account details:</h4>
+                            <ul class="list-unstyled">
+                                <li>MiiOwner Name: <span> {{name_first}} {{name_last}}</span></li>
+                                <li>MiiSitter Name: <span> {{booking.service.sitter.first_name}} {{booking.service.sitter.last_name}}</span></li>
+                                <li>Service Name: <span>{{booking.service.service_name}}</span></li>
+                            </ul>
+                            <p>Please remember that your order may be canceled if you do not make your payment within next 48 hours or 24 hours before the booking</p>
+                        </div>
+                        <div class="row atbd_payment_summary_wrapper">
+                            <div class="col-md-12">
+                                  <p class="atbd_payment_summary">Order summary:</p>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>ORDER #</td>
+                                                <td>{{m_payment_id}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Amount</td>
+                                                <td>R {{amount}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date</td>
+                                                <td>{{booking.start_date}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <form action="{{payfast_url}}" method="POST" id="payfastCheckout">
+                        <input type="hidden" name="merchant_id" value={{merchant_id}}>
+                        <input type="hidden" name="merchant_key" value={{merchant_key}}>
+                        <input type="hidden" name="return_url" value={{return_url}}>
+                        <input type="hidden" name="cancel_url" value={{cancel_url}}>
+                        <input type="hidden" name="notify_url" value={{notify_url}}>
+                        <input type="hidden" name="name_first" value={{name_first}}>
+                        <input type="hidden" name="name_last" value={{name_last}}>
+                        <input type="hidden" name="email_address" value={{email_address}}>
+                        <input type="hidden" name="m_payment_id" value={{m_payment_id}}>
+                        <input type="hidden" name="amount" value={{amount}}>
+                        <input type="hidden" name="item_name" value={{item_name}}>
+                        <input type="hidden" name="item_description" value={{item_description}}>
+                        <input type="hidden" name="custom_int1" value={{custom_int1}}>
+                        <input type="hidden" name="custom_str1" value={{custom_str1}}>
+                        <input type="hidden" name="setup" value='{ "split_payment" : {
+                                    "merchant_id":{{sitter_merchant_id}},
+                                    "percentage":80}}' >
+                        <input type="hidden" name="signature" value={{signature}}>
+                        <div class="res-box text-center mar-top-30">
+                            <button type="submit" class="btn v3" style="background-color: #007A33;"><i class="ion-log-in" ></i>Pay now</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Invoice ends-->
+
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#payfastCheckout").submit();
+</script> -->
+{%endblock content%}
