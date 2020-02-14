@@ -1,0 +1,23 @@
+{%extends "core/base.html"%}
+{%load static%}
+{% load crispy_forms_tags %}
+
+{%block content%}
+        <!--Booking confirmation starts-->
+        <div class="list-details-section section-padding add_list mar-top-40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="booking-confirmation-page">
+                            <i class="ion-android-checkmark-circle"></i>
+                            <h2 class="margin-top-30">Thank you for your payment, you are all set!</h2>
+                            <p>You can now contact your sitter with the email adress {{booking.service.sitter.email}} </p>
+                            <br><br><br>
+                            <p>Have some future plans? Plan it with peace of mind and make another booking <a href="{%url 'services-all'%}">here</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Booking confirmation ends-->
+{%endblock content%}
