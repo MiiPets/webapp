@@ -26,8 +26,7 @@
                               <h2>{{service_name}}</h2>
                               <p><i class="ion-ios-location" style="color: #007A33;"></i>{{location}}</p>
                               <div class="list-ratings">
-                                  {{review_html}}
-                                  <a href="#reviews">({{service.number_of_reviews}})</a>
+                                  {{review_html|safe}} ({{service.review_score}})
                               </div>
                               <ul>
                                 {%if service.dogs_allowed%}
@@ -133,7 +132,7 @@
                         <h6>R{{price}} per {%if type == 'WALK' or type == 'SIT' %} hour {%else%} day {%endif%}</h6>
                       </div>
                       <div id="reviews" class="list-details-section mar-top-10">
-                          <h4>Reviews <span>({{number_of_reviews}})</span></h4>
+                          <h4>Reviews <span>({{service.number_of_reviews}})</span></h4>
                           <div class="review-box">
                               <ul class="review_wrap">
                                 <li>

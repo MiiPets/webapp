@@ -343,24 +343,25 @@ def generate_review_html_start(rating):
         <li><i class="ion-android-star"></i></li>
         </ul>
     """
-
-    if 0 < rating <= 1.49:
+    print("NOW I AM HERE")
+    print(rating)
+    if 0 <= rating <= 1.49:
         return one_star_total
-    elif 1.49 < rating <= 1.99:
+    elif 1.49 <= rating <= 1.99:
         return one_half_star_total
-    elif 2 < rating <= 2.49:
+    elif 2 <= rating <= 2.49:
         return two_star_total
-    elif 2.49 < rating <= 2.99:
+    elif 2.49 <= rating <= 2.99:
         return two_half_star_total
-    elif 3 < rating <= 3.49:
+    elif 3.0 <= rating <= 3.49:
         return three_star_total
-    elif 3.49 < rating <= 3.99:
+    elif 3.49 <= rating <= 3.99:
         return three_half_star_total
-    elif 4 < rating <= 4.49:
+    elif 4 <= rating <= 4.49:
         return four_star_total
-    elif 4.49 < rating <= 4.8:
+    elif 4.49 <= rating <= 4.8:
         return four_half_star_total
-    elif 4.8 < rating <= 5:
+    elif 4.8 <= rating <= 5:
         return five_star_total
     else:
         return "No reviews yet"

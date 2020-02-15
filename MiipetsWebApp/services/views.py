@@ -202,11 +202,14 @@ def view_single_service(request, service_id):
     difference = now - service.updated_at
     total_hours = difference.days*24
 
-    if total_hours>5:
-         number_of_reviews = ServiceReviews.objects.filter(service=service).count()
-         service.number_of_reviews = number_of_reviews
-         service.review_score = ServiceReviews.objects.filter(service=service).aggregate(Sum('review_score'))['review_score__sum']/number_of_reviews
-         service.save(update_fields=["number_of_reviews", "review_score"])
+    try:
+        if total_hours>5:
+             number_of_reviews = ServiceReviews.objects.filter(service=service).count()
+             service.number_of_reviews = number_of_reviews
+             service.review_score = ServiceReviews.objects.filter(service=service).aggregate(Sum('review_score'))['review_score__sum']/number_of_reviews
+             service.save(update_fields=["number_of_reviews", "review_score"])
+    except:
+        print("couldnt update")
 
     similar_services = SitterServices.objects.filter(
                           Q(type=service.type) &
