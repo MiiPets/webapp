@@ -5,14 +5,15 @@ from core.decorators import miiowner_required, agreed_terms_required
 from core.models import User, Pets, SitterServices, ServicePhotos
 from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
-from django.db.models import Q
-from core.methods import sort_out_dates, filter_on_location, return_day_of_week_from_date
+from django.db.models import Q, Sum
+from core.methods import sort_out_dates, filter_on_location, return_day_of_week_from_date, generate_review_html_start
 from core.methods import  get_options_of_timeslots_walk_sit, get_options_of_timeslots_board_daycare
 from .forms import BookService
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core import mail
 from django.conf import settings
+from datetime import datetime, timedelta, timezone
 
 
 def view_all_services(request):
@@ -146,15 +147,19 @@ def view_services(request, type):
         try:
             location_input = request.GET['location_input']
             services,locations = filter_on_location(services, location_input)
+            reviews = [generate_review_html_start(service.review_score) for service in services]
+            number_of_reviews = [service.number_of_reviews for service in services]
         except:
             location_input = ""
             ids = [service.id for service in services]
             locations = ServiceLocation.objects.filter(id__in=ids)
+            reviews = [generate_review_html_start(service.review_score) for service in services]
+            number_of_reviews = [service.number_of_reviews for service in services]
 
         if not location_input:
             location_input = "Location"
 
-        services = zip(services, locations)
+        services = zip(services, locations, reviews, number_of_reviews)
 
         try:
             if request.user.is_sitter:
@@ -190,6 +195,19 @@ def view_services(request, type):
 def view_single_service(request, service_id):
 
     service = SitterServices.objects.get(id=service_id)
+    reviews = ServiceReviews.objects.filter(service=service)
+
+    # check if service should be updated (only every 10 hours)
+    now = datetime.now(timezone.utc)
+    difference = now - service.updated_at
+    total_hours = difference.days*24
+
+    if total_hours>5:
+         number_of_reviews = ServiceReviews.objects.filter(service=service).count()
+         service.number_of_reviews = number_of_reviews
+         service.review_score = ServiceReviews.objects.filter(service=service).aggregate(Sum('review_score'))['review_score__sum']/number_of_reviews
+         service.save(update_fields=["number_of_reviews", "review_score"])
+
     similar_services = SitterServices.objects.filter(
                           Q(type=service.type) &
                           Q(allowed_to_show=True)&
@@ -244,8 +262,10 @@ def view_single_service(request, service_id):
             context = {
                 "title": "Single pet service",
                 "sitter":sitter,
+                "reviews":reviews,
                 "similar_services":similar_services,
                 "sitter_user":True,
+                "review_html":generate_review_html_start(service.review_score),
                 'type':type_converter[service.type],
                 "service_name":service.service_name,
                 "service_description":service.description,
@@ -274,8 +294,10 @@ def view_single_service(request, service_id):
                 "title": "Single pet service",
                 "sitter":sitter,
                 "similar_services":similar_services,
+                "reviews":reviews,
                 "sitter_user":False,
                 'type':service.type,
+                "review_html":generate_review_html_start(service.review_score),
                 "service_name":service.service_name,
                 "service_description":service.description,
                 'price':service.price,
@@ -303,8 +325,10 @@ def view_single_service(request, service_id):
                 "title": "Single pet service",
                 "sitter":sitter,
                 "similar_services":similar_services,
+                "reviews":reviews,
                 "sitter_user":False,
                 'type':service.type,
+                "review_html":generate_review_html_start(service.review_score),
                 "service_name":service.service_name,
                 "service_description":service.description,
                 'price':service.price,
