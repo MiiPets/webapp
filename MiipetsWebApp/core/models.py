@@ -62,7 +62,7 @@ class Metrics(TimeStampMixin):
         ordering = ('-created_at',)
 
 
-class User(AbstractUser):
+class User(AbstractUser, TimeStampMixin):
 
     """
     Data that is required for all of the user types are defined in here
@@ -130,6 +130,8 @@ class MiiSitter(TimeStampMixin):
     merchant_id = models.CharField(max_length=40, default="")
     id_number = models.PositiveIntegerField(default=0)
     validated = models.BooleanField(default=False)
+    review_score = models.FloatField(default=6.0)
+    number_of_bookings = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return ("MiiSitter ({}), ID: {}".format(self.user.first_name, self.user.id))
@@ -155,6 +157,8 @@ class SitterServices(TimeStampMixin):
                        (DAYCARE, 'Daycare')]
 
     allowed_to_show = models.BooleanField(default = False) # we first need to approve it
+    review_score = models.FloatField(default = 6, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    number_of_reviews = models.PositiveIntegerField(default=0)
     sitter = models.ForeignKey(User, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)
@@ -259,8 +263,8 @@ class ServiceLocation(TimeStampMixin):
     longitude = models.FloatField()
 
 
-    # def __str__(self):
-    #     return ("Location of service {}".format(self.service.id))
+    def __str__(self):
+        return ("Location of service {}".format(self.service.id))
 
 
 class ServiceReviews(TimeStampMixin):
@@ -270,9 +274,79 @@ class ServiceReviews(TimeStampMixin):
     """
 
     service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
-    review_score = models.FloatField()
+    review_score = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     review_text = models.CharField(max_length=10000)
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return ("Review of service {}".format(self.service.id))
+
+
+class PayFastOrder(TimeStampMixin):
+
+    """
+    Storing data of payfast payments
+    """
+
+    m_payment_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    pf_payment_id = models.CharField(max_length=40, unique=True, null=True, blank=True)
+    payment_status = models.CharField(max_length=20, null=True, blank=True)
+    item_name = models.CharField(max_length=100)
+    item_description = models.CharField(max_length=255, null=True, blank=True)
+    amount = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+
+
+    custom_str1 = models.CharField(max_length=255, null=True, blank=True)
+    custom_str2 = models.CharField(max_length=255, null=True, blank=True)
+    custom_str3 = models.CharField(max_length=255, null=True, blank=True)
+    custom_str4 = models.CharField(max_length=255, null=True, blank=True)
+    custom_str5 = models.CharField(max_length=255, null=True, blank=True)
+
+    custom_int1 = models.IntegerField(null=True, blank=True)
+    custom_int2 = models.IntegerField(null=True, blank=True)
+    custom_int3 = models.IntegerField(null=True, blank=True)
+    custom_int4 = models.IntegerField(null=True, blank=True)
+    custom_int5 = models.IntegerField(null=True, blank=True)
+
+    #payer information
+    name_first = models.CharField(max_length=100, null=True, blank=True)
+    name_last = models.CharField(max_length=100, null=True, blank=True)
+    email_address = models.CharField(max_length=100, null=True, blank=True)
+
+    #Receiver Information
+    merchant_id = models.CharField(max_length=15)
+    merchant_key = models.CharField(max_length=40)
+    sitter_merchant_id = models.CharField(max_length=15)
+    sitter_percantage = models.FloatField(default = 0.2)
+    user_pay = models.ForeignKey(User, on_delete=models.CASCADE)
+    booking = models.ForeignKey(ServiceBooking, on_delete=models.CASCADE)
+    # split info
+    setup = models.CharField(max_length=200)
+    # Security Information
+    signature = models.CharField(max_length=32, null=True, blank=True)
+    request_ip = models.GenericIPAddressField(null=True, blank=True)
+
+
+    class HelpText:
+        m_payment_id = "Unique transaction ID on the receiver's system."
+        pf_payment_id = "Unique transaction ID on PayFast."
+        payment_status = "The status of the payment."
+        item_name = "The name of the item being charged for."
+        item_description = "The description of the item being charged for."
+        amount_gross = "The total amount which the payer paid."
+        amount_fee = "The total in fees which was deducted from the amount."
+        amount_net = "The net amount credited to the receiver's account."
+
+        first_name_payer = "First name of the payer."
+        last_name_payer = "Last name of the payer."
+        email_address = "Email address of the payer."
+
+        merchant_id = "The Merchant ID as given by the PayFast system."
+        sitter_merchant_id = "The Merchant ID of sitter as given by the PayFast system."
+        signature = "A security signature of the transmitted data"
+
+    def __str__(self):
+        return 'PayFastOrder {id} of booking'.format(self.m_payment_id, self.booking.id)
+
+    class Meta:
+        verbose_name = 'PayFast order'

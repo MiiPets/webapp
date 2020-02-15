@@ -70,7 +70,7 @@
       <div class="tab-content">
         <div id="grid-view" class="tab-pane active  product-grid">
           <div class="row">
-            {% for service, location in services %}
+            {% for service, location, star_reviews, number_of_reviews in services %}
               <div class="col-md-3 col-12">
                 <div class="trending-place-item">
 
@@ -84,16 +84,12 @@
                             <div class="rating-summary float-left">
                                 <div class="rating-result" title="60%">
                                     <ul class="product-rating">
-                                        <li><i class="ion-android-star"></i></li>
-                                        <li><i class="ion-android-star"></i></li>
-                                        <li><i class="ion-android-star"></i></li>
-                                        <li><i class="ion-android-star-half"></i></li>
-                                        <li><i class="ion-android-star-half"></i></li>
+                                        {{star_reviews|safe}}
                                     </ul>
                                 </div>
                             </div>
                             <div class="review-summury float-right">
-                                <p><a href="#">3 Reviews</a></p>
+                                <p><a href="#">{{number_of_reviews}} Reviews</a></p>
                             </div>
                         </div>
                         <br>
