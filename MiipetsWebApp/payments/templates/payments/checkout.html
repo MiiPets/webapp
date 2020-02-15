@@ -21,7 +21,8 @@
                                 <li>MiiSitter Name: <span> {{booking.service.sitter.first_name}} {{booking.service.sitter.last_name}}</span></li>
                                 <li>Service Name: <span>{{booking.service.service_name}}</span></li>
                             </ul>
-                            <p>Please remember that your order may be canceled if you do not make your payment within next 48 hours or 24 hours before the booking</p>
+                            <p>Please remember that your order may be cancelled if you do not make your
+                               payment within the next 48 hours or 24 hours before the booking.</p>
                         </div>
                         <div class="row atbd_payment_summary_wrapper">
                             <div class="col-md-12">
@@ -61,8 +62,8 @@
                         <input type="hidden" name="amount" value={{amount}}>
                         <input type="hidden" name="item_name" value={{item_name}}>
                         <input type="hidden" name="item_description" value={{item_description}}>
-                        <input type="hidden" name="custom_int1" value={{custom_int1}}>
-                        <input type="hidden" name="custom_str1" value={{custom_str1}}>
+                        <input type="hidden" name="email_confirmation" value={{email_confirmation}}>
+                        <input type="hidden" name="confirmation_address" value={{confirmation_address}}>
                         <input type="hidden" name="setup" value='{ "split_payment" : {
                                     "merchant_id":{{sitter_merchant_id}},
                                     "percentage":80}}' >
