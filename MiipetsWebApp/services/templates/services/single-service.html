@@ -25,14 +25,9 @@
                                </p>
                               <h2>{{service_name}}</h2>
                               <p><i class="ion-ios-location" style="color: #007A33;"></i>{{location}}</p>
-                              <!-- <div class="list-ratings">
-                                  <span class="ion-android-star"></span>
-                                  <span class="ion-android-star"></span>
-                                  <span class="ion-android-star"></span>
-                                  <span class="ion-android-star"></span>
-                                  <span class="ion-android-star-half"></span>
-                                  <a href="#">(4 Reviews)</a>
-                              </div> -->
+                              <div class="list-ratings">
+                                  {{review_html|safe}} ({{service.review_score|floatformat}})
+                              </div>
                               <ul>
                                 {%if service.dogs_allowed%}
                                 <li style="display:inline-block;">
@@ -91,7 +86,6 @@
                           <li class="nav-item"><a href="#gallery">Gallery</a></li>
                           <li class="nav-item"><a href="#price">Pricing</a></li>
                           <li class="nav-item"><a href="#reviews">Reviews</a></li>
-                          <li class="nav-item"><a href="#add_review">Add Review</a></li>
                       </ul>
                   </div>
                   <!--Listing Details starts-->
@@ -138,78 +132,55 @@
                         <h6>R{{price}} per {%if type == 'WALK' or type == 'SIT' %} hour {%else%} day {%endif%}</h6>
                       </div>
                       <div id="reviews" class="list-details-section mar-top-10">
-                          <h4>Reviews <span>({{number_of_reviews}})</span></h4>
+                          <h4>Reviews <span>({{service.number_of_reviews}})</span></h4>
                           <div class="review-box">
                               <ul class="review_wrap">
                                 <li>
                                   {%for review in reviews %}
                                       <div class="customer-review_wrap">
                                           <div class="reviewer-img">
-                                              <img src="images/clients/reviewer-3.png" class="img-fluid" alt="#">
-                                              <p>{{review.giver}}</p>
+                                            {% if review.reviewer.profile_picture %}
+                                              <a href = "#"><img src="{{review.reviewer.profile_picture.url}}" class="img-fluid" alt="#"></a>
+                                            {%else%}
+                                              <a href = "#"><img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt=""></a>
+                                            {%endif%}
+                                              <p>{{review.reviewer.first_name}} {{review.reviewer.last_name}}</p>
                                           </div>
                                           <div class="customer-content-wrap">
                                               <div class="customer-content">
-                                                  <div class="customer-review">
-                                                      <h6>{{review.name}}</h6>
-                                                      <p>{{review.daysback}}</p>
-                                                  </div>
-                                                  <div class="customer-rating">{{review.score}}</div>
+                                                  <div class="customer-rating" style="background-color: #007A33;">{{review.review_score|floatformat}}</div>
                                               </div>
                                               <p class="customer-text">
-                                                {{review.text}}
+                                                {{review.review_text}}
                                               </p>
                                           </div>
                                       </div>
                                   {%endfor%}
                                   </li>
                               </ul>
+                              {% if reviews.has_other_pages %}
+                                <ul class="pagination">
+                                  {% if reviews.has_previous %}
+                                    <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+                                  {% else %}
+                                    <li class="disabled"><span>&laquo;</span></li>
+                                  {% endif %}
+                                  {% for i in reviews.paginator.page_range %}
+                                    {% if reviews.number == i %}
+                                      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                    {% else %}
+                                      <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                  {% endfor %}
+                                  {% if reviews.has_next %}
+                                    <li><a href="?page={{ reviews.next_page_number }}">&raquo;</a></li>
+                                  {% else %}
+                                    <li class="disabled"><span>&raquo;</span></li>
+                                  {% endif %}
+                                </ul>
+                             {% endif %}
                           </div>
                       </div>
-                      <!-- <div id="add_review" class="list-details-section mar-top-10">
-                          <h4>Add Review</h4>
-                          <form class="contact-form" id="leave-review">
-                              <h4 class="contact-form__title">
-                                  Rate us and Write a Review
-                              </h4>
-                              <div class="row">
-                                  <div class="col-md-6 col-sm-7 col-12">
-                                      <p class="contact-form__rate">
-                                          Your rating for this listing:
-                                      </p>
-                                      <p class="contact-form__rate-bx">
-                                          <i class="ion-ios-star"></i>
-                                          <i class="ion-ios-star"></i>
-                                          <i class="ion-ios-star"></i>
-                                          <i class="ion-ios-star"></i>
-                                          <i class="ion-ios-star"></i>
-                                      </p>
-                                      <p class="contact-form__rate-bx-show">
-                                          <span class="rate-actual">0</span> / 5
-                                      </p>
-                                  </div>
-                                  <div class="col-md-6 col-sm-5 col-12">
-                                      <div class="contact-form__upload-btn xs-left">
-                                          <input class="contact-form__input-file" type="file" name="photo-upload" id="photo-upload">
-                                          <span>
-                                              <i class="icofont-upload-alt"></i>
-                                              Upload Photos
-                                          </span>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-md-6">
-                                      <input class="contact-form__input-text" type="text" name="name" id="name" placeholder="Name:">
-                                  </div>
-                                  <div class="col-md-6">
-                                      <input class="contact-form__input-text" type="text" name="mail" id="mail" placeholder="Email:">
-                                  </div>
-                              </div>
-                              <textarea class="contact-form__textarea" name="comment" id="comment" placeholder="Comment"></textarea>
-                              <input class="btn v1" type="submit" name="submit-contact" id="submit_contact" value="Submit" style="background-color: #007A33;">
-                          </form>
-                      </div> -->
                   </div>
                   <!--Listing Details ends-->
                   <!--Similar Listing starts-->
@@ -227,17 +198,11 @@
                                       <p><span class="price-amt">R{{similar.price}} per {%if similar.type == 'WALK' or similar.type == 'SIT' %} hour {%else%} day {%endif%}</span></p>
                                   </div>
                                   <div class="customer-review">
-                                      <!-- <div class="rating-summary">
+                                      <div class="rating-summary">
                                           <div class="rating-result" title="60%">
-                                              <ul class="product-rating">
-                                                  <li><i class="ion-android-star"></i></li>
-                                                  <li><i class="ion-android-star"></i></li>
-                                                  <li><i class="ion-android-star"></i></li>
-                                                  <li><i class="ion-android-star-half"></i></li>
-                                                  <li><i class="ion-android-star-half"></i></li>
-                                              </ul>
+                                              {{review_html}}
                                           </div>
-                                      </div> -->
+                                      </div>
                                   </div>
                               </div>
                             {%endfor%}
@@ -346,11 +311,15 @@
                           </div>
                           <ul class="social-counts">
                               <li>
-                                  <h6>4.3</h6>
+                                  {%if miisitter.review_score > 5 %}
+                                    <h6>No reviews yet</h6>
+                                  {%else%}
+                                    <h6>{{miisitter.review_score|floatformat}}</h6>
+                                  {%endif%}
                                   <span>Average review score</span>
                               </li>
                               <li>
-                                  <h6>326</h6>
+                                  <h6>{{miisitter.number_of_bookings}}</h6>
                                   <span>Bookings completed</span>
                               </li>
                           </ul>

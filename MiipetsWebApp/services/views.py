@@ -1,18 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
-from core.decorators import miiowner_required
-from core.models import User, Pets, SitterServices, ServicePhotos
+from core.decorators import miiowner_required, agreed_terms_required
+from core.models import User, Pets, SitterServices, ServicePhotos, MiiSitter
 from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
-from django.db.models import Q
-from core.methods import sort_out_dates, filter_on_location, return_day_of_week_from_date
+from django.db.models import Q, Sum
+from core.methods import sort_out_dates, filter_on_location, return_day_of_week_from_date, generate_review_html_start
 from core.methods import  get_options_of_timeslots_walk_sit, get_options_of_timeslots_board_daycare
 from .forms import BookService
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core import mail
 from django.conf import settings
+from datetime import datetime, timedelta, timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def view_all_services(request):
@@ -146,15 +148,19 @@ def view_services(request, type):
         try:
             location_input = request.GET['location_input']
             services,locations = filter_on_location(services, location_input)
+            reviews = [generate_review_html_start(service.review_score) for service in services]
+            number_of_reviews = [service.number_of_reviews for service in services]
         except:
             location_input = ""
             ids = [service.id for service in services]
             locations = ServiceLocation.objects.filter(id__in=ids)
+            reviews = [generate_review_html_start(service.review_score) for service in services]
+            number_of_reviews = [service.number_of_reviews for service in services]
 
         if not location_input:
             location_input = "Location"
 
-        services = zip(services, locations)
+        services = zip(services, locations, reviews, number_of_reviews)
 
         try:
             if request.user.is_sitter:
@@ -186,9 +192,44 @@ def view_services(request, type):
 
 
 @login_required(login_url='core-login')
+@agreed_terms_required
 def view_single_service(request, service_id):
 
     service = SitterServices.objects.get(id=service_id)
+    reviews = ServiceReviews.objects.filter(service=service)
+    reviews_paginator = Paginator(reviews, 5)
+
+    # check if service should be updated (only every 5 hours)
+    now = datetime.now(timezone.utc)
+    difference = now - service.updated_at
+    total_hours = difference.days*24
+    try:
+        if total_hours>5:
+             number_of_reviews = ServiceReviews.objects.filter(service=service).count()
+             service.number_of_reviews = number_of_reviews
+             service.review_score = ServiceReviews.objects.filter(service=service).aggregate(Sum('review_score'))['review_score__sum']/number_of_reviews
+             service.save(update_fields=["number_of_reviews", "review_score"])
+    except:
+        print("couldnt update")
+
+
+    # check if sitter should be updated (only every 5 hours)
+    now = datetime.now(timezone.utc)
+    difference = now - service.sitter.updated_at
+    total_hours = difference.days*24
+    try:
+        if total_hours>5:
+             sitter = MiiSitter.objects.get(user=service.sitter)
+             number_of_services = SitterServices.objects.filter(sitter=service.sitter).count()
+             sitter_review_score = SitterServices.objects.filter(sitter=service.sitter).aggregate(Sum('review_score'))['review_score__sum']/number_of_services
+             number_of_bookings = ServiceBooking.objects.filter(service=service).count()
+
+             sitter.review_score = sitter_review_score
+             sitter.number_of_bookings = number_of_bookings
+             sitter.save(update_fields=["review_score", "number_of_bookings"])
+    except:
+        print("couldnt update sitter")
+
     similar_services = SitterServices.objects.filter(
                           Q(type=service.type) &
                           Q(allowed_to_show=True)&
@@ -198,6 +239,7 @@ def view_single_service(request, service_id):
     photos = ServicePhotos.objects.filter(service=service)
     location = ServiceLocation.objects.get(service=service)
     sitter = User.objects.get(id=service.sitter.id)
+    miisitter = MiiSitter.objects.get(user=sitter)
 
     type_converter = {"BOARD":"Boarding",
                       "SIT": "House Sitter/Feeder",
@@ -238,13 +280,25 @@ def view_single_service(request, service_id):
     else:
         form = BookService(user = request.user, service = service)
 
+
+    page = request.GET.get('page', 1)
+    try:
+        reviews = reviews_paginator.page(page)
+    except PageNotAnInteger:
+        reviews = reviews_paginator.page(1)
+    except EmptyPage:
+        reviews = reviews_paginator.page(paginator.num_pages)
+
     try:
         if request.user.is_sitter:
             context = {
                 "title": "Single pet service",
                 "sitter":sitter,
+                "miisitter":miisitter,
+                "reviews":reviews,
                 "similar_services":similar_services,
                 "sitter_user":True,
+                "review_html":generate_review_html_start(service.review_score),
                 'type':type_converter[service.type],
                 "service_name":service.service_name,
                 "service_description":service.description,
@@ -273,8 +327,11 @@ def view_single_service(request, service_id):
                 "title": "Single pet service",
                 "sitter":sitter,
                 "similar_services":similar_services,
+                "miisitter":miisitter,
+                "reviews":reviews,
                 "sitter_user":False,
                 'type':service.type,
+                "review_html":generate_review_html_start(service.review_score),
                 "service_name":service.service_name,
                 "service_description":service.description,
                 'price':service.price,
@@ -302,8 +359,11 @@ def view_single_service(request, service_id):
                 "title": "Single pet service",
                 "sitter":sitter,
                 "similar_services":similar_services,
+                "miisitter":miisitter,
+                "reviews":reviews,
                 "sitter_user":False,
                 'type':service.type,
+                "review_html":generate_review_html_start(service.review_score),
                 "service_name":service.service_name,
                 "service_description":service.description,
                 'price':service.price,
@@ -547,7 +607,7 @@ def sitter_confirmation(request, service_id, booking_id, sitter_answer):
 
     return render(request, 'services/booking_confirmation_sitter.html', {"user":request.user, "sitter_answer":sitter_answer})
 
-
+@agreed_terms_required
 def view_sitter_profile(request, sitter_id):
     """
     When a someone clicks on the service sitter
@@ -581,6 +641,7 @@ def view_sitter_profile(request, sitter_id):
 
 
 @login_required(login_url='core-login')
+@agreed_terms_required
 def owner_payment(request, service_id, booking_id):
 
     booking = ServiceBooking.objects.get(id=booking_id)

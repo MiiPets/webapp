@@ -1,0 +1,21 @@
+{%extends "core/base.html"%}
+{%load static%}
+{% load crispy_forms_tags %}
+
+{%block content%}
+<div class="user-login-section section-padding bg-fixed">
+        <div class="col-md-10 offset-md-1  text-center">
+            <form method="post">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">You need to accept the Terms and Conditions and Privacy Policy to continue</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <a href="{%url 'core-tcs' %}"><p>Terms and Conditions</p></a>
+            <a href="{%url 'core-privacy' %}"><p>Privacy Policy</p></a>
+            <div class="res-box text-center mar-top-30">
+                <button type="submit" class="btn v3" style="background-color: #007A33;"><i class="ion-log-in" ></i>Agree</button>
+            </div>
+        </div>
+</div>
+{%endblock content%}

@@ -6,7 +6,8 @@ from datetime import datetime, timedelta
 from core.models import ServiceLocation, ServiceReviews
 import geopy.distance
 import numpy as np
-
+import hashlib
+import urllib.parse
 
 def sort_out_dates(start_date, end_date):
     """
@@ -243,3 +244,123 @@ def get_options_of_timeslots_board_daycare (taken_dates, number_of_pets, request
     options = [[x, time_to_interval_converter[x]] for x in time_slots_availible ]
 
     return options
+
+
+def create_signature(list_of_values):
+
+    """
+    Required to create hash function for Payfast payments
+    """
+
+    CHECKOUT_SIGNATURE_IGNORED_WHITESPACE = ''.join([
+    ' ',
+    '\t',
+    '\n',
+    '\r',
+    '\x0b',  # \N{LINE TABULATION} (Python 2 does not know this Unicode character name)
+
+    # XXX: trim() strips '\0', but it's not clear whether to actually strip it here.
+    # We can't really test it, since the endpoint seems to refuse any requests with null values.
+    # '\0',
+    ])
+
+    signature_string = urllib.parse.urlencode(list_of_values)
+    signature = hashlib.md5(signature_string.strip(CHECKOUT_SIGNATURE_IGNORED_WHITESPACE).encode()).hexdigest()
+    print(signature_string)
+    print(signature)
+    return signature
+
+
+def generate_review_html_start(rating):
+
+    """
+    This function will return html that displays the rating in terms of
+    stars. It will always generate x.5 or x.0 stars. The function returns the html that should
+    be inserted into the template.
+    """
+
+    one_star_total = """<ul class="product-rating">
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star-half"></i></li>
+        </ul>
+    """
+
+    one_half_star_total = """<ul class="product-rating">
+        <li><i class="ion-android-star"></i></li>
+        </ul>
+    """
+
+    two_star_total = """<ul class="product-rating">
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        </ul>
+    """
+
+    two_half_star_total = """<ul class="product-rating">
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star-half"></i></li>
+        </ul>
+    """
+
+    three_star_total = """<ul class="product-rating">
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        </ul>
+    """
+
+    three_half_star_total = """<ul class="product-rating">
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star-half"></i></li>
+        </ul>
+    """
+
+    four_star_total = """<ul class="product-rating">
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        </ul>
+    """
+
+    four_half_star_total = """<ul class="product-rating">
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star-half"></i></li>
+        </ul>
+    """
+
+    five_star_total = """<ul class="product-rating">
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        <li><i class="ion-android-star"></i></li>
+        </ul>
+    """
+
+    if 0 <= rating <= 1.49:
+        return one_star_total
+    elif 1.49 <= rating <= 1.99:
+        return one_half_star_total
+    elif 2 <= rating <= 2.49:
+        return two_star_total
+    elif 2.49 <= rating <= 2.99:
+        return two_half_star_total
+    elif 3.0 <= rating <= 3.49:
+        return three_star_total
+    elif 3.49 <= rating <= 3.99:
+        return three_half_star_total
+    elif 4 <= rating <= 4.49:
+        return four_star_total
+    elif 4.49 <= rating <= 4.8:
+        return four_half_star_total
+    elif 4.8 <= rating <= 5:
+        return five_star_total
+    else:
+        return "No reviews yet"
