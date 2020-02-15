@@ -12,7 +12,8 @@ urlpatterns = [
     path('pets/', include('pets.urls')),
     path('miidashboard/', include('miisitters.urls')),
     path('services/', include('services.urls')),
-    path('payments/', include('payments.urls'))
+    path('payments/', include('payments.urls')),
+    path('reviews/', include('reviews.urls')),
 ]
 
 if settings.DEBUG:

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from core.decorators import miiowner_required, agreed_terms_required
-from core.models import User, Pets, SitterServices, ServicePhotos
+from core.models import User, Pets, SitterServices, ServicePhotos, MiiSitter
 from core.models import ServiceBooking, ServiceLocation, ServiceReviews
 from django.views.generic import ListView
 from django.db.models import Q, Sum
@@ -14,6 +14,7 @@ from django.utils.html import strip_tags
 from django.core import mail
 from django.conf import settings
 from datetime import datetime, timedelta, timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def view_all_services(request):
@@ -196,12 +197,12 @@ def view_single_service(request, service_id):
 
     service = SitterServices.objects.get(id=service_id)
     reviews = ServiceReviews.objects.filter(service=service)
+    reviews_paginator = Paginator(reviews, 5)
 
-    # check if service should be updated (only every 10 hours)
+    # check if service should be updated (only every 5 hours)
     now = datetime.now(timezone.utc)
     difference = now - service.updated_at
     total_hours = difference.days*24
-
     try:
         if total_hours>5:
              number_of_reviews = ServiceReviews.objects.filter(service=service).count()
@@ -210,6 +211,24 @@ def view_single_service(request, service_id):
              service.save(update_fields=["number_of_reviews", "review_score"])
     except:
         print("couldnt update")
+
+
+    # check if sitter should be updated (only every 5 hours)
+    now = datetime.now(timezone.utc)
+    difference = now - service.sitter.updated_at
+    total_hours = difference.days*24
+    try:
+        if total_hours>5:
+             sitter = MiiSitter.objects.get(user=service.sitter)
+             number_of_services = SitterServices.objects.filter(sitter=service.sitter).count()
+             sitter_review_score = SitterServices.objects.filter(sitter=service.sitter).aggregate(Sum('review_score'))['review_score__sum']/number_of_services
+             number_of_bookings = ServiceBooking.objects.filter(service=service).count()
+
+             sitter.review_score = sitter_review_score
+             sitter.number_of_bookings = number_of_bookings
+             sitter.save(update_fields=["review_score", "number_of_bookings"])
+    except:
+        print("couldnt update sitter")
 
     similar_services = SitterServices.objects.filter(
                           Q(type=service.type) &
@@ -220,6 +239,7 @@ def view_single_service(request, service_id):
     photos = ServicePhotos.objects.filter(service=service)
     location = ServiceLocation.objects.get(service=service)
     sitter = User.objects.get(id=service.sitter.id)
+    miisitter = MiiSitter.objects.get(user=sitter)
 
     type_converter = {"BOARD":"Boarding",
                       "SIT": "House Sitter/Feeder",
@@ -260,11 +280,21 @@ def view_single_service(request, service_id):
     else:
         form = BookService(user = request.user, service = service)
 
+
+    page = request.GET.get('page', 1)
+    try:
+        reviews = reviews_paginator.page(page)
+    except PageNotAnInteger:
+        reviews = reviews_paginator.page(1)
+    except EmptyPage:
+        reviews = reviews_paginator.page(paginator.num_pages)
+
     try:
         if request.user.is_sitter:
             context = {
                 "title": "Single pet service",
                 "sitter":sitter,
+                "miisitter":miisitter,
                 "reviews":reviews,
                 "similar_services":similar_services,
                 "sitter_user":True,
@@ -297,6 +327,7 @@ def view_single_service(request, service_id):
                 "title": "Single pet service",
                 "sitter":sitter,
                 "similar_services":similar_services,
+                "miisitter":miisitter,
                 "reviews":reviews,
                 "sitter_user":False,
                 'type':service.type,
@@ -328,6 +359,7 @@ def view_single_service(request, service_id):
                 "title": "Single pet service",
                 "sitter":sitter,
                 "similar_services":similar_services,
+                "miisitter":miisitter,
                 "reviews":reviews,
                 "sitter_user":False,
                 'type':service.type,

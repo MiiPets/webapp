@@ -1,41 +1,18 @@
+{%extends "core/base.html"%}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
 <div id="add_review" class="list-details-section mar-top-10">
-    <h4>Pleas review {{service.service_name}}</h4>
-    <form class="contact-form" id="leave-review">
-        <div class="row">
-            <div class="col-md-6 col-sm-7 col-12">
-                <p class="contact-form__rate">
-                    Your rating for this service:
-                </p>
-                <p class="contact-form__rate-bx">
-                    <i class="ion-ios-star"></i>
-                    <i class="ion-ios-star"></i>
-                    <i class="ion-ios-star"></i>
-                    <i class="ion-ios-star"></i>
-                    <i class="ion-ios-star"></i>
-                </p>
-                <p class="contact-form__rate-bx-show">
-                    <span class="rate-actual">0</span> / 5
-                </p>
-            </div>
-            <div class="col-md-6 col-sm-5 col-12">
-                <div class="contact-form__upload-btn xs-left">
-                    <input class="contact-form__input-file" type="file" name="photo-upload" id="photo-upload">
-                    <span>
-                        <i class="icofont-upload-alt"></i>
-                        Upload Photos
-                    </span>
-                </div>
-            </div>
+    <h4>Please review {{service.service_name}}</h4>
+    <form class="contact-form" id="leave-review" method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        {{form.errors}}
+        <div class="res-box text-center mar-top-30">
+            <button type="submit" class="btn v3" style="background-color: #007A33;"><i class="ion-log-in" ></i> Update Profile</button>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <input class="contact-form__input-text" type="text" name="name" id="name" placeholder="Name:">
-            </div>
-            <div class="col-md-6">
-                <input class="contact-form__input-text" type="text" name="mail" id="mail" placeholder="Email:">
-            </div>
-        </div>
-        <textarea class="contact-form__textarea" name="comment" id="comment" placeholder="Comment"></textarea>
-        <input class="btn v1" type="submit" name="submit-contact" id="submit_contact" value="Submit" style="background-color: #007A33;">
     </form>
 </div>
+{%endblock content%}

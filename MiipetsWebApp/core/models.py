@@ -62,7 +62,7 @@ class Metrics(TimeStampMixin):
         ordering = ('-created_at',)
 
 
-class User(AbstractUser):
+class User(AbstractUser, TimeStampMixin):
 
     """
     Data that is required for all of the user types are defined in here
@@ -130,6 +130,8 @@ class MiiSitter(TimeStampMixin):
     merchant_id = models.CharField(max_length=40, default="")
     id_number = models.PositiveIntegerField(default=0)
     validated = models.BooleanField(default=False)
+    review_score = models.FloatField(default=6.0)
+    number_of_bookings = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return ("MiiSitter ({}), ID: {}".format(self.user.first_name, self.user.id))

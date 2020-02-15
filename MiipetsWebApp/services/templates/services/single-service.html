@@ -26,7 +26,7 @@
                               <h2>{{service_name}}</h2>
                               <p><i class="ion-ios-location" style="color: #007A33;"></i>{{location}}</p>
                               <div class="list-ratings">
-                                  {{review_html|safe}} ({{service.review_score}})
+                                  {{review_html|safe}} ({{service.review_score|floatformat}})
                               </div>
                               <ul>
                                 {%if service.dogs_allowed%}
@@ -148,7 +148,7 @@
                                           </div>
                                           <div class="customer-content-wrap">
                                               <div class="customer-content">
-                                                  <div class="customer-rating">{{review.review_score}}</div>
+                                                  <div class="customer-rating" style="background-color: #007A33;">{{review.review_score|floatformat}}</div>
                                               </div>
                                               <p class="customer-text">
                                                 {{review.review_text}}
@@ -158,6 +158,27 @@
                                   {%endfor%}
                                   </li>
                               </ul>
+                              {% if reviews.has_other_pages %}
+                                <ul class="pagination">
+                                  {% if reviews.has_previous %}
+                                    <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+                                  {% else %}
+                                    <li class="disabled"><span>&laquo;</span></li>
+                                  {% endif %}
+                                  {% for i in reviews.paginator.page_range %}
+                                    {% if reviews.number == i %}
+                                      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                    {% else %}
+                                      <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                  {% endfor %}
+                                  {% if reviews.has_next %}
+                                    <li><a href="?page={{ reviews.next_page_number }}">&raquo;</a></li>
+                                  {% else %}
+                                    <li class="disabled"><span>&raquo;</span></li>
+                                  {% endif %}
+                                </ul>
+                             {% endif %}
                           </div>
                       </div>
                   </div>
@@ -290,11 +311,15 @@
                           </div>
                           <ul class="social-counts">
                               <li>
-                                  <h6>4.3</h6>
+                                  {%if miisitter.review_score > 5 %}
+                                    <h6>No reviews yet</h6>
+                                  {%else%}
+                                    <h6>{{miisitter.review_score|floatformat}}</h6>
+                                  {%endif%}
                                   <span>Average review score</span>
                               </li>
                               <li>
-                                  <h6>326</h6>
+                                  <h6>{{miisitter.number_of_bookings}}</h6>
                                   <span>Bookings completed</span>
                               </li>
                           </ul>

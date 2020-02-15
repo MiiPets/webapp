@@ -8,14 +8,14 @@ class ReviewService(forms.ModelForm):
 
     class Meta():
         model = ServiceReviews
-        fields = ['service', 'review_score', 'review_text', 'reviewer']
+        fields = ['review_score', 'review_text']
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user',None)
+        self.booking = kwargs.pop('booking',None)
         self.service = kwargs.pop('service', None)
         super(ReviewService, self).__init__(*args, **kwargs)
-        # no reason to see the below field but it must be updated
-        self.fields['reviewer'] = forms.ChoiceField(widget = forms.HiddenInput())
+
+    review_text = forms.CharField(widget=forms.Textarea)
 
 
     @transaction.atomic
@@ -25,7 +25,7 @@ class ReviewService(forms.ModelForm):
         # removing bad words
         review_text =  profanity.censor(self.cleaned_data.get('review_text'))
 
-        review.reviewer = self.user
+        review.reviewer = self.booking.requester
         review.service = self.service
         review.review_score = self.cleaned_data.get('review_score')
         review.review_text = review_text

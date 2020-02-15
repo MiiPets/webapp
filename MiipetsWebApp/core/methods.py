@@ -343,8 +343,7 @@ def generate_review_html_start(rating):
         <li><i class="ion-android-star"></i></li>
         </ul>
     """
-    print("NOW I AM HERE")
-    print(rating)
+
     if 0 <= rating <= 1.49:
         return one_star_total
     elif 1.49 <= rating <= 1.99:
