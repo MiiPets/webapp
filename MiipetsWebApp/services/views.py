@@ -623,6 +623,42 @@ def view_sitter_profile(request, sitter_id):
                 "services":services,
                 "sitter":sitter,
                 "sitter_user":True,
+                "review_score":generate_review_html_start(sitter.review_score),
+            }
+        else:
+            context = {
+                "services":services,
+                "sitter":sitter,
+                "sitter_user":False,
+                "review_score":generate_review_html_start(sitter.review_score),
+            }
+    except:
+        context = {
+            "services":services,
+            "sitter":sitter,
+            "sitter_user":False,
+            "review_score":generate_review_html_start(sitter.review_score),
+        }
+
+    return render(request, 'services/view_sitter_profile.html', context)
+
+
+@agreed_terms_required
+def view_owner_profile(request, owner_id):
+    """
+    When a someone clicks on the owner
+    link they will be taken to this profile page
+    where there is no option to edit profile
+    """
+    owner = User.objects.get(id=owner_id)
+    pets = Pets.objects.filter(owner=owner)
+
+    try:
+        if request.user.is_sitter:
+            context = {
+                "pets":pets,
+                "owner":owner,
+                "sitter_user":True,
             }
         else:
             context = {
@@ -637,7 +673,7 @@ def view_sitter_profile(request, sitter_id):
             "sitter_user":False,
         }
 
-    return render(request, 'services/view_sitter_profile.html', context)
+    return render(request, 'services/view_owner_profile.html', context)
 
 
 @login_required(login_url='core-login')

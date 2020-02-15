@@ -13,6 +13,7 @@ urlpatterns = [
     path('sitter_confirmation/<int:service_id>/<int:booking_id>/<int:sitter_answer>', service_views.sitter_confirmation, name='services-sitter-confirmation'),
     path('owner_payment/<int:booking_id>', service_views.owner_payment, name='services-owner-payment'),
     path('view_miisitter_profile/<int:sitter_id>/', service_views.view_sitter_profile, name='services-view-miisitter'),
+    path('view_miiowner_profile/<int:owner_id>/', service_views.view_owner_profile, name='services-view-miiowner'),
 ]
 
 if settings.DEBUG:

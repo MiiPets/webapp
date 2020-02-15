@@ -279,7 +279,7 @@
                             <tr>
                                 <td style="padding: 0px 40px 20px 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; text-align: left; font-weight:normal;">
                                     <p style="margin: 0;">
-                                       You have just recieved a booking from <a href="http://127.0.0.1:8000{% url 'sitter-view-owner-profile' owner_id=owner.id%}">{{owner.first_name}} {{owner.last_name}}</a>
+                                       You have just recieved a booking from <a href="http://127.0.0.1:8000{% url 'services-view-miiowner' owner_id=owner.id%}">{{owner.first_name}} {{owner.last_name}}</a>
                                        to {%if service.type == "WALK" %} walk {%else%} look after {%endif%}
                                        their {{number_of_pets}} pet{%if number_of_pets > 1%}s{%endif%}
 
