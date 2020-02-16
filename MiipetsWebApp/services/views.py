@@ -630,6 +630,7 @@ def view_sitter_profile(request, sitter_id):
     where there is no option to edit profile
     """
     sitter = User.objects.get(id=sitter_id)
+    miisitter = MiiSitter.objects.get(user=sitter)
     services = SitterServices.objects.filter(sitter=sitter)
 
     try:
@@ -638,21 +639,21 @@ def view_sitter_profile(request, sitter_id):
                 "services":services,
                 "sitter":sitter,
                 "sitter_user":True,
-                "review_score":generate_review_html_start(services[0].sitter.review_score),
+                "review_score":generate_review_html_start(miisitter.review_score),
             }
         else:
             context = {
                 "services":services,
                 "sitter":sitter,
                 "sitter_user":False,
-                "review_score":generate_review_html_start(services[0].sitter.review_score),
+                "review_score":generate_review_html_start(miisitter.review_score),
             }
     except:
         context = {
             "services":services,
             "sitter":sitter,
             "sitter_user":False,
-            "review_score":generate_review_html_start(services[0].sitter.review_score),
+            "review_score":generate_review_html_start(miisitter.review_score),
         }
 
     return render(request, 'services/view_sitter_profile.html', context)
