@@ -138,7 +138,6 @@ def view_services(request, type):
         except:
             review_score = -1
 
-
         #get relevant services not based on location
         if pet_type == "All Pets":
             services = SitterServices.objects.filter(Q(type__in=type)&
@@ -639,21 +638,21 @@ def view_sitter_profile(request, sitter_id):
                 "services":services,
                 "sitter":sitter,
                 "sitter_user":True,
-                "review_score":generate_review_html_start(sitter.review_score),
+                "review_score":generate_review_html_start(services.sitter.review_score),
             }
         else:
             context = {
                 "services":services,
                 "sitter":sitter,
                 "sitter_user":False,
-                "review_score":generate_review_html_start(sitter.review_score),
+                "review_score":generate_review_html_start(services.sitter.review_score),
             }
     except:
         context = {
             "services":services,
             "sitter":sitter,
             "sitter_user":False,
-            "review_score":generate_review_html_start(sitter.review_score),
+            "review_score":generate_review_html_start(services.sitter.review_score),
         }
 
     return render(request, 'services/view_sitter_profile.html', context)
