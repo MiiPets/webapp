@@ -5,7 +5,7 @@ from djmoney.models.fields import MoneyField
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from django.conf import settings
 
 def image_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
@@ -93,7 +93,7 @@ class MiiOwner(TimeStampMixin):
     app
     """
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
         return ("MiiOwner: {}, ID: {}".format(self.user.first_name, self.user.id))
@@ -107,7 +107,7 @@ class Pets(TimeStampMixin):
     detail as they can.
     """
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     age = models.PositiveIntegerField()
     breed = models.CharField(max_length=50)
@@ -126,7 +126,7 @@ class MiiSitter(TimeStampMixin):
     This model class will store all the data related to the sitters.
     """
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
     merchant_id = models.CharField(max_length=40, default="")
     id_number = models.PositiveIntegerField(default=0)
     validated = models.BooleanField(default=False)
@@ -159,7 +159,7 @@ class SitterServices(TimeStampMixin):
     allowed_to_show = models.BooleanField(default = False) # we first need to approve it
     review_score = models.FloatField(default = 6, validators=[MinValueValidator(0), MaxValueValidator(5)])
     number_of_reviews = models.PositiveIntegerField(default=0)
-    sitter = models.ForeignKey(User, on_delete=models.CASCADE)
+    sitter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, choices=SERVICE_CHOICES, default=DAYCARE)
     dogs_allowed = models.BooleanField(default=False)
@@ -227,7 +227,7 @@ class ServiceBooking(TimeStampMixin):
     related to sitters.
     """
 
-    requester = models.ForeignKey(User, on_delete=models.CASCADE)
+    requester = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
@@ -276,7 +276,7 @@ class ServiceReviews(TimeStampMixin):
     service = models.ForeignKey(SitterServices, on_delete=models.CASCADE)
     review_score = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     review_text = models.CharField(max_length=10000)
-    reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
+    reviewer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return ("Review of service {}".format(self.service.id))
@@ -318,7 +318,7 @@ class PayFastOrder(TimeStampMixin):
     merchant_key = models.CharField(max_length=40)
     sitter_merchant_id = models.CharField(max_length=15)
     sitter_percantage = models.FloatField(default = 0.2)
-    user_pay = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_pay = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     booking = models.ForeignKey(ServiceBooking, on_delete=models.CASCADE)
     # split info
     setup = models.CharField(max_length=200)
