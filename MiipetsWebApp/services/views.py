@@ -639,21 +639,24 @@ def view_sitter_profile(request, sitter_id):
                 "services":services,
                 "sitter":sitter,
                 "sitter_user":True,
-                "review_score":generate_review_html_start(miisitter.review_score),
+                "review_html":generate_review_html_start(miisitter.review_score),
+                "review_score":miisitter.review_score,
             }
         else:
             context = {
                 "services":services,
                 "sitter":sitter,
                 "sitter_user":False,
-                "review_score":generate_review_html_start(miisitter.review_score),
+                "review_html":generate_review_html_start(miisitter.review_score),
+                "review_score":miisitter.review_score,
             }
     except:
         context = {
             "services":services,
             "sitter":sitter,
             "sitter_user":False,
-            "review_score":generate_review_html_start(miisitter.review_score),
+            "review_html":generate_review_html_start(miisitter.review_score),
+            "review_score":miisitter.review_score,
         }
 
     return render(request, 'services/view_sitter_profile.html', context)
