@@ -128,7 +128,7 @@ class MiiSitter(TimeStampMixin):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
     merchant_id = models.CharField(max_length=40, default="")
-    id_number = models.PositiveIntegerField(default=0)
+    id_number = models.CharField(max_length=13, default="")
     validated = models.BooleanField(default=False)
     review_score = models.FloatField(default=6.0)
     number_of_bookings = models.PositiveIntegerField(default=0)

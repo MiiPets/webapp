@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with DEBUG turned on in production!
-DEBUG = False
+DEBUG = True
 
 if not DEBUG:
     ALLOWED_HOSTS = ['miipets.net', 'miipets.com', 'www.miipets.net', 'www.miipets.com']
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['miipets.com']
 
 
 # Application definition
@@ -35,7 +35,9 @@ INSTALLED_APPS = [
     'miiprofile.apps.MiiprofileConfig',
     'pets.apps.PetsConfig',
     'miisitters.apps.MiisittersConfig',
-    'listings.apps.ListingsConfig',
+    'services.apps.ServicesConfig',
+    'payments.apps.PaymentsConfig',
+    'reviews.apps.ReviewsConfig',
     'phonenumber_field',
     'djmoney',
     'crispy_forms',
