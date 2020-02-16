@@ -143,3 +143,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
