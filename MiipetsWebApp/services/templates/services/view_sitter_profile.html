@@ -19,7 +19,9 @@
                           <h4>{{sitter.first_name}} {{sitter.last_name}}</h4>
                            <div class="list-ratings">
                                 {{review_html|safe}}
-                                {{review_score}}
+                                {%if review_score <= 5%}
+                                  {{review_score}}
+                                {%endif%}
                             </div>
                       </div>
                   </div>
