@@ -1,0 +1,23 @@
+{%extends "core/base.html"%}
+{%load static%}
+{% load crispy_forms_tags %}
+
+{%block content%}
+        <!--Booking confirmation starts-->
+        <div class="list-details-section section-padding add_list mar-top-40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="booking-confirmation-page">
+                            <i class="ion-android-checkmark-circle"></i>
+                            <h2 class="margin-top-30">Thank you for your booking!</h2>
+                            <p>A email will be sent to {{user.email}} once the sitter has confirmed (within 24 hours).</p>
+                            <p>In the email you will receive the link to complete the payment process, where after you will enjoy your Freedom!</p>
+                            <a href="{% url 'services-all' %}" class="button margin-top-30">Make another booking</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Booking confirmation ends-->
+{%endblock content%}

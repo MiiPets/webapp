@@ -1,76 +1,103 @@
 {%extends "core/base.html"%}
-{%load static%}
-
-{%block content%}
-<br><br><br>
-  <!--Dashboard breadcrumb starts-->
-  <div class="dash-breadcrumb">
-      <div class="container-fluid">
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+  <!--User Profile starts-->
+  <div class="user-profile section-padding mar-top-30 bg-green-1">
+      <div class="container">
           <div class="row">
-              <div class="col-md-12">
-                  <div class="dash-breadcrumb-content">
-                      <a class="btn v3" href= {% url 'sitter-add-listing'%} style="background-color: #007A33;"><i class="ion-plus-round" ></i>Add Listing </a>
+              <div class="col-lg-6 col-md-12">
+                  <div class="user-titlebar">
+                      <div class="user-avatar">
+                        {% if user.profile_picture %}
+                          <a href = "{% url 'sitter-edit-profile' %}"><img src="{{user.profile_picture.url}}" alt=""></a>
+                        {%else%}
+                          <a href = "{% url 'sitter-edit-profile' %}"><img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt=""></a>
+                        {%endif%}
+                      </div>
+                      <div class="user-name">
+                          <h4>{{user.first_name}} {{user.last_name}}</h4>
+                          <ul>
+                            <li>
+                              <a class="link-hov style2" href="{% url 'sitter-add-service' %}">Add Service</a>
+                            </li>
+                            <li>
+                              <a class="link-hov style2" href="{% url 'sitter-edit-profile' %}">Edit Profile</a>
+                            </li>
+                          <ul>
+                      </div>
                   </div>
+              </div>
+              <div class="col-lg-6 col-md-12">
+                  <p>{{user.bio|linebreaks}}</p>
               </div>
           </div>
       </div>
   </div>
-  <!--Dashboard breadcrumb ends-->
+  <!--User Profile ends-->
+  <!--User profile details starts-->
+  <div class="list-details-section section-padding mar-top-20">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-7 col-md-12">
+                  <div class="user_info_menu">
+                      <ul class="nav nav-tabs list-details-tab" id="lionTab" role="tablist">
+                          <li class="nav-item active">
+                              <a data-toggle="tab" href="#my-pets">My services</a>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="tab-content mar-top-30" id="lionTabContent">
+                      <div class="tab-pane fade active show" id="my-pets">
+                          <div class="row">
+                            {% for service in services %}
+                              <div class="col-md-6">
+                                  <div class="similar-item mar-bot-40">
+                                      <img src= {%if service.profile_picture %}
+                                                  "{{service.profile_picture.url}}"
+                                                {%else%}
+                                                  "{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"
+                                                {%endif%} alt="..." style = "width:50%;"> <!-- DOG IMAGE-->
+                                      <div class="similar-title-box">
+                                          <h5><a href="{% url 'services-single' service_id=service.id%}">{{service.service_name}}</a></h5>
+                                      </div>
+                                  </div>
+                              </div>
+                            {%endfor%}
+                          </div>
+                      </div>
 
+                  </div>
+              </div>
 
-<!--Dashboard content starts-->
-<div class="dash-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-10 offset-md-1">
-                <div class="recent-activity">
-                    <div class="act-title">
-                        <h5><i class="ion-person"></i>Profile Details</h5>
-                    </div>
-                    <div class="profile-wrap">
-                        <div class="row">
-                            <div class="col-md-8 offset-md-2 py-4">
-                                <div class="edit-profile-photo text-center">
-                                  {% if user.profile_picture %}
-                                    <img src="{{user.profile_picture.url}}" alt="" style = "width: 40%;">
-                                  {%else%}
-                                    <img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt="">
-                                  {%endif%}
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="my-profile">
-                                    <ul class="db-profile-info">
-                                        <li>
-                                            <h6>First Name :</h6>
-                                            <span>{{user.first_name}}</span>
-                                        </li>
-                                        <li>
-                                            <h6>Last Name :</h6>
-                                            <span>{{user.last_name}}</span>
-                                        </li>
-                                        <li>
-                                            <h6>Email Id :</h6>
-                                            <span>{{user.email}}</span>
-                                        </li>
-                                        <li>
-                                            <h6>Address :</h6>
-                                            <span>{{user.address}}</span>
-                                        </li>
-                                        <li>
-                                            <h6>Bio :</h6>
-                                            <span>{{user.bio|linebreaks}}</span>
-                                        </li>
-                                    </ul>
-                                    <a href="{% url 'sitter-edit-profile' %}" class="btn v5" style="background-color: #007A33;">Edit profile</a>
-                                </div>
-                            </div>
+              <!-- CONTACT DETAILS -->
+                <div class="col-lg-5 col-md-12">
+                    <div class="listing-sidebar">
+                        <div class="boxed-widget">
+                            <h3><i class="icofont-contact-add"></i>Contact details</h3>
+                            {% if user.address %}
+                              <div class="address">
+                                  <span class="ion-ios-location"></span>
+                                  <p> {{user.address}}</p>
+                              </div>
+                            {%endif%}
+                            {% if user.contact_number %}
+                              <div class="address">
+                                  <span class="ion-ios-telephone"></span>
+                                  <p> {{user.contact_number}}</p>
+                              </div>
+                            {%endif%}
+                            {% if user.email %}
+                              <div class="address">
+                                  <span class="ion-ios-email"></span>
+                                  <p> {{user.email}}</p>
+                              </div>
+                            {%endif%}
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Dashboard content ends-->
+          </div>
+      </div>
+  </div>
+  <!--User profile details ends-->
 {%endblock content%}

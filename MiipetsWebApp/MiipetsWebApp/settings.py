@@ -25,7 +25,7 @@ DEBUG = False
 if not DEBUG:
     ALLOWED_HOSTS = ['miipets.net', 'miipets.com', 'www.miipets.net', 'www.miipets.com']
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['miipets.com']
 
 
 # Application definition
@@ -35,7 +35,9 @@ INSTALLED_APPS = [
     'miiprofile.apps.MiiprofileConfig',
     'pets.apps.PetsConfig',
     'miisitters.apps.MiisittersConfig',
-    'listings.apps.ListingsConfig',
+    'services.apps.ServicesConfig',
+    'payments.apps.PaymentsConfig',
+    'reviews.apps.ReviewsConfig',
     'phonenumber_field',
     'djmoney',
     'crispy_forms',
@@ -143,3 +145,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']

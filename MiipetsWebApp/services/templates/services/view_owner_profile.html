@@ -1,0 +1,96 @@
+{%extends "core/base.html"%}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+  <!--User Profile starts-->
+  <div class="user-profile section-padding mar-top-30 bg-green-1">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-6 col-md-12">
+                  <div class="user-titlebar">
+                      <div class="user-avatar">
+                        {% if owner.profile_picture %}
+                          <img src="{{owner.profile_picture.url}}" alt="">
+                        {%else%}
+                          <img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt="">
+                        {%endif%}
+                      </div>
+                      <div class="user-name">
+                          <h4>{{owner.first_name}} {{owner.last_name}}</h4>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-6 col-md-12">
+                  <p>{{owner.bio|linebreaks}}</p>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--User Profile ends-->
+  <!--User profile details starts-->
+  <div class="list-details-section section-padding mar-top-40">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-7 col-md-12">
+                  <div class="user_info_menu">
+                      <ul class="nav nav-tabs list-details-tab" id="lionTab" role="tablist">
+                          <li class="nav-item active">
+                              <a data-toggle="tab" href="#my-pets">My Pets</a>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="tab-content mar-top-30" id="lionTabContent">
+                      <div class="tab-pane fade active show" id="my-pets">
+                          <div class="row">
+                            {% for pet in pets %}
+                              <div class="col-md-6">
+                                  <div class="similar-item mar-bot-40">
+                                      <img src= {%if pet.profile_picture %}
+                                                  "{{pet.profile_picture.url}}"
+                                                {%else%}
+                                                  "{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"
+                                                {%endif%} alt="..." style = "width:50%;"> <!-- DOG IMAGE-->
+                                      <div class="similar-title-box">
+                                          <h5><a href="#">{{pet.name}}</a></h5>
+                                          <p><span class="price-amt">{{pet.breed}}</span>/{{pet.age}} Years old</p>
+                                      </div>
+                                  </div>
+                              </div>
+                            {%endfor%}
+                          </div>
+                      </div> <!-- END OF PET PICTURES -->
+
+                  </div>
+              </div>
+
+              <!-- CONTACT DETAILS -->
+                <div class="col-lg-5 col-md-12">
+                    <div class="listing-sidebar">
+                        <div class="boxed-widget">
+                            <h3><i class="icofont-contact-add"></i>Contact details</h3>
+                            {% if owner.address %}
+                              <div class="address">
+                                  <span class="ion-ios-location"></span>
+                                  <p> {{owner.address}}</p>
+                              </div>
+                            {%endif%}
+                            {% if owner.contact_number %}
+                              <div class="address">
+                                  <span class="ion-ios-telephone"></span>
+                                  <p> {{owner.contact_number}}</p>
+                              </div>
+                            {%endif%}
+                            {% if owner.email %}
+                              <div class="address">
+                                  <span class="ion-ios-email"></span>
+                                  <p> {{owner.email}}</p>
+                              </div>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+          </div>
+      </div>
+  </div>
+  <!--User profile details ends-->
+{%endblock content%}

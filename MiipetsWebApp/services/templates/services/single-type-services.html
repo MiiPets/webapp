@@ -1,0 +1,158 @@
+{%extends "core/base.html"%}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<br><br><br>
+  <div class="col-md-12 text-center">
+      <form class="hero__form v1" method = 'GET' action = "{% url 'services' type='Placeholder' %}">
+          <div class="row">
+                <div class="col-lg-4 col-md-12">
+                  <input class="hero__form-input custom-select" type="text" name="location_input" autocomplete="off" id="place-event" placeholder="{{location_input}}">
+                </div>
+                <div class="col-lg-2 col-md-12">
+                      <select class="hero__form-input  custom-select" name = "service_type_input">
+                          <option>Type of service</option>
+                          <option>Sitter/Feeder</option>
+                          <option >Walker</option>
+                          <option>Boarding</option>
+                          <option>Daycare</option>
+                      </select>
+                </div>
+                <div class="col-lg-1 col-md-12">
+                  <input class="hero__form-input custom-select" type="text" name="date_end_input" autocomplete="off" id="datepicker-from" placeholder="From">
+                </div>
+                <div class="col-lg-1 col-md-12">
+                  <input class="hero__form-input custom-select" type="text" name="date_end_input" autocomplete="off" id="datepicker-to" placeholder="To">
+                </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-2 col-md-12">
+                    <input class="hero__form-input custom-select" type="number" name="price_start" id="place-event" placeholder="Min Price">
+                  </div>
+                  <div class="col-lg-2 col-md-12">
+                    <input class="hero__form-input custom-select" type="number" name="price_end" id="place-event" placeholder="Max Price">
+                  </div>
+                  <div class="col-lg-2 col-md-12">
+                        <select class="hero__form-input  custom-select" name = "review_score">
+                            <option>Review score</option>
+                            <option>1+</option>
+                            <option>2+</option>
+                            <option>3+</option>
+                            <option>4+</option>
+                        </select>
+                  </div>
+                  <div class="col-lg-2 col-md-12">
+                        <select class="hero__form-input  custom-select" name = "pet_type">
+                            <option>All Pets</option>
+                            <option>Cat</option>
+                            <option>Dog</option>
+                            <option>Bird</option>
+                            <option>Reptile</option>
+                            <option>Other</option>
+                        </select>
+                  </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-lg-1 col-md-12">
+                    <div class="submit_btn text-right md-left">
+                        <button class="btn v3  mar-right-5" type="submit" style="background-color: #007A33;"><i class="ion-search" aria-hidden="true"></i>Filter</button>
+                    </div>
+                </div>
+              </div>
+      </form>
+  </div>
+
+  <div class="filter-wrapper style1 ">
+    <div class="item-wrapper">
+      <div class="tab-content">
+        <div id="grid-view" class="tab-pane active  product-grid">
+          <div class="row">
+            {% for service, location, star_reviews, number_of_reviews in services %}
+              <div class="col-md-3 col-12">
+                <div class="trending-place-item">
+
+                    <div class="trending-img">
+                        <img src="{{service.profile_picture.url}}" alt="#">
+                    </div>
+
+                    <div class="trending-title-box">
+                        <h4><a href="{% url 'services-single' service_id=service.id %}">{{service.service_name}}</a></h4>
+                        <div class="customer-review">
+                            <div class="rating-summary float-left">
+                                <div class="rating-result" title="60%">
+                                    <ul class="product-rating">
+                                        {{star_reviews|safe}}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="review-summury float-right">
+                                <p><a href="#">{{number_of_reviews}} Reviews</a></p>
+                            </div>
+                        </div>
+                        <br>
+                        <ul class="trending-address" style="padding: 2px;">
+                            <li>
+                              <i class="ion-ios-location"  style="color: #007A33;  padding: 5px;"></i>
+                              <p>{{location.city}}, {{location.province}}</p>
+                            </li>
+                            <li>
+                              <i class="ion-card"  style="color: #007A33;"></i>
+                              <p>R{{service.price}} per {%if service.type == 'WALK' or service.type == 'SIT' %} hour {%else%} day {%endif%}</p>
+                            </li>
+                            {%if service.dogs_allowed%}
+                            <li>
+                              <i class="icofont-dog-alt"  style="color: #007A33;"></i>
+                              <p> Dogs Allowed</p>
+                            </li>
+                            {%endif%}
+                            {%if service.cats_allowed%}
+                            <li>
+                              <i class="icofont-cat-alt-3"  style="color: #007A33;"></i>
+                              <p> Cats Allowed</p>
+                            </li>
+                            {%endif%}
+                            {%if service.birds_allowed%}
+                            <li>
+                              <i class="icofont-bird-alt"  style="color: #007A33;"></i>
+                              <p> Birds Allowed</p>
+                            </li>
+                            {%endif%}
+                            {%if service.reptiles_allowed%}
+                            <li>
+                              <i class="icofont-frog"  style="color: #007A33;"></i>
+                              <p> Reptiles Allowed</p>
+                            </li>
+                            {%endif%}
+                            {%if service.other_pets_allowed%}
+                            <li>
+                              <i class="icofont-fish-4"  style="color: #007A33;"></i>
+                              <p> Other Pets Allowed</p>
+                            </li>
+                            {%endif%}
+                        </ul>
+                        <div class="trending-bottom mar-top-15 pad-bot-30">
+                            <div class="trend-left float-left">
+                                <span class="round-bg pink" style="background-color: #007A33;"><i class="icofont-book"></i></span>
+                                <p><a href="{% url 'services-single' service_id=service.id %}">Explore</a></p>
+
+                            </div>
+                            <div class="trend-right float-right">
+                                <div class="trend-open">
+                                    <i class="ion-android-person" style="color: #007A33;"></i>
+                                    <p>{{service.sitter.first_name}} {{service.sitter.last_name}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          {%endfor%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock content%}

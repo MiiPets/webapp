@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
-from core.decorators import miiowner_required
+from core.decorators import miiowner_required, agreed_terms_required
 from core.models import User, Pets
 from .forms import AddPetProfile
 
 
 @login_required(login_url='core-login')
 @miiowner_required
+@agreed_terms_required
 def add_pet_profile(request):
     """
     This view allows user to add a pet

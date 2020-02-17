@@ -5,12 +5,13 @@ from django.views.generic import View
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from django.views.generic import CreateView
-from .forms import MiiOwnerSignUpForm, MiiSitterSignUpForm, ContactForm
+from .forms import MiiOwnerSignUpForm, MiiSitterSignUpForm, ContactForm, AgreeToTerms
 from .models import User, Metrics
 from .decorators import miiowner_required, miisitter_required
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core import mail
+from django.conf import settings
 
 
 def send_email_sign_up(first_name, email_address, is_sitter=False):
@@ -102,15 +103,18 @@ def home(request):
         if request.user.is_sitter:
             context= {
                 "title":"Home",
-                'sitter_user':True
+                'sitter_user':True,
+                "google_api":str(settings.GOOGLE_API_KEY),
             }
         else:
             context= {
-                "title":"Home"
+                "title":"Home",
+                "google_api":str(settings.GOOGLE_API_KEY),
             }
     except:
         context= {
-            "title":"Home"
+            "title":"Home",
+            "google_api":str(settings.GOOGLE_API_KEY),
         }
     return render(request, 'core/home.html', context)
 
@@ -253,3 +257,47 @@ def register(request):
 def logout_view(request):
     logout(request)
     return redirect('core-home')
+
+
+def terms_and_conditions(request):
+    """
+    View that displays the terms and conditions
+    """
+    context = {
+        "title":"Terms and Conditions"
+    }
+
+    return render(request, 'core/tcs.html', context)
+
+
+def privacy(request):
+    """
+    View that displays the terms and conditions
+    """
+    context = {
+        "title":"Privacy Policy"
+    }
+
+    return render(request, 'core/privacy.html', context)
+
+
+def agree_to_terms(request):
+    """
+    View that displays the terms and conditions
+    """
+
+    if request.method == 'POST':
+        form = AgreeToTerms(request.POST, user=request.user)
+        #form.actual_user = request.user
+        if form.is_valid():
+            form.save()
+            return redirect('core-home')
+    else:
+        form = AgreeToTerms(user=request.user)
+
+    context = {
+        "title":"Agreement to terms",
+        "form":form
+    }
+
+    return render(request, 'core/require_agreement.html', context)

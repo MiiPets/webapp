@@ -1,0 +1,117 @@
+
+{%extends "core/base.html"%}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+  <!--Dashboard breadcrumb ends-->
+  <!--Dashboard content starts-->
+  <br><br><br><br>
+  <div class="dash-content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="db-add-list-wrap">
+                      <div class="act-title">
+                          <h5><i class="ion-person"></i> Listing Details :</h5>
+                      </div>
+                      <div class="db-add-listing">
+                          <div class="row">
+                              <div class="col-md-12">
+                                <!--DETAILS -->
+                                <form enctype="multipart/form-data" method="post">
+                                  {% csrf_token %}
+                                  {{form.errors}}
+                                  {{form|crispy}}
+                                  <div class="res-box text-center mar-top-30">
+                                      <button type="submit" class="btn v3" style="background-color: #007A33;"><i class="ion-log-in" ></i>Add Listing</button>
+                                  </div>
+
+                                </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              <div class="col-md-6">
+                  <div class="db-add-list-wrap">
+                      <div class="act-title">
+                          <h5><i class="ion-person"></i>Some tips :</h5>
+                      </div>
+                      <div style="padding: 10px 10px 10px 10px;">
+                        <ul>
+                          <li>
+                            <div class="company-desc">
+                              <p>
+                                MiiOwners will choose services and not Miisitters (even though
+                                reviews about you will have an impact). Thus don’t make you service
+                                 just you sitting, but think of specific services that MiiOwners
+                                 will want. For example, create a service that is you walking dogs
+                                 in Seapoint from 15:00 till 17:00, not just a general dog walking service.
+                              </p>
+                             </div>
+                           </li>
+                           <br>
+                           <li>
+                             <div class="company-desc">
+                               <p>
+                                If you are providing a feeder/sitter/walker service,
+                                the price you are providing is PER HOUR.
+                               </p>
+                              </div>
+                            </li>
+                            <br>
+                            <li>
+                              <div class="company-desc">
+                                <p>
+                                  More is definitely merrier. Having more detail attached to your
+                                  service (in the bio) about you and your service allows the potential
+                                   MiiOwners to get to know you quicker and feel peace of mind in their choice.
+                                </p>
+                              </div>
+                            </li>
+                            <br>
+                            <li>
+                              <div class="company-desc">
+                                <p>
+                                Take your time creating this listing. MiiOwners are choosing based on
+                                the information you provide here.
+                                </p>
+                              </div>
+                            </li>
+                            <br>
+                            <li>
+                              <div class="company-desc">
+                                <p>
+                                  Do not over promise as this will lead to a bad review.
+                                </p>
+                              </div>
+                            </li>
+                            <br>
+                            <li>
+                              <div class="company-desc">
+                                <p>
+                                  Think of a funny and descriptive name for your service, as
+                                  this will ensure the owner spots your service.
+                                </p>
+                              </div>
+                            </li>
+                            <br>
+                            <li>
+                              <div class="company-desc">
+                                <p>
+                                  Upload as many photos of you and your service as possible.
+                                  MiiOwners will love to see that you have done this before.
+                                </p>
+                              </div>
+                            </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+  <!--Dashboard content ends-->
+  <!--User profile details ends-->
+{%endblock content%}

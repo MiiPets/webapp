@@ -1,0 +1,365 @@
+{%extends "core/base.html"%}
+{%load static%}
+{% load crispy_forms_tags %}
+
+{%block content%}
+  <!--Listing Details Hero starts-->
+  <div class="listing-details-slider swiper-container">
+      <div class="swiper-wrapper">
+      </div>
+      <div class="listing-details-next slider-btn v4"><i class="ion-arrow-right-c"></i></div>
+      <div class="listing-details-prev slider-btn v4"><i class="ion-arrow-left-c"></i></div>
+  </div>
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="list-details-title v2">
+                  <div class="row">
+                      <div class="col-lg-6 col-md-7 col-sm-12">
+                          <div class="single-listing-title float-left">
+                              <p>
+                                <a href="#" class="btn v6" style="background-color: #007A33;">
+                                   {{type}}
+                                 </a>
+
+                               </p>
+                              <h2>{{service_name}}</h2>
+                              <p><i class="ion-ios-location" style="color: #007A33;"></i>{{location}}</p>
+                              <div class="list-ratings">
+                                  {{review_html|safe}} ({{service.review_score|floatformat}})
+                              </div>
+                              <ul>
+                                {%if service.dogs_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-dog-alt"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                                {%if service.cats_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-cat-alt-3"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                                {%if service.birds_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-bird-alt"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                                {%if service.reptiles_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-frog"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                                {%if service.other_pets_allowed%}
+                                <li style="display:inline-block;">
+                                  <i class="icofont-fish-4"  style="color: #007A33; font-size: 30px;"></i>
+                                </li>
+                                {%endif%}
+                              </ul>
+                          </div>
+                      </div>
+                      <div class="col-lg-6 col-md-5 col-sm-12">
+                          <div class="list-details-btn text-right sm-left">
+                              <div class="share-btn">
+                                  <a href="#" class="btn v3" style="background-color: #007A33;"><i class="ion-android-share-alt" ></i> Share</a>
+                                  <ul class="social-share">
+                                      <li class="bg-fb"><a href="#"><i class="ion-social-facebook"></i></a></li>
+                                      <li class="bg-tt"><a href="#"><i class="ion-social-twitter"></i></a></li>
+                                      <li class="bg-ig"><a href="#"><i class="ion-social-instagram"></i></a></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--Listing Details Hero ends-->
+  <!--Listing Details Info starts-->
+  <div class="list-details-section section-padding">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-8 col-md-12">
+                  <div id="list-menu" class="list_menu">
+                      <ul class="list-details-tab fixed_nav">
+                          <li class="nav-item active"><a href="#overview" class="active">Overview</a></li>
+                          <li class="nav-item"><a href="#gallery">Gallery</a></li>
+                          <li class="nav-item"><a href="#price">Pricing</a></li>
+                          <li class="nav-item"><a href="#reviews">Reviews</a></li>
+                      </ul>
+                  </div>
+                  <!--Listing Details starts-->
+                  <div class="list-details-wrap">
+                      <div id="overview" class="list-details-section">
+                         <h4>Overview</h4>
+                          <div class="overview-content">
+                              <p class="mar-bot-10">{{service_description}}</p>
+                          </div>
+
+                      </div>
+                      <div id="gallery" class="list-details-section">
+                          <h4>Gallery</h4>
+                          <!--Carousel Wrapper-->
+                          <div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails list-gallery" data-ride="carousel">
+                              <!--Slides-->
+                              <div class="carousel-inner" role="listbox">
+                                  <div class="carousel-item active">
+                                      <!-- <img class="d-block w-100" src="images/single-listing/restaurant-1.jpg" alt="slide"> -->
+                                  </div>
+                              </div>
+                              <!--Controls starts-->
+                              <a class="carousel-control-prev" href="#carousel-thumb" role="button" data-slide="prev">
+                                  <span class="ion-arrow-left-c" aria-hidden="true" style="background-color: #007A33;"></span>
+                                  <span class="sr-only">Previous</span>
+                              </a>
+                              <a class="carousel-control-next" href="#carousel-thumb" role="button" data-slide="next">
+                                  <span class="ion-arrow-right-c" aria-hidden="true" style="background-color: #007A33;"></span>
+                                  <span class="sr-only">Next</span>
+                              </a>
+                              <!--Controls ends-->
+                              <ol class="carousel-indicators  list-gallery-thumb">
+                                {%for photo in photos%}
+                                  <li data-target="#carousel-thumb" data-slide-to="0">
+                                    <img class="img-fluid d-block w-100" style="width:400%" src="{{photo.profile_picture.url}}">
+                                  </li>
+                                {%endfor%}
+                              </ol>
+                          </div>
+                          <!--/.Carousel Wrapper-->
+                      </div>
+                      <div id="price" class="list-details-section mar-top-80">
+                        <h4>Pricing</h4>
+                        <h6>R{{price}} per {%if type == 'WALK' or type == 'SIT' %} hour {%else%} day {%endif%}</h6>
+                      </div>
+                      <div id="reviews" class="list-details-section mar-top-10">
+                          <h4>Reviews <span>({{service.number_of_reviews}})</span></h4>
+                          <div class="review-box">
+                              <ul class="review_wrap">
+                                <li>
+                                  {%for review in reviews %}
+                                      <div class="customer-review_wrap">
+                                          <div class="reviewer-img">
+                                            {% if review.reviewer.profile_picture %}
+                                              <a href = "#"><img src="{{review.reviewer.profile_picture.url}}" class="img-fluid" alt="#"></a>
+                                            {%else%}
+                                              <a href = "#"><img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt=""></a>
+                                            {%endif%}
+                                              <p>{{review.reviewer.first_name}} {{review.reviewer.last_name}}</p>
+                                          </div>
+                                          <div class="customer-content-wrap">
+                                              <div class="customer-content">
+                                                  <div class="customer-rating" style="background-color: #007A33;">{{review.review_score|floatformat}}</div>
+                                              </div>
+                                              <p class="customer-text">
+                                                {{review.review_text}}
+                                              </p>
+                                          </div>
+                                      </div>
+                                  {%endfor%}
+                                  </li>
+                              </ul>
+                              {% if reviews.has_other_pages %}
+                                <ul class="pagination">
+                                  {% if reviews.has_previous %}
+                                    <li><a href="?page={{ users.previous_page_number }}">&laquo;</a></li>
+                                  {% else %}
+                                    <li class="disabled"><span>&laquo;</span></li>
+                                  {% endif %}
+                                  {% for i in reviews.paginator.page_range %}
+                                    {% if reviews.number == i %}
+                                      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                    {% else %}
+                                      <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                  {% endfor %}
+                                  {% if reviews.has_next %}
+                                    <li><a href="?page={{ reviews.next_page_number }}">&raquo;</a></li>
+                                  {% else %}
+                                    <li class="disabled"><span>&raquo;</span></li>
+                                  {% endif %}
+                                </ul>
+                             {% endif %}
+                          </div>
+                      </div>
+                  </div>
+                  <!--Listing Details ends-->
+                  <!--Similar Listing starts-->
+                  <div class="similar-listing">
+                      <div class="similar-listing-title">
+                          <h3>Similar Services</h3>
+                      </div>
+                      <div class="swiper-container similar-list-wrap">
+                          <div class="swiper-wrapper">
+                            {% for similar in similar_services %}
+                              <div class="swiper-slide similar-item">
+                                  <img src="{{similar.profile_picture.url}}" class="img-fluid" alt="...">
+                                  <div class="similar-title-box">
+                                      <h5><a href="{% url 'services-single' service_id=similar.id %}">{{similar.service_name}}</a></h5>
+                                      <p><span class="price-amt">R{{similar.price}} per {%if similar.type == 'WALK' or similar.type == 'SIT' %} hour {%else%} day {%endif%}</span></p>
+                                  </div>
+                                  <div class="customer-review">
+                                      <div class="rating-summary">
+                                          <div class="rating-result" title="60%">
+                                              {{review_html}}
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                            {%endfor%}
+                          </div>
+                      </div>
+                      <div class="slider-btn v3 similar-next"><i class="ion-arrow-right-c"></i></div>
+                      <div class="slider-btn v3 similar-prev"><i class="ion-arrow-left-c"></i></div>
+                  </div>
+                  <!--Similar Listing ends-->
+              </div>
+              <div class="col-lg-4 col-md-12">
+                  <div class="listing-sidebar">
+                      <div class="sidebar-widget info">
+                          <h3><i class="ion-android-calendar"></i>Booking</h3>
+                          <form method="post" id="bookingForm" data-timeslots-url="{% url 'ajax_load_time' service_id=service.id %}">
+                            {% csrf_token %}
+                            {{form|crispy}}
+                            <div class="res-box text-center mar-top-30">
+                                BOOKINGS ARE COMING SOON!
+                            </div>
+                          </form>
+                      </div>
+                      <div class="sidebar-widget">
+                          <div class="business-time">
+                              <div class="business-title">
+                                  <h6><i class="ion-android-alarm-clock"  style="color: #007A33;"></i> {{sitter.first_name}}'s Hours</h6>
+                              </div>
+                              <ul class="business-hours">
+                                  <li class="business-open {%if saturday_start_time == 'Not availibe' or saturday_end_time == 'Not availibe'%} trend-closed {%endif%}">
+                                      <span class="day">Saturday</span>
+                                      <div class="atbd_open_close_time">
+                                          {%if saturday_start_time == 'Not availibe' or saturday_end_time == 'Not availibe'%}
+                                            <span class="time">Not availibe</span>
+                                          {%else%}
+                                            <span class="time">{{saturday_start_time}}</span> - <span class="time">{{saturday_end_time}}</span>
+                                          {%endif%}
+                                      </div>
+                                  </li>
+                                  <li class="business-open {%if sunday_start_time == 'Not availibe' or sunday_end_time == 'Not availibe'%} trend-closed {%endif%}">
+                                      <span class="day">Sunday</span>
+                                      <div class="atbd_open_close_time">
+                                        {%if sunday_start_time == 'Not availibe' or sunday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{sunday_start_time}}</span> - <span class="time">{{sunday_end_time}}</span>
+                                        {%endif%}
+                                      </div>
+                                  </li>
+                                  <li class="business-open {%if monday_start_time == 'Not availibe' or monday_end_time == 'Not availibe'%} trend-closed {%endif%}">
+                                      <span class="day">Monday</span>
+                                      <div class="atbd_open_close_time">
+                                        {%if monday_start_time == 'Not availibe' or monday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{monday_start_time}}</span> - <span class="time">{{monday_end_time}}</span>
+                                        {%endif%}
+                                      </div>
+                                  </li>
+                                  <li class="business-open {%if tuesday_start_time == 'Not availibe' or tuesday_end_time == 'Not availibe'%} trend-closed {%endif%}">
+                                      <span class="day">Tuesday</span>
+                                      <div class="atbd_open_close_time">
+                                        {%if tuesday_start_time == 'Not availibe' or tuesday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{tuesday_start_time}}</span> - <span class="time">{{tuesday_end_time}}</span>
+                                        {%endif%}
+                                      </div>
+                                  </li>
+                                  <li class="business-open {%if wednesday_start_time == 'Not availibe' or wednesday_end_time == 'Not availibe'%} trend-closed {%endif%}">
+                                      <span class="day">Wednesday</span>
+                                      <div class="atbd_open_close_time">
+                                        {%if wednesday_start_time == 'Not availibe' or wednesday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{wednesday_start_time}}</span> - <span class="time">{{wednesday_end_time}}</span>
+                                        {%endif%}
+                                      </div>
+                                  </li>
+                                  <li class="business-open {%if thursday_start_time == 'Not availibe' or thursday_end_time == 'Not availibe'%} trend-closed {%endif%}">
+                                      <span class="day">Thursday</span>
+                                      <div class="atbd_open_close_time">
+                                        {%if thursday_start_time == 'Not availibe' or thursday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{thursday_start_time}}</span> - <span class="time">{{thursday_end_time}}</span>
+                                        {%endif%}
+                                      </div>
+                                  </li>
+                                  <li class="business-open {%if friday_start_time == 'Not availibe' or friday_end_time == 'Not availibe'%} trend-closed {%endif%}">
+                                      <span class="day">Friday</span>
+                                      <div class="atbd_open_close_time">
+                                        {%if friday_start_time == 'Not availibe' or friday_end_time == 'Not availibe'%}
+                                          <span class="time">Not availibe</span>
+                                        {%else%}
+                                          <span class="time">{{friday_start_time}}</span> - <span class="time">{{friday_end_time}}</span>
+                                        {%endif%}
+                                      </div>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                      <div class="sidebar-widget follow">
+                          <div class="follow-img">
+                            {% if sitter.profile_picture %}
+                              <a href = "#"><img src="{{sitter.profile_picture.url}}" class="img-fluid" alt="#"></a>
+                            {%else%}
+                              <a href = "#"><img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt=""></a>
+                            {%endif%}
+                              <h6>{{sitter.first_name}} {{sitter.last_name}}</h6>
+                          </div>
+                          <ul class="social-counts">
+                              <li>
+                                  {%if miisitter.review_score > 5 %}
+                                    <h6>No reviews yet</h6>
+                                  {%else%}
+                                    <h6>{{miisitter.review_score|floatformat}}</h6>
+                                  {%endif%}
+                                  <span>Average review score</span>
+                              </li>
+                              <li>
+                                  <h6>{{miisitter.number_of_bookings}}</h6>
+                                  <span>Bookings completed</span>
+                              </li>
+                          </ul>
+                          <div class="text-center mar-bot-25">
+                              <a href="{% url 'services-view-miisitter' sitter_id=sitter.id%}" class="btn v3" style="background-color: #007A33;"><i class="icofont-eye-alt"></i> View profile</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--Listing Details Info ends-->
+
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+
+    $("#id_start_date").change(function () {
+      var url = $("#bookingForm").attr("data-timeslots-url");
+      var date = $(this).val();
+      var booked_pets = $("#id_number_of_pets").val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'date': date,
+          'booked_pets':booked_pets
+        },
+        success: function (data) {
+          $(".nice-select .current").html("Please choose a time slot")
+          $(".nice-select .list").html(data);
+        }
+      });
+
+    });
+  </script>
+{%endblock content%}

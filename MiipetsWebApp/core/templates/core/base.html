@@ -81,12 +81,12 @@
                                                 <a href="{% url 'core-home' %}" {%if sitter_user %} style = "color:black" {%endif%} >Home</a>
                                             </li>
                                             <li class="has-children">
-                                                <a href="{%url 'listings-all' %}" {%if sitter_user %} style = "color:black" {%endif%}>Services</a>
+                                                <a href="{%url 'services-all' %}" {%if sitter_user %} style = "color:black" {%endif%}>Services</a>
                                                 <ul class="dropdown">
-                                                      <li><a href="{% url 'listings' type='Walker' %}">Walker</a></li>
-                                                      <li><a href="{% url 'listings' type='Boarding' %}">Boarding</a></li>
-                                                      <li><a href="{% url 'listings' type='Sitter' %}">House Sitting</a></li>
-                                                      <li><a href="{% url 'listings' type='Daycare' %}">Daycare</a></li>
+                                                      <li><a href="{% url 'services' type='Walker' %}">Walker</a></li>
+                                                      <li><a href="{% url 'services' type='Boarding' %}">Boarding</a></li>
+                                                      <li><a href="{% url 'services' type='Sitter' %}">House Sitting</a></li>
+                                                      <li><a href="{% url 'services' type='Daycare' %}">Daycare</a></li>
                                                   <!--
                                                   <li class="has-children">
                                                       <a href="#">MiiProvider Services</a>
@@ -110,7 +110,7 @@
                                                           <li><a href="{% url 'core-faq' %}#general-faq">General</a></li>
                                                         </ul>
                                                     </li>
-                                                    <li><a href="{% url 'core-contact' %}" {%if sitter_user %} style = "color:black" {%endif%}>Contact us</a></li>
+                                                    <li><a href="{% url 'core-contact' %}" {%if sitter_user %} style = "color:black" {%endif%}>Contact Us</a></li>
                                                 </ul>
                                             </li>
                                             {% if request.user.is_authenticated %}
@@ -201,7 +201,7 @@
                           <h2 class="title">Helpful Links</h2>
                           <ul class="list">
                               <li><a class="link-hov style2" href="{% url 'core-login' %}">Login</a></li>
-                              <li><a class="link-hov style2" href="{%url 'listings-all' %}">Book</a></li>
+                              <li><a class="link-hov style2" href="{%url 'services-all' %}">Book</a></li>
                               <li><a class="link-hov style2" href="{% url 'core-faq' %}">FAQ</a></li>
                               <!--<li><a class="link-hov style2" href="#">Privacy policy</a></li>-->
                           </ul>
@@ -209,7 +209,7 @@
                   </div>
                   <div class="col-lg-3 col-md-12">
                       <div class="footer-content nav">
-                          <h2 class="title">Contact us</h2>
+                          <h2 class="title">Contact Us</h2>
                           <ul class="list footer-list">
                               <li>
                                   <div class="contact-info">

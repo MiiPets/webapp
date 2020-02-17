@@ -8,7 +8,8 @@ urlpatterns = [
     path('', sitter_views.sitter_dashboard, name='sitter-dashboard'),
     path('profile', sitter_views.sitter_profile, name = 'sitter-profile'),
     path('edit-profile', sitter_views.edit_sitter_profile, name = 'sitter-edit-profile'),
-    path('add-listing', sitter_views.add_listing, name = 'sitter-add-listing'),
+    path('add-listing', sitter_views.add_service, name = 'sitter-add-service'),
+    path('vetting-in-process', sitter_views.vetting_sitter, name = 'sitter-still-vetting'),
 ]
 
 if settings.DEBUG:

@@ -4,6 +4,8 @@
 <html dir="ltr" lang="en-US">
 
 <head>
+
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156447703-1"></script>
   <script>
@@ -13,6 +15,7 @@
 
     gtag('config', 'UA-156447703-1');
   </script>
+
 
   <!-- Metas -->
   <meta charset="UTF-8" />
@@ -60,12 +63,12 @@
                                             <li class="no-children">
                                                 <a href="{% url 'core-home' %}"> Home</a>
                                                 <li class="has-children">
-                                                    <a href="{%url 'listings-all' %}">Services</a>
+                                                    <a href="{%url 'services-all' %}">Services</a>
                                                     <ul class="dropdown">
-                                                      <li><a href="{% url 'listings' type='Walker' %}">Walker</a></li>
-                                                      <li><a href="{% url 'listings' type='Boarding' %}">Boarding</a></li>
-                                                      <li><a href="{% url 'listings' type='Sitter' %}">House Sitting</a></li>
-                                                      <li><a href="{% url 'listings' type='Daycare' %}">Daycare</a></li>
+                                                      <li><a href="{% url 'services' type='Walker' %}">Walker</a></li>
+                                                      <li><a href="{% url 'services' type='Boarding' %}">Boarding</a></li>
+                                                      <li><a href="{% url 'services' type='Sitter' %}">House Sitting</a></li>
+                                                      <li><a href="{% url 'services' type='Daycare' %}">Daycare</a></li>
                                                       <!--
                                                       <li class="has-children">
                                                           <a href="#">MiiProvider Services</a>
@@ -171,14 +174,35 @@
                             {%endif%}
                         </p>
                     </div>
-                    <br><br><br><br><br><br><br><br><br><br>
+
                     <div class="col-md-12 text-center mar-top-10">
-                      <p class="hero-desc v2">
-                           COMING SOON
-                      </p>
-                      <p class="hero-desc v2">
-                           Sign up now to get notified when we are live
-                      </p>
+                        <form class="hero__form v2" method = 'GET' action = "{% url 'services' type='Placeholder' %}">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-12">
+                                  <input class="hero__form-input custom-select" type="text" name="location_input" id="place-event" placeholder="Where do you want this service?">
+                                </div>
+                                <div class="col-lg-3 col-md-12">
+                                      <select class="hero__form-input  custom-select" name = "service_type_input">
+                                          <option>Select type of service</option>
+                                          <option>Sitter/Feeder</option>
+                                          <option >Walker</option>
+                                          <option>Boarding</option>
+                                          <option>Daycare</option>
+                                      </select>
+                                </div>
+                                <div class="col-lg-2 col-md-12">
+                                  <input class="hero__form-input custom-select" type="text" name="date_begin_input"  id="datepicker-from" placeholder="From">
+                                </div>
+                                <div class="col-lg-2 col-md-12">
+                                  <input class="hero__form-input custom-select" type="text" name="date_end_input" id="datepicker-to" placeholder="To">
+                                </div>
+                                <div class="col-lg-2 col-md-12">
+                                    <div class="submit_btn text-right md-left">
+                                        <button class="btn v3  mar-right-5" type="submit" style="background-color: #007A33;"><i class="ion-search" aria-hidden="true"></i> Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
