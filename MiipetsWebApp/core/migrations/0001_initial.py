@@ -98,7 +98,7 @@ class Migration(migrations.Migration):
                 ('price_currency', djmoney.models.fields.CurrencyField(choices=[('ZAR', 'Rand'), ('USD', 'US Dollar')], default='ZAR', editable=False, max_length=3)),
                 ('price', djmoney.models.fields.MoneyField(decimal_places=2, default_currency='ZAR', max_digits=14)),
                 ('score', models.FloatField(null=-1)),
-                ('profile_picture', models.ImageField(upload_to=core.models.image_directory_path_listing)),
+                ('profile_picture', models.ImageField(upload_to=core.models.image_directory_path_service)),
                 ('sitter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={

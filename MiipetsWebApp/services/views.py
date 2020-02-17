@@ -125,24 +125,39 @@ def view_services(request, type):
             want_reptile = False
 
 
+
+        try:
+            review_score = request.GET['review_score']
+            if review_score == "Review score":
+                review_score = -1
+            else:
+                print(review_score[0])
+                print(review_score[0])
+                review_score = int(review_score[0])
+
+        except:
+            review_score = -1
+
         #get relevant services not based on location
         if pet_type == "All Pets":
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
-                                                     Q(date_start__lte=start_date)&
-                                                     Q(date_end__gte=end_date)&
-                                                     Q(price__range=[price_start, price_end]))
+                                                     Q(date_start__gte=start_date)&
+                                                     Q(date_end__lte=end_date)&
+                                                     Q(price__range=[price_start, price_end])&
+                                                     Q(review_score__gte=review_score))
         else:
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
-                                                     Q(date_start__lte=start_date)&
-                                                     Q(date_end__gte=end_date)&
+                                                     Q(date_start__gte=start_date)&
+                                                     Q(date_end__lte=end_date)&
                                                      Q(price__range=[price_start, price_end])&
                                                      Q(dogs_allowed=want_dog)&
                                                      Q(cats_allowed=want_cat)&
                                                      Q(birds_allowed=want_bird)&
                                                      Q(reptiles_allowed=want_reptile)&
-                                                     Q(other_pets_allowed=want_other))
+                                                     Q(other_pets_allowed=want_other)&
+                                                     Q(review_score__gte=review_score))
 
         #filter on location
         try:
@@ -615,6 +630,7 @@ def view_sitter_profile(request, sitter_id):
     where there is no option to edit profile
     """
     sitter = User.objects.get(id=sitter_id)
+    miisitter = MiiSitter.objects.get(user=sitter)
     services = SitterServices.objects.filter(sitter=sitter)
 
     try:
@@ -623,21 +639,24 @@ def view_sitter_profile(request, sitter_id):
                 "services":services,
                 "sitter":sitter,
                 "sitter_user":True,
-                "review_score":generate_review_html_start(sitter.review_score),
+                "review_html":generate_review_html_start(miisitter.review_score),
+                "review_score":miisitter.review_score,
             }
         else:
             context = {
                 "services":services,
                 "sitter":sitter,
                 "sitter_user":False,
-                "review_score":generate_review_html_start(sitter.review_score),
+                "review_html":generate_review_html_start(miisitter.review_score),
+                "review_score":miisitter.review_score,
             }
     except:
         context = {
             "services":services,
             "sitter":sitter,
             "sitter_user":False,
-            "review_score":generate_review_html_start(sitter.review_score),
+            "review_html":generate_review_html_start(miisitter.review_score),
+            "review_score":miisitter.review_score,
         }
 
     return render(request, 'services/view_sitter_profile.html', context)

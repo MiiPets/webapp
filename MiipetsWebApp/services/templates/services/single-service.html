@@ -221,7 +221,7 @@
                             {% csrf_token %}
                             {{form|crispy}}
                             <div class="res-box text-center mar-top-30">
-                                <button type="submit" class="btn v3" style="background-color: #007A33;"><i class="ion-log-in" ></i>Book now</button>
+                                BOOKINGS ARE COMING SOON!
                             </div>
                           </form>
                       </div>
@@ -306,7 +306,11 @@
                       </div>
                       <div class="sidebar-widget follow">
                           <div class="follow-img">
-                              <img src="{{sitter.profile_picture.url}}" class="img-fluid" alt="#">
+                            {% if sitter.profile_picture %}
+                              <a href = "#"><img src="{{sitter.profile_picture.url}}" class="img-fluid" alt="#"></a>
+                            {%else%}
+                              <a href = "#"><img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt=""></a>
+                            {%endif%}
                               <h6>{{sitter.first_name}} {{sitter.last_name}}</h6>
                           </div>
                           <ul class="social-counts">
