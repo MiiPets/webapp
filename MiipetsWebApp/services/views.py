@@ -144,6 +144,10 @@ def view_services(request, type):
                                                      Q(date_end__gte=end_date)&
                                                      Q(price__range=[price_start, price_end])&
                                                      Q(review_score__gte=review_score))
+            print(services)
+            print("ALL SERVICES")
+            print(SitterServices.objects.all())
+            print("STARTDATE:{}, END_DATE:{}".format(start_date, end_date))
 
         else:
             services = SitterServices.objects.filter(Q(type__in=type)&
@@ -157,6 +161,10 @@ def view_services(request, type):
                                                      Q(reptiles_allowed=want_reptile)&
                                                      Q(other_pets_allowed=want_other)&
                                                      Q(review_score__gte=review_score))
+
+            print("ALL SERVICES")
+            print(SitterServices.objects.all())
+            print("STARTDATE:{}, END_DATE:{}".format(start_date, end_date))
 
         #filter on location
         try:
