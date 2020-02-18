@@ -14,6 +14,7 @@ urlpatterns = [
     path('services/', include('services.urls')),
     path('payments/', include('payments.urls')),
     path('reviews/', include('reviews.urls')),
+    path('mass-emails/', include('mass_emails.urls')),
 ]
 
 if settings.DEBUG:
