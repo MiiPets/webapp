@@ -145,6 +145,9 @@ def view_services(request, type):
                                                      Q(price__range=[price_start, price_end])&
                                                      Q(review_score__gte=review_score))
 
+            print("QUERIED SERVICES in all pets")
+            print(services)
+
         else:
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
@@ -157,19 +160,33 @@ def view_services(request, type):
                                                      Q(reptiles_allowed=want_reptile)&
                                                      Q(other_pets_allowed=want_other)&
                                                      Q(review_score__gte=review_score))
+            print("QUERIED SERVICES in type of pet")
+            print(services)
 
         #filter on location
         try:
             location_input = request.GET['location_input']
             services,locations = filter_on_location(services, location_input)
+            print("SERVICE AND LOCATIONS IN TRY")
+            print(services,locations)
             reviews = [generate_review_html_start(service.review_score) for service in services]
+            print("REVIEWS IN TRY")
+            print(reviews)
             number_of_reviews = [service.number_of_reviews for service in services]
+            print("REVIEWS IN TRY")
+            print(number_of_reviews)
         except:
             location_input = ""
             ids = [service.id for service in services]
             locations = ServiceLocation.objects.filter(id__in=ids)
+            print("SERVICE AND LOCATIONS IN EXCEPT")
+            print(services,locations)
             reviews = [generate_review_html_start(service.review_score) for service in services]
+            print("REVIEWS IN EXCEPT")
+            print(reviews)
             number_of_reviews = [service.number_of_reviews for service in services]
+            print("REVIEWS IN EXCEPT")
+            print(number_of_reviews)
 
         if not location_input:
             location_input = "Location"
