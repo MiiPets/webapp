@@ -25,17 +25,21 @@ def send_sitter_notification_add_services(request):
 
     if request.method == 'POST':
         for email, first_name in sitter_email_first_names:
-            print("Sending to {} at email {}".format(first_name, email))
-            subject = 'MiiPets is days from launching!'
-            html_message = render_to_string(template,
-                                            {'first_name': first_name})
-            plain_message = strip_tags(html_message)
-            from_email = 'info@miipets.com'
-            to = email
             try:
-                mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-            except mail.BadHeaderError:
-                return HttpResponse('Invalid header found.')
+                print("Sending to {} at email {}".format(first_name, email))
+                subject = 'MiiPets is days from launching!'
+                html_message = render_to_string(template,
+                                                {'first_name': first_name})
+                plain_message = strip_tags(html_message)
+                from_email = 'info@miipets.com'
+                to = email
+                try:
+                    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+                except mail.BadHeaderError:
+                    return HttpResponse('Invalid header found.')
+            except:
+                print("Sending to {} at email {} FAILED".format(first_name, email))
+
 
     context= {
         "who":"All Pet sitters",
