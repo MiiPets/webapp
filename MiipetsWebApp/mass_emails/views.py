@@ -37,10 +37,10 @@ def send_sitter_notification_add_services(request):
             except mail.BadHeaderError:
                 return HttpResponse('Invalid header found.')
 
-        context= {
-            "who":"All Pet sitters",
-            "what":"Notifying them that services can be added",
-            "template":template
-        }
+    context= {
+        "who":"All Pet sitters",
+        "what":"Notifying them that services can be added",
+        "template":template
+    }
 
-        return render(request, "mass_emails/press_before_send.html", context)
+    return render(request, "mass_emails/press_before_send.html", context)
