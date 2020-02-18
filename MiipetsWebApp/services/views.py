@@ -203,7 +203,7 @@ def view_services(request, type):
                 }
 
     print("context")
-    print(context)
+    print(services)
 
     return render(request, 'services/single-type-services.html', context)
 
