@@ -25,7 +25,7 @@ def send_sitter_notification_add_services(request):
 
     if request.method == 'POST':
         for email, first_name in sitter_email_first_names:
-
+            print("Sending to {} at email {}".format(first_name, email))
             subject = 'MiiPets is days from launching!'
             html_message = render_to_string(template,
                                             {'first_name': first_name})
