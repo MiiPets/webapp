@@ -131,8 +131,6 @@ def view_services(request, type):
             if review_score == "Review score":
                 review_score = -1
             else:
-                print(review_score[0])
-                print(review_score[0])
                 review_score = int(review_score[0])
 
         except:
@@ -142,15 +140,16 @@ def view_services(request, type):
         if pet_type == "All Pets":
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
-                                                     Q(date_start__gte=start_date)&
-                                                     Q(date_end__lte=end_date)&
+                                                     Q(date_start__lte=start_date)&
+                                                     Q(date_end__gte=end_date)&
                                                      Q(price__range=[price_start, price_end])&
                                                      Q(review_score__gte=review_score))
+
         else:
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
-                                                     Q(date_start__gte=start_date)&
-                                                     Q(date_end__lte=end_date)&
+                                                     Q(date_start__lte=start_date)&
+                                                     Q(date_end__gte=end_date)&
                                                      Q(price__range=[price_start, price_end])&
                                                      Q(dogs_allowed=want_dog)&
                                                      Q(cats_allowed=want_cat)&
