@@ -174,6 +174,8 @@ def view_services(request, type):
         if not location_input:
             location_input = "Location"
 
+        print("ZIP CONTENTS")
+        print(services, locations, reviews, number_of_reviews)
         services = zip(services, locations, reviews, number_of_reviews)
 
         try:
@@ -202,8 +204,6 @@ def view_services(request, type):
                 "location_input":location_input
                 }
 
-    print("context")
-    print(services)
 
     return render(request, 'services/single-type-services.html', context)
 
