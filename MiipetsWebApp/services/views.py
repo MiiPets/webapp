@@ -166,6 +166,8 @@ def view_services(request, type):
         #filter on location
         try:
             location_input = request.GET['location_input']
+            print("SERVICE AND LOCATIONS IN TRY BEFORE FUNCTION")
+            print(services,location_input))
             services,locations = filter_on_location(services, location_input)
             print("SERVICE AND LOCATIONS IN TRY")
             print(services,locations)
