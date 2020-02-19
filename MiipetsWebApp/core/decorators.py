@@ -4,6 +4,22 @@ from django.core.exceptions import PermissionDenied
 from core.models import User, MiiSitter
 from django.shortcuts import redirect
 
+
+def superuser_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='core-login'):
+        '''
+        Decorator for views that checks that the logged in user is a superuser,
+        means use it for very important stuff.
+        '''
+        actual_decorator = user_passes_test(
+            lambda u: u.is_superuser,
+            login_url=login_url,
+            redirect_field_name=redirect_field_name
+        )
+        if function:
+            return actual_decorator(function)
+        return actual_decorator
+
+
 def miiowner_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='core-login'):
     '''
     Decorator for views that checks that the logged in user is a miiowner,

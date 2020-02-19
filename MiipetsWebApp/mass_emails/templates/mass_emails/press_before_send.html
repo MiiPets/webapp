@@ -1,0 +1,13 @@
+{%extends "core/base.html"%}
+{%load static%}
+{% load crispy_forms_tags %}
+{%block content%}
+<br><br><br><br><br>
+<form method="post">
+{% csrf_token %}
+<p>Are you sure you want to send email to <strong>{{who}}</strong> about <strong>{{what}}</strong> using template <strong>{{template}}</strong>?</p>
+<div class="res-box text-center mar-top-30">
+    <button type="submit" class="btn v3" style="background-color: #007A33;"><i class="ion-log-in" ></i>SEND EMAILS</button>
+</div>
+
+{%endblock content%}

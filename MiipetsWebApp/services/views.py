@@ -125,13 +125,29 @@ def view_services(request, type):
             want_reptile = False
 
 
+
+        try:
+            review_score = request.GET['review_score']
+            if review_score == "Review score":
+                review_score = -1
+            else:
+                review_score = int(review_score[0])
+
+        except:
+            review_score = -1
+
         #get relevant services not based on location
         if pet_type == "All Pets":
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
                                                      Q(date_start__lte=start_date)&
                                                      Q(date_end__gte=end_date)&
-                                                     Q(price__range=[price_start, price_end]))
+                                                     Q(price__range=[price_start, price_end])&
+                                                     Q(review_score__gte=review_score))
+
+            print("QUERIED SERVICES in all pets")
+            print(services)
+
         else:
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
@@ -142,7 +158,9 @@ def view_services(request, type):
                                                      Q(cats_allowed=want_cat)&
                                                      Q(birds_allowed=want_bird)&
                                                      Q(reptiles_allowed=want_reptile)&
-                                                     Q(other_pets_allowed=want_other))
+                                                     Q(other_pets_allowed=want_other)&
+                                                     Q(review_score__gte=review_score))
+
 
         #filter on location
         try:
@@ -187,6 +205,7 @@ def view_services(request, type):
                 "services":services,
                 "location_input":location_input
                 }
+
 
     return render(request, 'services/single-type-services.html', context)
 
@@ -615,6 +634,7 @@ def view_sitter_profile(request, sitter_id):
     where there is no option to edit profile
     """
     sitter = User.objects.get(id=sitter_id)
+    miisitter = MiiSitter.objects.get(user=sitter)
     services = SitterServices.objects.filter(sitter=sitter)
 
     try:
@@ -622,6 +642,45 @@ def view_sitter_profile(request, sitter_id):
             context = {
                 "services":services,
                 "sitter":sitter,
+                "sitter_user":True,
+                "review_html":generate_review_html_start(miisitter.review_score),
+                "review_score":miisitter.review_score,
+            }
+        else:
+            context = {
+                "services":services,
+                "sitter":sitter,
+                "sitter_user":False,
+                "review_html":generate_review_html_start(miisitter.review_score),
+                "review_score":miisitter.review_score,
+            }
+    except:
+        context = {
+            "services":services,
+            "sitter":sitter,
+            "sitter_user":False,
+            "review_html":generate_review_html_start(miisitter.review_score),
+            "review_score":miisitter.review_score,
+        }
+
+    return render(request, 'services/view_sitter_profile.html', context)
+
+
+@agreed_terms_required
+def view_owner_profile(request, owner_id):
+    """
+    When a someone clicks on the owner
+    link they will be taken to this profile page
+    where there is no option to edit profile
+    """
+    owner = User.objects.get(id=owner_id)
+    pets = Pets.objects.filter(owner=owner)
+
+    try:
+        if request.user.is_sitter:
+            context = {
+                "pets":pets,
+                "owner":owner,
                 "sitter_user":True,
             }
         else:
@@ -637,7 +696,7 @@ def view_sitter_profile(request, sitter_id):
             "sitter_user":False,
         }
 
-    return render(request, 'services/view_sitter_profile.html', context)
+    return render(request, 'services/view_owner_profile.html', context)
 
 
 @login_required(login_url='core-login')

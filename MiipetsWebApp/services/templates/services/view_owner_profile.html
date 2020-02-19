@@ -9,31 +9,25 @@
               <div class="col-lg-6 col-md-12">
                   <div class="user-titlebar">
                       <div class="user-avatar">
-                        {% if sitter.profile_picture %}
-                          <img src="{{sitter.profile_picture.url}}" alt="">
+                        {% if owner.profile_picture %}
+                          <img src="{{owner.profile_picture.url}}" alt="">
                         {%else%}
                           <img src="{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"  alt="">
                         {%endif%}
                       </div>
                       <div class="user-name">
-                          <h4>{{sitter.first_name}} {{sitter.last_name}}</h4>
-                           <div class="list-ratings">
-                                {{review_html|safe}}
-                                {%if review_score <= 5%}
-                                  {{review_score}}
-                                {%endif%}
-                            </div>
+                          <h4>{{owner.first_name}} {{owner.last_name}}</h4>
                       </div>
                   </div>
               </div>
               <div class="col-lg-6 col-md-12">
-                  <p>{{sitter.bio|linebreaks}}</p>
+                  <p>{{owner.bio|linebreaks}}</p>
               </div>
           </div>
       </div>
   </div>
-  <!--sitter Profile ends-->
-  <!--sitter profile details starts-->
+  <!--User Profile ends-->
+  <!--User profile details starts-->
   <div class="list-details-section section-padding mar-top-40">
       <div class="container">
           <div class="row">
@@ -41,29 +35,30 @@
                   <div class="user_info_menu">
                       <ul class="nav nav-tabs list-details-tab" id="lionTab" role="tablist">
                           <li class="nav-item active">
-                              <a data-toggle="tab" href="#my-pets">My services</a>
+                              <a data-toggle="tab" href="#my-pets">My Pets</a>
                           </li>
                       </ul>
                   </div>
                   <div class="tab-content mar-top-30" id="lionTabContent">
                       <div class="tab-pane fade active show" id="my-pets">
                           <div class="row">
-                            {% for service in services %}
+                            {% for pet in pets %}
                               <div class="col-md-6">
                                   <div class="similar-item mar-bot-40">
-                                      <img src= {%if service.profile_picture %}
-                                                  "{{service.profile_picture.url}}"
+                                      <img src= {%if pet.profile_picture %}
+                                                  "{{pet.profile_picture.url}}"
                                                 {%else%}
                                                   "{% static 'images/miipets/background/blank-profile-picture-973460.png' %}"
                                                 {%endif%} alt="..." style = "width:50%;"> <!-- DOG IMAGE-->
                                       <div class="similar-title-box">
-                                          <h5><a href="{% url 'services-single' service_id=service.id%}">{{service.service_name}}</a></h5>
+                                          <h5><a href="#">{{pet.name}}</a></h5>
+                                          <p><span class="price-amt">{{pet.breed}}</span>/{{pet.age}} Years old</p>
                                       </div>
                                   </div>
                               </div>
                             {%endfor%}
                           </div>
-                      </div>
+                      </div> <!-- END OF PET PICTURES -->
 
                   </div>
               </div>
@@ -73,22 +68,22 @@
                     <div class="listing-sidebar">
                         <div class="boxed-widget">
                             <h3><i class="icofont-contact-add"></i>Contact details</h3>
-                            {% if sitter.address %}
+                            {% if owner.address %}
                               <div class="address">
                                   <span class="ion-ios-location"></span>
-                                  <p> {{sitter.address}}</p>
+                                  <p> {{owner.address}}</p>
                               </div>
                             {%endif%}
-                            {% if sitter.contact_number %}
+                            {% if owner.contact_number %}
                               <div class="address">
                                   <span class="ion-ios-telephone"></span>
-                                  <p> {{sitter.contact_number}}</p>
+                                  <p> {{owner.contact_number}}</p>
                               </div>
                             {%endif%}
-                            {% if sitter.email %}
+                            {% if owner.email %}
                               <div class="address">
                                   <span class="ion-ios-email"></span>
-                                  <p> {{sitter.email}}</p>
+                                  <p> {{owner.email}}</p>
                               </div>
                             {%endif%}
                         </div>

@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
     <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
-    <title>Welcome - [Plain HTML]</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+    <title>One week to go</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
     <!-- Web Font / @font-face : BEGIN -->
     <!-- NOTE: If web fonts are not required, lines 10 - 27 can be safely removed. -->
@@ -180,6 +180,17 @@
 
     </style>
 
+    <!-- What it does: Makes background images in 72ppi Outlook render at correct size. -->
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
+
+
 </head>
 <body width="100%" bgcolor="#F1F1F1" style="margin: 0; mso-line-height-rule: exactly;">
     <center style="width: 100%; background: #F1F1F1; text-align: left;">
@@ -225,7 +236,17 @@
                 <tr>
                     <!-- Bulletproof Background Images c/o https://backgrounds.cm -->
                     <td background="background.png" bgcolor="#FFFFFF" align="center" valign="top" style="text-align: center; background-position: center center !important; background-size: cover !important;">
+                        <!--[if gte mso 9]>
+                        <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:680px; height:380px; background-position: center center !important;">
+                        <v:fill type="tile" src="background.png" color="#222222" />
+                        <v:textbox inset="0,0,0,0">
+                        <![endif]-->
                         <div>
+                            <!--[if mso]>
+                            <table role="presentation" border="0" cellspacing="0" cellpadding="0" align="center" width="500">
+                            <tr>
+                            <td align="center" valign="middle" width="500">
+                            <![endif]-->
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:500px; margin: auto;">
 
                                 <tr>
@@ -239,16 +260,31 @@
                                      <tr>
                                          <td valign="top" style="text-align: center; padding: 60px 0 10px 20px;">
                                              <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 30px; line-height: 36px; color: #0; font-weight: bold;">
-                                               YOU HAVE A NEW BOOKING {{service.sitter.first_name}}
+                                               IT IS TIME TO START GIVING FREEDOM WITH PEACE OF MIND
                                              </h1>
-                                             <br>
-                                             <h4 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #0; font-weight: bold;">
-                                               GO AND PROVIDE THEM PEACE OF MIND
-                                             </h4>
                                          </td>
                                      </tr>
                                      <tr>
                                          <td valign="top" style="text-align: center; padding: 10px 20px 15px 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #757575;">
+
+                                         </td>
+                                     </tr>
+                                     <tr>
+                                         <td valign="top" align="center" style="text-align: center; padding: 15px 0px 60px 0px;">
+
+                                             <!-- Button : BEGIN -->
+                                             <center>
+                                             <table role="presentation" align="center" cellspacing="0" cellpadding="0" border="0" class="center-on-narrow" style="text-align: center;">
+                                                 <tr>
+                                                     <td style="border-radius: 50px; background: #007A33; text-align: center;" class="button-td">
+                                                         <a href="https://www.miipets.com/login" style="background: #007A33; border: 15px solid #007A33; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
+                                                             <span style="color:#ffffff;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                         </a>
+                                                     </td>
+                                                 </tr>
+                                             </table>
+                                             </center>
+                                             <!-- Button : END -->
 
                                          </td>
                                      </tr>
@@ -262,7 +298,16 @@
                                 </tr>
 
                             </table>
+                            <!--[if mso]>
+                            </td>
+                            </tr>
+                            </table>
+                            <![endif]-->
                         </div>
+                        <!--[if gte mso 9]>
+                        </v:textbox>
+                        </v:rect>
+                        <![endif]-->
                     </td>
                 </tr>
                 <!-- HERO : END -->
@@ -272,24 +317,30 @@
                     <td bgcolor="#ffffff">
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                             <tr>
-                                <td style="padding: 40px 40px 20px 40px; text-align: left;">
-                                    <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 20px; line-height: 26px; color: #333333; font-weight: bold;">Please notify {{owner.first_name}} if you are availible within 24 hours</h1>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td style="padding: 0px 40px 20px 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; text-align: left; font-weight:normal;">
+                                   <p style="margin: 0;">
+                                     Hi {{first_name}}
+                                   </p>
+
+                                   <br>
                                     <p style="margin: 0;">
-                                       You have just recieved a booking from <a href="http://127.0.0.1:8000{% url 'services-view-miiowner' owner_id=owner.id%}">{{owner.first_name}} {{owner.last_name}}</a>
-                                       to {%if service.type == "WALK" %} walk {%else%} look after {%endif%}
-                                       their {{number_of_pets}} pet{%if number_of_pets > 1%}s{%endif%}
+                                       We have finally reached the point now where you
+                                       can start adding your awesome services for all MiiOwners
+                                       to see.
 
-                                       {%if service.type == "WALK" %}
-                                        on {{booking.start_date}} at {{timeslot}}
-                                       {%else%}
-                                       from {{booking.start_date}} till {{booking.end_date}}.
-                                       {%endif%}
+                                       To do this though, we still require some effort from your side, namely:
 
-                                       Please select if you are able to this using the buttons below.
+                                       <ul>
+                                          <li>Edit your profile to reflect who you are</li>
+                                          <li>Get your PayFast merchant ID. You can register <a href="https://www.payfast.co.za/registration">here</a>.</li>
+                                          <li>Accept our Terms and Conditions, which you can do <a href="https://miipets.com/agree-to-terms/">here</a></li>
+                                          <li>Wait for us to approve your profile (it will not take longer than 48 hours).</li>
+                                       </ul>
+
+                                      After doing this, you can freely add your services and they will
+                                      become visible to MiiOwners after we give them one final quality check. MiiOwners will then
+                                      be able to book your services very soon! We just have to sort out some last minute
+                                      admin with PayFast as well.
                                     </p>
                                 </td>
                             </tr>
@@ -335,8 +386,13 @@
                     <td bgcolor="#007A33">
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                             <tr>
+                                <td style="padding: 40px 40px 5px 40px; text-align: center;">
+                                    <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 20px; line-height: 24px; color: #ffffff; font-weight: bold;">YOUR FEEDBACK IS IMPORTANT</h1>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td style="padding: 0px 40px 20px 40px; font-family: sans-serif; font-size: 17px; line-height: 23px; color: #ffffff; text-align: center; font-weight:normal;">
-                                    <p style="margin: 0;">Are you availible?</p>
+                                    <p style="margin: 0;">Let us know what you think</p>
                                 </td>
                             </tr>
                             <tr>
@@ -346,22 +402,8 @@
                                     <table role="presentation" align="center" cellspacing="0" cellpadding="0" border="0" class="center-on-narrow">
                                         <tr>
                                             <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                <a href="http://127.0.0.1:8000{% url 'services-sitter-confirmation' service_id=service.id  booking_id=booking.id sitter_answer=1%}" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
-                                                    <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;YES&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                </a>
-                                            </td>
-                                            <td >
-                                                <p></p>
-                                            </td>
-                                            <td >
-                                                <p></p>
-                                            </td>
-                                            <td >
-                                                <p></p>
-                                            </td>
-                                            <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                <a href="http://127.0.0.1:8000{% url 'services-sitter-confirmation' service_id=service.id  booking_id=booking.id sitter_answer=0 %}"  style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
-                                                    <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                <a href="https://www.miipets.com/contact/" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
+                                                    <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;GIVE FEEDBACK&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </a>
                                             </td>
                                         </tr>
@@ -414,5 +456,3 @@
     </center>
 </body>
 </html>
-
-http://127.0.0.1:8000//services/sitter_confirmation/5/31/1
