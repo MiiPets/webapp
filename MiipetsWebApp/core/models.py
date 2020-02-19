@@ -157,7 +157,7 @@ class SitterServices(TimeStampMixin):
                        (DAYCARE, 'Daycare')]
 
     allowed_to_show = models.BooleanField(default = False) # we first need to approve it
-    review_score = models.FloatField(default = 6, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    review_score = models.FloatField(default = 6, validators=[MinValueValidator(0), MaxValueValidator(6)])
     number_of_reviews = models.PositiveIntegerField(default=0)
     sitter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
