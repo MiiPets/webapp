@@ -262,6 +262,9 @@ class ServiceLocation(TimeStampMixin):
     lattitude = models.FloatField()
     longitude = models.FloatField()
 
+    class Meta:
+        order_with_respect_to = 'created_at'
+
 
     def __str__(self):
         return ("Location of service {}".format(self.service.id))
