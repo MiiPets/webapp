@@ -224,6 +224,7 @@ def paysoft_check(request):
 
     # is request IP in trusted sources
     domain = request.META['HTTP_HOST']
+    print("REQUEST META: {}".format(request.META))
     #print(domain)
     #valid_domains = ["www.payfast.co.za", "w1w.payfast.co.za", "w2w.payfast.co.za", "sandbox.payfast.co.za"]
     #if domain in valid_domains:
@@ -233,47 +234,54 @@ def paysoft_check(request):
        # return HttpResponseBadRequest()
 
     # is payment amount what it should have been
+
     if order.amount == request.POST.get('amount_gross', None):
         pass
     else:
-        print("PAYMENT FAILED BECAUSE: amount is different ")
+        print("PAYMENT FAILED BECAUSE: amount is different")
+        print("US:{} THEY:{}".format(order.amount, request.POST.get('amount_gross', None)))
         return HttpResponseBadRequest()
 
     if order.item_description == request.POST.get('item_description', None):
         pass
     else:
         print("PAYMENT FAILED BECAUSE: item_description are different")
+        print("US:{} THEY:{}".format(order.item_description, request.POST.get('item_description', None)))
         return HttpResponseBadRequest()
 
     if order.name_first == request.POST.get('name_first', None):
         pass
     else:
         print("PAYMENT FAILED BECAUSE: name_first are different")
+        print("US:{} THEY:{}".format(order.name_first, request.POST.get('name_first', None)))
         return HttpResponseBadRequest()
 
     if order.name_last == request.POST.get('name_last', None):
         pass
     else:
         print("PAYMENT FAILED BECAUSE: name_last are different")
+        print("US:{} THEY:{}".format(order.name_last, request.POST.get('name_last', None)))
         return HttpResponseBadRequest()
 
     if order.email_address == request.POST.get('email_address', None):
         pass
     else:
         print("PAYMENT FAILED BECAUSE: email_address are different")
+        print("US:{} THEY:{}".format(order.email_address, request.POST.get('email_address', None)))
         return HttpResponseBadRequest()
 
     if order.merchant_id == request.POST.get('merchant_id', None):
         pass
     else:
         print("PAYMENT FAILED BECAUSE: merchant_id are different")
+        print("US:{} THEY:{}".format(order.merchant_id, request.POST.get('merchant_id', None)))
         return HttpResponseBadRequest()
 
 
     # data has not been processed yet
     post_bytes = urllib.parse.urlencode(list_of_values, encoding='utf-8', errors='strict').encode('ascii')
     response = urllib.request.urlopen("https://sandbox.payfast.co.za/eng/query/validate", data=post_bytes)
-    result = response.read().decode('utf-8')  # XXX: Assumed encoding
+    result = response.read().decode('utf-8')
     print("RESULT:{}".format(result))
 
     if result:
