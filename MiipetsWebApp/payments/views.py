@@ -161,6 +161,11 @@ def checkout_payment(request, booking_id):
 @agreed_terms_required
 def success_payment(request, booking_id):
     booking = ServiceBooking.objects.get(id=booking_id)
+    #update booking as everything is now good
+    booking.owner_payed = True
+    booking.invoice_sent = True
+    booking.save(update_fields=["owner_payed", "invoice_sent"])
+
     return render(request, 'payments/sucess.html', {"booking":booking})
 
 
@@ -300,12 +305,11 @@ def paysoft_check(request):
 
     # pf_payment_id not somewhere in database perhaps
     try:
-        orders = PayFastOrder.objects.filter(pf_payment_id = request.POST.get('pf_payment_id', None))
+        orders = PayFastOrder.objects.filter(m_payment_id = request.POST.get('m_payment_id', None))
     except Exception as e:
         print(e)
-        orders = ['PlaceHolder']
-    print("ORDERS: {}".format(orders))
-    if len(orders) >= 1:
+
+    if orders[0].payment_status == "COMPLETE":
         print("PAYMENT FAILED BECAUSE: Payment has already been processed")
         return HttpResponseBadRequest()
     else:
