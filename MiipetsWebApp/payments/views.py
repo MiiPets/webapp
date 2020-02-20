@@ -320,8 +320,8 @@ def paysoft_check(request):
         order.signature_from_payfast = request.POST.get('signature', None)
         order.trusted = True
         order.went_to_payfast = True
-        order = form.save(update_fields = ["pf_payment_id", "payment_status", "amount_gross", "went_to_payfast",
-                                           "amount_fee", "amount_net", "signature_from_payfast","trusted"])
+        order.save(update_fields = ["pf_payment_id", "payment_status", "amount_gross", "went_to_payfast",
+                                    "amount_fee", "amount_net", "signature_from_payfast","trusted"])
     except Exception as e:
         print(e)
 
@@ -332,7 +332,7 @@ def paysoft_check(request):
                                              order.booking.service.sitter.email,
                                              order.booking)
             order.notified_sitter = True
-            order = form.save(update_fields = ['notified_sitter'])
+            order.save(update_fields = ['notified_sitter'])
         except:
             print('could not notify sitter in payment')
 
@@ -342,9 +342,9 @@ def paysoft_check(request):
                                             order.booking.requester.email,
                                             order.booking)
             order.notified_owner = True
-            order = form.save(update_fields = ['notified_sitter'])
+            order.save(update_fields = ['notified_owner'])
         except:
-            print('could not notify sitter in payment')
+            print('could not notify owner in payment')
 
     # notify owner and sitter that payment has been made and booking confirmed
     print("MADE IT TO THE END!!")
