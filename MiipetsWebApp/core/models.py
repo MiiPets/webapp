@@ -316,8 +316,8 @@ class PayFastOrder(TimeStampMixin):
     pf_payment_id =  models.CharField(max_length=200, null=True)
     trusted = models.BooleanField(default = True)
     went_to_payfast = models.BooleanField(default = False)
-    notified_sitter = model.BooleanField(default=False)
-    notified_owner = model.BooleanField(default=False)
+    notified_sitter = models.BooleanField(default=False)
+    notified_owner = models.BooleanField(default=False)
 
     def __str__(self):
         return ("Payment of booking {}".format(self.booking.id))
