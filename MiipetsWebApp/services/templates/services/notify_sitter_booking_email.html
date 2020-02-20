@@ -279,7 +279,7 @@
                             <tr>
                                 <td style="padding: 0px 40px 20px 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; text-align: left; font-weight:normal;">
                                     <p style="margin: 0;">
-                                       You have just recieved a booking from <a href="http://127.0.0.1:8000{% url 'services-view-miiowner' owner_id=owner.id%}">{{owner.first_name}} {{owner.last_name}}</a>
+                                       You have just recieved a booking from <a href="https://www.miipets.com{% url 'services-view-miiowner' owner_id=owner.id%}">{{owner.first_name}} {{owner.last_name}}</a>
                                        to {%if service.type == "WALK" %} walk {%else%} look after {%endif%}
                                        their {{number_of_pets}} pet{%if number_of_pets > 1%}s{%endif%}
 
@@ -346,7 +346,7 @@
                                     <table role="presentation" align="center" cellspacing="0" cellpadding="0" border="0" class="center-on-narrow">
                                         <tr>
                                             <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                <a href="http://127.0.0.1:8000{% url 'services-sitter-confirmation' service_id=service.id  booking_id=booking.id sitter_answer=1%}" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
+                                                <a href="https://www.miipets.com{% url 'services-sitter-confirmation' service_id=service.id  booking_id=booking.id sitter_answer=1%}" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
                                                     <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;YES&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </a>
                                             </td>
@@ -360,7 +360,7 @@
                                                 <p></p>
                                             </td>
                                             <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                <a href="http://127.0.0.1:8000{% url 'services-sitter-confirmation' service_id=service.id  booking_id=booking.id sitter_answer=0 %}"  style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
+                                                <a href="https://www.miipets.com{% url 'services-sitter-confirmation' service_id=service.id  booking_id=booking.id sitter_answer=0 %}"  style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
                                                     <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 </a>
                                             </td>
@@ -414,5 +414,3 @@
     </center>
 </body>
 </html>
-
-http://127.0.0.1:8000//services/sitter_confirmation/5/31/1
