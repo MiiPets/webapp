@@ -285,12 +285,12 @@ def paysoft_check(request):
 
     # data has not been processed yet
     print("NOW I AM HERE")
-    post_bytes = urllib.parse.urlencode(list_of_values, encoding='utf-8', errors='strict').encode('ascii')
-    print("POST BYTES {}".format(post_bytes))
-    response = urllib.request.urlopen("https://sandbox.payfast.co.za/eng/query/validate", data=post_bytes)
-    print("Response {}".format(response))
-    result = response.read().decode('utf-8')
-    print("RESULT:{}".format(result))
+    try:
+        post_bytes = urllib.parse.urlencode(list_of_values, encoding='utf-8', errors='strict').encode('ascii')
+        response = urllib.request.urlopen("https://sandbox.payfast.co.za/eng/query/validate", data=post_bytes)
+        result = response.read().decode('utf-8')
+        print("RESULT:{}".format(result))
+    except Exception as e: print(e)
 
     if result:
         pass
