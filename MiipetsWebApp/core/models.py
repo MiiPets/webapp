@@ -157,7 +157,7 @@ class SitterServices(TimeStampMixin):
                        (DAYCARE, 'Daycare')]
 
     allowed_to_show = models.BooleanField(default = False) # we first need to approve it
-    review_score = models.FloatField(default = 6, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    review_score = models.FloatField(default = 6, validators=[MinValueValidator(0), MaxValueValidator(6)])
     number_of_reviews = models.PositiveIntegerField(default=0)
     sitter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     service_name = models.CharField(max_length=50)
@@ -262,6 +262,9 @@ class ServiceLocation(TimeStampMixin):
     lattitude = models.FloatField()
     longitude = models.FloatField()
 
+    class Meta:
+        order_with_respect_to = 'created_at'
+
 
     def __str__(self):
         return ("Location of service {}".format(self.service.id))
@@ -288,8 +291,8 @@ class PayFastOrder(TimeStampMixin):
     """
 
     payfast_url = models.CharField(max_length=100, default = "https://payfast.co.za/eng/process")
-    merchant_id = models.CharField(max_length=10, default = "14938518")
-    merchant_key = models.CharField(max_length=10, default = "w0rseik5fm412")
+    merchant_id = models.CharField(max_length=20, default = "14938518")
+    merchant_key = models.CharField(max_length=50, default = "w0rseik5fm412")
     return_url = models.CharField(max_length=200, default = "")
     cancel_url = models.CharField(max_length=200, default = "http://www.miipets.com/payments/cancel-payment")
     notify_url = models.CharField(max_length=200, default = "http://www.miipets.com/payments/notify-payment")
@@ -313,8 +316,8 @@ class PayFastOrder(TimeStampMixin):
     pf_payment_id =  models.CharField(max_length=200, null=True)
     trusted = models.BooleanField(default = True)
     went_to_payfast = models.BooleanField(default = False)
-    notified_sitter = model.BooleanField(default=False)
-    notified_owner = model.BooleanField(default=False)
+    notified_sitter = models.BooleanField(default=False)
+    notified_owner = models.BooleanField(default=False)
 
     def __str__(self):
         return ("Payment of booking {}".format(self.booking.id))

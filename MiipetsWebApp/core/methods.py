@@ -77,6 +77,7 @@ def address_to_lat_long(full_addres='', city="", province="",
     return lat, lng
 
 
+
 def filter_on_location(services, searched_location):
     """
     This function will filter the current services and only return the services
@@ -84,11 +85,9 @@ def filter_on_location(services, searched_location):
     """
 
     lat_search, lng_search = address_to_lat_long(searched_location)
-
     # get location data of services
     ids = [service.id for service in services]
-    locations = ServiceLocation.objects.filter(id__in=ids)
-
+    locations = ServiceLocation.objects.filter(service__in=services)
     # create coordinate sets
     lat_long_sets = [(location.lattitude, location.longitude) for location in locations]
     # get distances

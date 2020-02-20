@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'services.apps.ServicesConfig',
     'payments.apps.PaymentsConfig',
     'reviews.apps.ReviewsConfig',
+    'mass_emails.apps.MassEmailsConfig',
     'phonenumber_field',
     'djmoney',
     'crispy_forms',
