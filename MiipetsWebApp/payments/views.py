@@ -160,21 +160,6 @@ def checkout_payment(request, booking_id):
 @agreed_terms_required
 def success_payment(request, booking_id):
     booking = ServiceBooking.objects.get(id=booking_id)
-
-    try:
-        send_sitter_payment_confirmation(order.booking.service.sitter.first_name,
-                                         order.booking.service.sitter.email,
-                                         order.booking)
-    except:
-        print('could not notify sitter in payment')
-
-    try:
-        send_owner_payment_confirmation(order.booking.requester.first_name,
-                                        order.booking.requester.email,
-                                        order.booking)
-    except:
-        print('could not notify sitter in payment')
-
     return render(request, 'payments/sucess.html', {"booking":booking})
 
 
