@@ -13,7 +13,7 @@ from django.core import mail
 from django.conf import settings
 import urllib
 
-def send_sitter_payment_confirmation(first_name, email_address, booking):
+def send_owner_payment_confirmation(first_name, email_address, booking):
     """
     Send email to user after sign up
     """
@@ -301,10 +301,11 @@ def paysoft_check(request):
     # pf_payment_id not somewhere in database perhaps
     try:
         orders = PayFastOrder.objects.filter(pf_payment_id = request.POST.get('pf_payment_id', None))
-    except:
-        orders = []
+    except Exception as e:
+        print(e)
+        orders = ['PlaceHolder']
 
-    if len(orders) >= 1:
+    if len(orders) > 1:
         print("PAYMENT FAILED BECAUSE: Payment has already been processed")
         return HttpResponseBadRequest()
     else:
