@@ -1,3 +1,4 @@
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
@@ -55,9 +56,9 @@ def checkout_payment(request, booking_id):
     payfast_url = "https://sandbox.payfast.co.za/eng/process"
     merchant_id = 10016213
     merchant_key = "qpy7a8jq1hgz1"
-    return_url = "https://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
-    cancel_url = "https://miipets.com:8080//payments/cancel-payment"
-    notify_url = "https://miipets.com:8080/payments/notify-payment"
+    return_url = "http://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
+    cancel_url = "http://miipets.com:8080/payments/cancel-payment"
+    notify_url = "http://miipets.com:8080/payments/notify-payment"
     name_first = (booking.requester.first_name).replace(" ", "")
     name_last = (booking.requester.last_name).replace(" ", "")
     email_address = (booking.requester.email).replace(" ", "")
@@ -181,7 +182,7 @@ def paysoft_check(request):
     order = get_object_or_404(PayFastOrder, m_payment_id=m_payment_id)
 
     print("HELLLOOO!!!")
-
+    print(request.POST)
 
     # is signature valid
     list_of_values = {
@@ -193,6 +194,16 @@ def paysoft_check(request):
           "amount_gross":request.POST.get('amount_gross', None),
           "amount_fee":request.POST.get('amount_fee', None),
           "amount_net":request.POST.get('amount_net', None),
+          'custom_str1': request.POST.get("custom_str1", None),
+          'custom_str2': request.POST.get("custom_str2", None),
+          'custom_str3': request.POST.get("custom_str3", None),
+          'custom_str4': request.POST.get("custom_str4", None),
+          'custom_str5': request.POST.get("custom_str5", None),
+          'custom_int1': request.POST.get("custom_int1", None),
+          'custom_int2': request.POST.get("custom_int2", None),
+          'custom_int3': request.POST.get("custom_int3", None),
+          'custom_int4': request.POST.get("custom_int4", None),
+          'custom_int5': request.POST.get("custom_int5", None),
           "name_first":request.POST.get('name_first', None),
           "name_last":request.POST.get('name_last', None),
           "email_address":request.POST.get('email_address', None),
@@ -203,7 +214,7 @@ def paysoft_check(request):
     print(list_of_values)
     signature = create_signature(list_of_values)
 
-    print("THERE SIGNATURE: {}".format(request.POST.get('signature', None))
+    print("THERE SIGNATURE: {}".format(request.POST.get('signature', None)))
 
     if signature == request.POST.get('signature', None):
         pass
@@ -213,12 +224,13 @@ def paysoft_check(request):
 
     # is request IP in trusted sources
     domain = request.META['HTTP_HOST']
-    valid_domains = ["www.payfast.co.za", "w1w.payfast.co.za", "w2w.payfast.co.za", "sandbox.payfast.co.za"]
-    if domain in valid_domains:
-        pass
-    else:
-        print("PAYMENT FAILED BECAUSE: IP is not trusted")
-        return HttpResponseBadRequest()
+    #print(domain)
+    #valid_domains = ["www.payfast.co.za", "w1w.payfast.co.za", "w2w.payfast.co.za", "sandbox.payfast.co.za"]
+    #if domain in valid_domains:
+     #   pass
+    #else:
+      #  print("PAYMENT FAILED BECAUSE: IP is not trusted")
+       # return HttpResponseBadRequest()
 
     # is payment amount what it should have been
     if order.amount == request.POST.get('amount_gross', None):
