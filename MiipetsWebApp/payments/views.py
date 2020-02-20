@@ -311,16 +311,19 @@ def paysoft_check(request):
         pass
 
     # update model to reflect payment
-    order.pf_payment_id =  request.POST.get('pf_payment_id', None)
-    order.payment_status = request.POST.get('payment_status', None)
-    order.amount_gross = request.POST.get('amount_gross', None)
-    order.amount_fee = request.POST.get('amount_fee', None)
-    order.amount_net = request.POST.get('amount_net', None)
-    order.signature_from_payfast = request.POST.get('signature', None)
-    order.trusted = True
-    order.went_to_payfast = True
-    order = form.save(update_fields = ["pf_payment_id", "payment_status", "amount_gross", "went_to_payfast",
-                                       "amount_fee", "amount_net", "signature_from_payfast","trusted"])
+    try:
+        order.pf_payment_id =  request.POST.get('pf_payment_id', None)
+        order.payment_status = request.POST.get('payment_status', None)
+        order.amount_gross = request.POST.get('amount_gross', None)
+        order.amount_fee = request.POST.get('amount_fee', None)
+        order.amount_net = request.POST.get('amount_net', None)
+        order.signature_from_payfast = request.POST.get('signature', None)
+        order.trusted = True
+        order.went_to_payfast = True
+        order = form.save(update_fields = ["pf_payment_id", "payment_status", "amount_gross", "went_to_payfast",
+                                           "amount_fee", "amount_net", "signature_from_payfast","trusted"])
+    except Exception as e:
+        print(e)
 
 
     if not order.notified_sitter:
