@@ -304,8 +304,8 @@ def paysoft_check(request):
     except Exception as e:
         print(e)
         orders = ['PlaceHolder']
-
-    if len(orders) > 1:
+    print("ORDERS: {}".format(orders))
+    if len(orders) >= 1:
         print("PAYMENT FAILED BECAUSE: Payment has already been processed")
         return HttpResponseBadRequest()
     else:
