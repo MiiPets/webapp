@@ -336,7 +336,7 @@ def paysoft_check(request):
         except:
             print('could not notify sitter in payment')
 
-    if not oder.notified_owner:
+    if not order.notified_owner:
         try:
             send_owner_payment_confirmation(order.booking.requester.first_name,
                                             order.booking.requester.email,
