@@ -13,6 +13,7 @@ from django.core import mail
 from django.conf import settings
 import urllib
 
+
 def send_owner_payment_confirmation(first_name, email_address, booking):
     """
     Send email to user after sign up
@@ -47,6 +48,118 @@ def send_sitter_payment_confirmation(first_name, email_address, booking):
         return HttpResponse('Invalid header found.')
 
 
+@login_required(login_url='core-login')
+@csrf_exempt
+def view_invoice(request, booking_id):
+
+    booking = ServiceBooking.objects.get(id=booking_id)
+    sitter = MiiSitter.objects.get(user = booking.service.sitter)
+
+    payfast_url = "https://sandbox.payfast.co.za/eng/process"
+    merchant_id = 10016213
+    merchant_key = "qpy7a8jq1hgz1"
+    return_url = "http://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
+    cancel_url = "http://miipets.com:8080/payments/cancel-payment"
+    notify_url = "http://miipets.com:8080/payments/notify-payment"
+    name_first = (booking.requester.first_name).replace(" ", "")
+    name_last = (booking.requester.last_name).replace(" ", "")
+    email_address = (booking.requester.email).replace(" ", "")
+    m_payment_id = (sitter.merchant_id+"_"+str(booking.id)).replace(" ", "")
+    amount = "{:.2f}".format(round(float(booking.price),2))
+    item_name = (booking.service.service_name).replace(" ", "")
+    item_description = (booking.service.service_name).replace(" ", "")
+    email_confirmation = 1
+    confirmation_address = 'info@miipets.com'
+
+    list_of_values = {
+        "merchant_id":merchant_id,
+        "merchant_key":merchant_key,
+        "return_url":return_url,
+        "cancel_url":cancel_url,
+        "notify_url":notify_url,
+        "name_first":name_first,
+        "name_last":name_last,
+        "email_address":email_address,
+        "m_payment_id":m_payment_id,
+        "amount":amount,
+        "item_name":item_name,
+        "item_description":item_description,
+        "email_confirmation":email_confirmation,
+        "confirmation_address":confirmation_address,
+    }
+
+    signature = create_signature(list_of_values)
+
+    context = {
+        "payfast_url":payfast_url,
+        "merchant_id":merchant_id,
+        "merchant_key":merchant_key,
+        "return_url":return_url,
+        "cancel_url":cancel_url,
+        "notify_url":notify_url,
+        "name_first":name_first,
+        "name_last":name_last,
+        "email_address":email_address,
+        "m_payment_id":m_payment_id,
+        "amount":amount,
+        "item_name":item_name,
+        "item_description":item_description,
+        "email_confirmation":email_confirmation,
+        "confirmation_address":confirmation_address,
+        "signature":signature,
+        "sitter_merchant_id":"10016213",
+        "booking":booking
+    }
+
+    # saving order
+    try:
+        already_there = PayFastOrder.objects.filter(m_payment_id = m_payment_id)
+        if already_there[0].payment_status == "COMPLETE"::
+            pass
+        else:
+            PayFastOrder.objects.create(payfast_url = payfast_url,
+                                        merchant_id = merchant_id,
+                                        merchant_key = merchant_key,
+                                        return_url = return_url,
+                                        cancel_url = cancel_url,
+                                        notify_url = notify_url,
+                                        name_first = name_first,
+                                        name_last = name_last,
+                                        email_address = email_address,
+                                        m_payment_id = m_payment_id,
+                                        amount = amount,
+                                        item_name = item_name,
+                                        item_description = item_description,
+                                        email_confirmation = str(email_confirmation),
+                                        confirmation_address = confirmation_address,
+                                        signature = signature,
+                                        sitter_merchant_id = sitter.merchant_id,
+                                        booking = booking)
+    except:
+        PayFastOrder.objects.create(payfast_url = payfast_url,
+                                    merchant_id = merchant_id,
+                                    merchant_key = merchant_key,
+                                    return_url = return_url,
+                                    cancel_url = cancel_url,
+                                    notify_url = notify_url,
+                                    name_first = name_first,
+                                    name_last = name_last,
+                                    email_address = email_address,
+                                    m_payment_id = m_payment_id,
+                                    amount = amount,
+                                    item_name = item_name,
+                                    item_description = item_description,
+                                    email_confirmation = str(email_confirmation),
+                                    confirmation_address = confirmation_address,
+                                    signature = signature,
+                                    sitter_merchant_id = sitter.merchant_id,
+                                    booking = booking)
+
+
+    return render(request, 'payments/checkout.html', context)
+
+
+@login_required(login_url='core-login')
 @csrf_exempt
 def checkout_payment(request, booking_id):
 
