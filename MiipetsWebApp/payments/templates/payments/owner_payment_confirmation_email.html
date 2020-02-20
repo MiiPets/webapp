@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
     <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
-    <title>Welcome - [Plain HTML]</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+    <title>Payment Confirmation</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
     <!-- Web Font / @font-face : BEGIN -->
     <!-- NOTE: If web fonts are not required, lines 10 - 27 can be safely removed. -->
@@ -239,11 +239,11 @@
                                      <tr>
                                          <td valign="top" style="text-align: center; padding: 60px 0 10px 20px;">
                                              <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 30px; line-height: 36px; color: #0; font-weight: bold;">
-                                               YOU HAVE A NEW BOOKING {{service.sitter.first_name}}
+                                               THANK YOU FOR YOUR PAYMENT!
                                              </h1>
                                              <br>
                                              <h4 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #0; font-weight: bold;">
-                                               GO AND PROVIDE THEM PEACE OF MIND
+                                               NOW ENJOY FREEDOM WITH PEACH OF MIND
                                              </h4>
                                          </td>
                                      </tr>
@@ -279,17 +279,10 @@
                             <tr>
                                 <td style="padding: 0px 40px 20px 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; text-align: left; font-weight:normal;">
                                     <p style="margin: 0;">
-                                       You have just recieved a booking from <a href="http://127.0.0.1:8000{% url 'services-view-miiowner' owner_id=owner.id%}">{{owner.first_name}} {{owner.last_name}}</a>
-                                       to {%if service.type == "WALK" %} walk {%else%} look after {%endif%}
-                                       their {{number_of_pets}} pet{%if number_of_pets > 1%}s{%endif%}
+                                      Hi {{first_name}}
+                                      <br>
+                                      We have successfully proccessed your payment for your booking of {{booking.service.service_name}} starting {{booking.start_date}}. You can view your invoice <a href="https://www.miipets.com/payments/view_invoice/{{booking.id}}">here</a>.
 
-                                       {%if service.type == "WALK" %}
-                                        on {{booking.start_date}} at {{timeslot}}
-                                       {%else%}
-                                       from {{booking.start_date}} till {{booking.end_date}}.
-                                       {%endif%}
-
-                                       Please select if you are able to this using the buttons below.
                                     </p>
                                 </td>
                             </tr>
@@ -330,87 +323,79 @@
                 </tr>
                 <!-- INTRO : END -->
 
-                <!-- CTA : BEGIN -->
-                <tr>
-                    <td bgcolor="#007A33">
-                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                            <tr>
-                                <td style="padding: 0px 40px 20px 40px; font-family: sans-serif; font-size: 17px; line-height: 23px; color: #ffffff; text-align: center; font-weight:normal;">
-                                    <p style="margin: 0;">Are you availible?</p>
-                                </td>
+
+                                <!-- CTA : BEGIN -->
+                                <tr>
+                                    <td bgcolor="#007A33">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding: 40px 40px 5px 40px; text-align: center;">
+                                                    <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 20px; line-height: 24px; color: #ffffff; font-weight: bold;">YOUR FEEDBACK IS IMPORTANT</h1>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0px 40px 20px 40px; font-family: sans-serif; font-size: 17px; line-height: 23px; color: #ffffff; text-align: center; font-weight:normal;">
+                                                    <p style="margin: 0;">Let us know what you think</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="middle" align="center" style="text-align: center; padding: 0px 20px 40px 20px;">
+
+                                                    <!-- Button : BEGIN -->
+                                                    <table role="presentation" align="center" cellspacing="0" cellpadding="0" border="0" class="center-on-narrow">
+                                                        <tr>
+                                                            <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
+                                                                <a href="https://www.miipets.com/contact/" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
+                                                                    <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;GIVE FEEDBACK&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <!-- Button : END -->
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <!-- CTA : END -->
+
+                                <!-- FOOTER : BEGIN -->
+                                <tr>
+                                    <td bgcolor="#ffffff">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding: 0px 40px 10px 40px; font-family: sans-serif; font-size: 12px; line-height: 18px; color: #666666; text-align: center; font-weight:normal;">
+                                                    <p style="margin: 0;">This email was sent to you from info@miipets.com</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0px 40px 10px 40px; font-family: sans-serif; font-size: 12px; line-height: 18px; color: #666666; text-align: center; font-weight:normal;">
+                                                    <p style="margin: 0;"><a href="https://www.miipets.com/login">Login</a> | <a href="https://www.instagram.com/miipets_pty/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="2%"><path d="M336 96c21.2 0 41.3 8.4 56.5 23.5S416 154.8 416 176v160c0 21.2-8.4 41.3-23.5 56.5S357.2 416 336 416H176c-21.2 0-41.3-8.4-56.5-23.5S96 357.2 96 336V176c0-21.2 8.4-41.3 23.5-56.5S154.8 96 176 96h160m0-32H176c-61.6 0-112 50.4-112 112v160c0 61.6 50.4 112 112 112h160c61.6 0 112-50.4 112-112V176c0-61.6-50.4-112-112-112z"/><path d="M360 176c-13.3 0-24-10.7-24-24s10.7-24 24-24c13.2 0 24 10.7 24 24s-10.8 24-24 24zM256 192c35.3 0 64 28.7 64 64s-28.7 64-64 64-64-28.7-64-64 28.7-64 64-64m0-32c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96z"/></svg></a> | <a href="https://web.facebook.com/MiiPets-105019651032940/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="2%"><path d="M426.8 64H85.2C73.5 64 64 73.5 64 85.2v341.6c0 11.7 9.5 21.2 21.2 21.2H256V296h-45.9v-56H256v-41.4c0-49.6 34.4-76.6 78.7-76.6 21.2 0 44 1.6 49.3 2.3v51.8h-35.3c-24.1 0-28.7 11.4-28.7 28.2V240h57.4l-7.5 56H320v152h106.8c11.7 0 21.2-9.5 21.2-21.2V85.2c0-11.7-9.5-21.2-21.2-21.2z"/></svg></a>  |<a href="https://twitter.com/MiiPets"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="2%"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6-18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6.8 15 2.5 22.1-80.5-4-151.9-42.6-199.6-101.3-8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7-16-.4-31-4.8-44-12.1v1.2c0 47 33.4 86.1 77.7 95-8.1 2.2-16.7 3.4-25.5 3.4-6.2 0-12.3-.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3-33.1 26-74.9 41.5-120.3 41.5-7.8 0-15.5-.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-.1-8.4-.3-12.5C462.6 146 479 129 492 109.5z"/></svg></ion-icon></a></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0px 40px 40px 40px; font-family: sans-serif; font-size: 12px; line-height: 18px; color: #666666; text-align: center; font-weight:normal;">
+                                                    <p style="margin: 0;">&copy; 2020 <b>MiiPets</b>, All Rights Reserved.</p>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <!-- FOOTER : END -->
+
+                            </table>
+                            <!-- Email Body : END -->
+
+                            <!--[if mso]>
+                            </td>
                             </tr>
-                            <tr>
-                                <td valign="middle" align="center" style="text-align: center; padding: 0px 20px 40px 20px;">
+                            </table>
+                            <![endif]-->
+                        </div>
 
-                                    <!-- Button : BEGIN -->
-                                    <table role="presentation" align="center" cellspacing="0" cellpadding="0" border="0" class="center-on-narrow">
-                                        <tr>
-                                            <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                <a href="http://127.0.0.1:8000{% url 'services-sitter-confirmation' service_id=service.id  booking_id=booking.id sitter_answer=1%}" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
-                                                    <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;YES&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                </a>
-                                            </td>
-                                            <td >
-                                                <p></p>
-                                            </td>
-                                            <td >
-                                                <p></p>
-                                            </td>
-                                            <td >
-                                                <p></p>
-                                            </td>
-                                            <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                <a href="http://127.0.0.1:8000{% url 'services-sitter-confirmation' service_id=service.id  booking_id=booking.id sitter_answer=0 %}"  style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
-                                                    <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <!-- Button : END -->
-
-                                </td>
-                            </tr>
-
-                        </table>
-                    </td>
-                </tr>
-                <!-- CTA : END -->
-
-                <!-- FOOTER : BEGIN -->
-                <tr>
-                    <td bgcolor="#ffffff">
-                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                            <tr>
-                                <td style="padding: 0px 40px 10px 40px; font-family: sans-serif; font-size: 12px; line-height: 18px; color: #666666; text-align: center; font-weight:normal;">
-                                    <p style="margin: 0;">This email was sent to you from info@miipets.com</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 0px 40px 10px 40px; font-family: sans-serif; font-size: 12px; line-height: 18px; color: #666666; text-align: center; font-weight:normal;">
-                                    <p style="margin: 0;"><a href="https://www.miipets.com/login">Login</a> | <a href="https://www.instagram.com/miipets_pty/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="2%"><path d="M336 96c21.2 0 41.3 8.4 56.5 23.5S416 154.8 416 176v160c0 21.2-8.4 41.3-23.5 56.5S357.2 416 336 416H176c-21.2 0-41.3-8.4-56.5-23.5S96 357.2 96 336V176c0-21.2 8.4-41.3 23.5-56.5S154.8 96 176 96h160m0-32H176c-61.6 0-112 50.4-112 112v160c0 61.6 50.4 112 112 112h160c61.6 0 112-50.4 112-112V176c0-61.6-50.4-112-112-112z"/><path d="M360 176c-13.3 0-24-10.7-24-24s10.7-24 24-24c13.2 0 24 10.7 24 24s-10.8 24-24 24zM256 192c35.3 0 64 28.7 64 64s-28.7 64-64 64-64-28.7-64-64 28.7-64 64-64m0-32c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96z"/></svg></a> | <a href="https://web.facebook.com/MiiPets-105019651032940/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="2%"><path d="M426.8 64H85.2C73.5 64 64 73.5 64 85.2v341.6c0 11.7 9.5 21.2 21.2 21.2H256V296h-45.9v-56H256v-41.4c0-49.6 34.4-76.6 78.7-76.6 21.2 0 44 1.6 49.3 2.3v51.8h-35.3c-24.1 0-28.7 11.4-28.7 28.2V240h57.4l-7.5 56H320v152h106.8c11.7 0 21.2-9.5 21.2-21.2V85.2c0-11.7-9.5-21.2-21.2-21.2z"/></svg></a>  |<a href="https://twitter.com/MiiPets"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="2%"><path d="M492 109.5c-17.4 7.7-36 12.9-55.6 15.3 20-12 35.4-31 42.6-53.6-18.7 11.1-39.4 19.2-61.5 23.5C399.8 75.8 374.6 64 346.8 64c-53.5 0-96.8 43.4-96.8 96.9 0 7.6.8 15 2.5 22.1-80.5-4-151.9-42.6-199.6-101.3-8.3 14.3-13.1 31-13.1 48.7 0 33.6 17.2 63.3 43.2 80.7-16-.4-31-4.8-44-12.1v1.2c0 47 33.4 86.1 77.7 95-8.1 2.2-16.7 3.4-25.5 3.4-6.2 0-12.3-.6-18.2-1.8 12.3 38.5 48.1 66.5 90.5 67.3-33.1 26-74.9 41.5-120.3 41.5-7.8 0-15.5-.5-23.1-1.4C62.8 432 113.7 448 168.3 448 346.6 448 444 300.3 444 172.2c0-4.2-.1-8.4-.3-12.5C462.6 146 479 129 492 109.5z"/></svg></ion-icon></a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 0px 40px 40px 40px; font-family: sans-serif; font-size: 12px; line-height: 18px; color: #666666; text-align: center; font-weight:normal;">
-                                    <p style="margin: 0;">&copy; 2020 <b>MiiPets</b>, All Rights Reserved.</p>
-                                </td>
-                            </tr>
-
-                        </table>
-                    </td>
-                </tr>
-                <!-- FOOTER : END -->
-
-            </table>
-            <!-- Email Body : END -->
-
-            <!--[if mso]>
-            </td>
-            </tr>
-            </table>
-            <![endif]-->
-        </div>
-
-    </center>
-</body>
-</html>
+                    </center>
+                </body>
+                </html>
