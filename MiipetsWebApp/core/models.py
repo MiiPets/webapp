@@ -291,8 +291,8 @@ class PayFastOrder(TimeStampMixin):
     """
 
     payfast_url = models.CharField(max_length=100, default = "https://payfast.co.za/eng/process")
-    merchant_id = models.CharField(max_length=10, default = "14938518")
-    merchant_key = models.CharField(max_length=10, default = "w0rseik5fm412")
+    merchant_id = models.CharField(max_length=20, default = "14938518")
+    merchant_key = models.CharField(max_length=50, default = "w0rseik5fm412")
     return_url = models.CharField(max_length=200, default = "")
     cancel_url = models.CharField(max_length=200, default = "http://www.miipets.com/payments/cancel-payment")
     notify_url = models.CharField(max_length=200, default = "http://www.miipets.com/payments/notify-payment")
