@@ -107,7 +107,7 @@ def view_invoice(request, booking_id):
         "email_confirmation":email_confirmation,
         "confirmation_address":confirmation_address,
         "signature":signature,
-        "sitter_merchant_id":"10016213",
+        "sitter_merchant_id":sitter.merchant_id,
         "booking":booking
     }
 
