@@ -55,9 +55,9 @@ def checkout_payment(request, booking_id):
     payfast_url = "https://sandbox.payfast.co.za/eng/process"
     merchant_id = 10016213
     merchant_key = "qpy7a8jq1hgz1"
-    return_url = "http://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
-    cancel_url = "http://miipets.com:8080/payments/cancel-payment"
-    notify_url = "http://miipets.com:8080/payments/notify-payment"
+    return_url = "https://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
+    cancel_url = "https://miipets.com:8080//payments/cancel-payment"
+    notify_url = "https://miipets.com:8080/payments/notify-payment"
     name_first = (booking.requester.first_name).replace(" ", "")
     name_last = (booking.requester.last_name).replace(" ", "")
     email_address = (booking.requester.email).replace(" ", "")
@@ -176,10 +176,12 @@ def paysoft_check(request):
     On successful access 'payfast.signals.notify' signal is sent.
     Orders should be processed in signal handler.
     """
+
     m_payment_id = request.POST.get('m_payment_id', None)
     order = get_object_or_404(PayFastOrder, m_payment_id=m_payment_id)
 
     print("HELLLOOO!!!")
+
 
     # is signature valid
     list_of_values = {
@@ -197,13 +199,18 @@ def paysoft_check(request):
           "merchant_id":request.POST.get('merchant_id', None)
         }
 
+    print("VALUES:")
+    print(list_of_values)
     signature = create_signature(list_of_values)
+
+    print("THERE SIGNATURE: {}".format(request.POST.get('signature', None))
 
     if signature == request.POST.get('signature', None):
         pass
     else:
         print("PAYMENT FAILED BECAUSE: signatures did not match")
-        
+        return HttpResponseBadRequest()
+
     # is request IP in trusted sources
     domain = request.META['HTTP_HOST']
     valid_domains = ["www.payfast.co.za", "w1w.payfast.co.za", "w2w.payfast.co.za", "sandbox.payfast.co.za"]
@@ -211,24 +218,46 @@ def paysoft_check(request):
         pass
     else:
         print("PAYMENT FAILED BECAUSE: IP is not trusted")
-       
+        return HttpResponseBadRequest()
 
     # is payment amount what it should have been
     if order.amount == request.POST.get('amount_gross', None):
         pass
     else:
-        print("PAYMENT FAILED BECAUSE: ")
-        
-    if (order.item_name ==  request.POST.get('item_name', None)
-       & order.item_description == request.POST.get('item_description', None)
-       & order.name_first == request.POST.get('name_first', None)
-       & order.name_last == request.POST.get('name_last', None)
-       & order.email_address == request.POST.get('email_address', None)
-       & order.merchant_id == request.POST.get('merchant_id', None)):
+        print("PAYMENT FAILED BECAUSE: amount is different ")
+        return HttpResponseBadRequest()
+
+    if order.item_description == request.POST.get('item_description', None):
         pass
     else:
-        print("PAYMENT FAILED BECAUSE: details are different")
-       
+        print("PAYMENT FAILED BECAUSE: item_description are different")
+        return HttpResponseBadRequest()
+
+    if order.name_first == request.POST.get('name_first', None):
+        pass
+    else:
+        print("PAYMENT FAILED BECAUSE: name_first are different")
+        return HttpResponseBadRequest()
+
+    if order.name_last == request.POST.get('name_last', None):
+        pass
+    else:
+        print("PAYMENT FAILED BECAUSE: name_last are different")
+        return HttpResponseBadRequest()
+
+    if order.email_address == request.POST.get('email_address', None):
+        pass
+    else:
+        print("PAYMENT FAILED BECAUSE: email_address are different")
+        return HttpResponseBadRequest()
+
+    if order.merchant_id == request.POST.get('merchant_id', None):
+        pass
+    else:
+        print("PAYMENT FAILED BECAUSE: merchant_id are different")
+        return HttpResponseBadRequest()
+
+
     # data has not been processed yet
     post_bytes = urllib.parse.urlencode(list_of_values, encoding='utf-8', errors='strict').encode('ascii')
     response = urllib.request.urlopen("https://sandbox.payfast.co.za/eng/query/validate", data=post_bytes)
@@ -239,7 +268,8 @@ def paysoft_check(request):
         pass
     else:
         print("PAYMENT FAILED BECAUSE: data has not been sent by payfast")
-        
+        return HttpResponseBadRequest()
+
     # pf_payment_id not somewhere in database perhaps
     try:
         orders = PayFastOrder.objects.filter(pf_payment_id = request.POST.get('pf_payment_id', None))
@@ -248,7 +278,7 @@ def paysoft_check(request):
 
     if len(orders) >= 1:
         print("PAYMENT FAILED BECAUSE: Payment has already been processed")
-        
+        return HttpResponseBadRequest()
     else:
         pass
 
