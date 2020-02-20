@@ -236,7 +236,7 @@ def paysoft_check(request):
     # is payment amount what it should have been
 
     try:
-        if order.amount.split(".")[0] == request.POST.get('amount_gross', None).split(".")[0]:
+        if str(order.amount).split(".")[0] == str(request.POST.get('amount_gross', None)).split(".")[0]:
             pass
         else:
             print("PAYMENT FAILED BECAUSE: amount is different")
