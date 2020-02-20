@@ -194,16 +194,16 @@ def paysoft_check(request):
           "amount_gross":request.POST.get('amount_gross', None),
           "amount_fee":request.POST.get('amount_fee', None),
           "amount_net":request.POST.get('amount_net', None),
-          'custom_str1': request.POST.get("custom_str1", None),
-          'custom_str2': request.POST.get("custom_str2", None),
-          'custom_str3': request.POST.get("custom_str3", None),
-          'custom_str4': request.POST.get("custom_str4", None),
-          'custom_str5': request.POST.get("custom_str5", None),
-          'custom_int1': request.POST.get("custom_int1", None),
-          'custom_int2': request.POST.get("custom_int2", None),
-          'custom_int3': request.POST.get("custom_int3", None),
-          'custom_int4': request.POST.get("custom_int4", None),
-          'custom_int5': request.POST.get("custom_int5", None),
+          'custom_str1':request.POST.get("custom_str1", None),
+          'custom_str2':request.POST.get("custom_str2", None),
+          'custom_str3':request.POST.get("custom_str3", None),
+          'custom_str4':request.POST.get("custom_str4", None),
+          'custom_str5':request.POST.get("custom_str5", None),
+          'custom_int1':request.POST.get("custom_int1", None),
+          'custom_int2':request.POST.get("custom_int2", None),
+          'custom_int3':request.POST.get("custom_int3", None),
+          'custom_int4':request.POST.get("custom_int4", None),
+          'custom_int5':request.POST.get("custom_int5", None),
           "name_first":request.POST.get('name_first', None),
           "name_last":request.POST.get('name_last', None),
           "email_address":request.POST.get('email_address', None),
@@ -235,12 +235,20 @@ def paysoft_check(request):
 
     # is payment amount what it should have been
 
-    if order.amount == request.POST.get('amount_gross', None):
-        pass
-    else:
-        print("PAYMENT FAILED BECAUSE: amount is different")
-        print("US:{} THEY:{}".format(order.amount, request.POST.get('amount_gross', None)))
-        return HttpResponseBadRequest()
+    try:
+        if order.amount.split(".")[0] == request.POST.get('amount_gross', None).split(".")[0]:
+            pass
+        else:
+            print("PAYMENT FAILED BECAUSE: amount is different")
+            print("US:{} THEY:{}".format(order.amount, request.POST.get('amount_gross', None)))
+            return HttpResponseBadRequest()
+    except:
+        if order.amount == request.POST.get('amount_gross', None):
+            pass
+        else:
+            print("PAYMENT FAILED BECAUSE: amount is different")
+            print("US:{} THEY:{}".format(order.amount, request.POST.get('amount_gross', None)))
+            return HttpResponseBadRequest()
 
     if order.item_description == request.POST.get('item_description', None):
         pass
