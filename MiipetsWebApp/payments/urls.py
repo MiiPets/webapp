@@ -9,6 +9,7 @@ urlpatterns = [
     path('checkout/<int:booking_id>', payment_views.checkout_payment, name='payments-checkout'),
     path('payment-complete/<int:booking_id>', payment_views.success_payment, name='payments-sucess'),
     path('notify-payment', payment_views.paysoft_check, name='payments-check-payfast'),
+    path('cancel-payment', payment_views.cancel_payment, name='payments-cancel'),
 ]
 
 if settings.DEBUG:

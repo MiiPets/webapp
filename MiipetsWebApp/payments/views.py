@@ -164,6 +164,12 @@ def success_payment(request, booking_id):
 
 
 @login_required(login_url='core-login')
+@agreed_terms_required
+def cancel_payment(request):
+    return render(request, 'payments/cancel.html')
+
+
+@login_required(login_url='core-login')
 @csrf_exempt
 def paysoft_check(request):
     """
