@@ -223,17 +223,13 @@ def paysoft_check(request):
         return HttpResponseBadRequest()
 
     # is request IP in trusted sources
-    domain = request.META['HTTP_HOST']
-    print("REQUEST META: {}".format(request.META))
-    #print(domain)
-    #valid_domains = ["www.payfast.co.za", "w1w.payfast.co.za", "w2w.payfast.co.za", "sandbox.payfast.co.za"]
-    #if domain in valid_domains:
-     #   pass
-    #else:
-      #  print("PAYMENT FAILED BECAUSE: IP is not trusted")
-       # return HttpResponseBadRequest()
-
-    # is payment amount what it should have been
+    domain = request.META['HTTP_REFERER']
+    valid_domains = ["www.payfast.co.za", "w1w.payfast.co.za", "w2w.payfast.co.za", "sandbox.payfast.co.za"]
+    if domain.split("https://")[1] in valid_domains:
+       pass
+    else:
+       print("PAYMENT FAILED BECAUSE: IP is not trusted")
+       return HttpResponseBadRequest()
 
     try:
         if str(order.amount).split(".")[0] == str(request.POST.get('amount_gross', None)).split(".")[0]:
@@ -243,6 +239,7 @@ def paysoft_check(request):
             print("US:{} THEY:{}".format(order.amount, request.POST.get('amount_gross', None)))
             return HttpResponseBadRequest()
     except:
+        print("IN THE EXCEPT")
         if order.amount == request.POST.get('amount_gross', None):
             pass
         else:
