@@ -11,7 +11,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core import mail
 from django.conf import settings
-
+import urllib
 
 def send_sitter_payment_confirmation(first_name, email_address, booking):
     """
