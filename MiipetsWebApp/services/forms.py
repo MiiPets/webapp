@@ -80,7 +80,7 @@ class BookService(forms.ModelForm):
         if self.service.type != "WALK":
             booking.end_date = end_date
         else:
-            booking.end_date = '1900-01-01'
+            booking.end_date = start_date
 
         if self.service.type == "WALK":
             booking.time_slot =  self.cleaned_data.get('time_slot')
