@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
     <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
-    <title>Welcome - [Plain HTML]</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+    <title>Please rate your MiiSitter</title> <!-- The title tag shows in email notifications, like Android 4.4. -->
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
     <!-- Web Font / @font-face : BEGIN -->
     <!-- NOTE: If web fonts are not required, lines 10 - 27 can be safely removed. -->
@@ -180,6 +180,17 @@
 
     </style>
 
+    <!-- What it does: Makes background images in 72ppi Outlook render at correct size. -->
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
+
+
 </head>
 <body width="100%" bgcolor="#F1F1F1" style="margin: 0; mso-line-height-rule: exactly;">
     <center style="width: 100%; background: #F1F1F1; text-align: left;">
@@ -225,7 +236,17 @@
                 <tr>
                     <!-- Bulletproof Background Images c/o https://backgrounds.cm -->
                     <td background="background.png" bgcolor="#FFFFFF" align="center" valign="top" style="text-align: center; background-position: center center !important; background-size: cover !important;">
+                        <!--[if gte mso 9]>
+                        <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:680px; height:380px; background-position: center center !important;">
+                        <v:fill type="tile" src="background.png" color="#222222" />
+                        <v:textbox inset="0,0,0,0">
+                        <![endif]-->
                         <div>
+                            <!--[if mso]>
+                            <table role="presentation" border="0" cellspacing="0" cellpadding="0" align="center" width="500">
+                            <tr>
+                            <td align="center" valign="middle" width="500">
+                            <![endif]-->
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="100%" style="max-width:500px; margin: auto;">
 
                                 <tr>
@@ -239,18 +260,8 @@
                                      <tr>
                                          <td valign="top" style="text-align: center; padding: 60px 0 10px 20px;">
                                              <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 30px; line-height: 36px; color: #0; font-weight: bold;">
-                                               {% if booking.sitter_answer %}
-                                                {{service.sitter.first_name}} HAS CONFIRMED YOUR BOOKING
-                                               {% else %}
-                                                {{service.sitter.first_name}} HAS UNFORTUNATELY DECLINED YOUR BOOKING
-                                               {%endif%}
+                                               HOW WAS THAT FREEDOM WITH PEACE OF MIND?
                                              </h1>
-                                             <br>
-                                             {% if booking.sitter_answer %}
-                                               <h4 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #0; font-weight: bold;">
-                                                 YOU CAN NOW ENJOY FREEDOM WITH PEACE OF MIND
-                                               </h4>
-                                             {%endif%}
                                          </td>
                                      </tr>
                                      <tr>
@@ -287,7 +298,16 @@
                                 </tr>
 
                             </table>
+                            <!--[if mso]>
+                            </td>
+                            </tr>
+                            </table>
+                            <![endif]-->
                         </div>
+                        <!--[if gte mso 9]>
+                        </v:textbox>
+                        </v:rect>
+                        <![endif]-->
                     </td>
                 </tr>
                 <!-- HERO : END -->
@@ -298,40 +318,17 @@
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                             <tr>
                                 <td style="padding: 0px 40px 20px 40px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; text-align: left; font-weight:normal;">
-                                    {% if booking.sitter_answer %}
-                                      <p style="margin: 0;">
-                                         Your booking for {{service.service_name}}
-
-                                         {%if service.type == "WALK" %}
-                                          on {{booking.start_date}} at {{timeslot}}
-                                         {%else%}
-                                         from {{booking.start_date}} till {{booking.end_date}}.
-                                         {%endif%}
-
-                                         has been approved by your MiiSitter, {{service.sitter.first_name}}.
-                                      </p>
-                                    {%else%}
-                                      <p style="margin: 0;">
-                                         Your booking for {{service.service_name}}
-
-                                         {%if service.type == "WALK" %}
-                                          on {{booking.start_date}} at {{timeslot}}
-                                         {%else%}
-                                         from {{booking.start_date}} till {{booking.end_date}}.
-                                         {%endif%}
-
-                                         has been rejected by your MiiSitter. We are sorry for this disruption to your plans.
-                                         You can find another booking with the link below.
-                                      </p>
-                                    {%endif%}
-
-                                {% if booking.sitter_answer %}
-                                      <p style="margin: 0;">
-                                         All that is required from you now to complete finalize the booking is to follow the link to the payment page
-                                         to pay your total of {{booking.price}}.
-                                      </p>
-                                {%endif%}
-
+                                   <p style="margin: 0;">
+                                     Hi {{booking.requester.first_name}}
+                                   </p>
+                                   <br>
+                                    <p style="margin: 0;">
+                                       We hope everything went brilliant with your service, <em>{{booking.service.service_name}}</em>. In order for
+                                       us to improve and tackle any issues you might have experienced,
+                                       will you please leave a review for your service
+                                       <a href="https://miipets.com/reviews/review-pet-service/{{booking.id}}">here</a>.
+                                    </p>
+                                    <br>
                                 </td>
                             </tr>
                             <tr>
@@ -376,8 +373,13 @@
                     <td bgcolor="#007A33">
                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                             <tr>
+                                <td style="padding: 40px 40px 5px 40px; text-align: center;">
+                                    <h1 style="margin: 0; font-family: 'Montserrat', sans-serif; font-size: 20px; line-height: 24px; color: #ffffff; font-weight: bold;">YOUR FEEDBACK IS IMPORTANT</h1>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td style="padding: 0px 40px 20px 40px; font-family: sans-serif; font-size: 17px; line-height: 23px; color: #ffffff; text-align: center; font-weight:normal;">
-                                    <p style="margin: 0;">Freedom is close!</p>
+                                    <p style="margin: 0;">Let us know what you think about MiiPets</p>
                                 </td>
                             </tr>
                             <tr>
@@ -386,19 +388,11 @@
                                     <!-- Button : BEGIN -->
                                     <table role="presentation" align="center" cellspacing="0" cellpadding="0" border="0" class="center-on-narrow">
                                         <tr>
-                                           {%if booking.sitter_answer %}
-                                              <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                  <a href="https://miipets.com{% url 'payments-checkout' booking_id=booking.id %}" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
-                                                      <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;Pay Now&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                  </a>
-                                              </td>
-                                            {%else%}
-                                              <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
-                                                  <a href="https://miipets.com{% url 'services' type=booking.service.type %}" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
-                                                      <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;Search other services&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                  </a>
-                                              </td>
-                                            {%endif%}
+                                            <td style="border-radius: 50px; background: #ffffff; text-align: center;" class="button-td">
+                                                <a href="https://www.miipets.com/contact/" style="background: #ffffff; border: 15px solid #ffffff; font-family: 'Montserrat', sans-serif; font-size: 14px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 50px; font-weight: bold;" class="button-a">
+                                                    <span style="color:#00000;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;GIVE FEEDBACK&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                </a>
+                                            </td>
                                         </tr>
                                     </table>
                                     <!-- Button : END -->

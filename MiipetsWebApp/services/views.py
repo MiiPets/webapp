@@ -685,14 +685,14 @@ def view_owner_profile(request, owner_id):
             }
         else:
             context = {
-                "services":services,
-                "sitter":sitter,
+                "pets":pets,
+                "owner":owner,
                 "sitter_user":False,
             }
     except:
         context = {
-            "services":services,
-            "sitter":sitter,
+            "pets":pets,
+            "owner":owner,
             "sitter_user":False,
         }
 

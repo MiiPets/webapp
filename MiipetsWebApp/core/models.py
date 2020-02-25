@@ -286,70 +286,38 @@ class ServiceReviews(TimeStampMixin):
 
 
 class PayFastOrder(TimeStampMixin):
-
     """
-    Storing data of payfast payments
+    The payment of the booking will be stored here
     """
 
-    m_payment_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
-    pf_payment_id = models.CharField(max_length=40, unique=True, null=True, blank=True)
-    payment_status = models.CharField(max_length=20, null=True, blank=True)
-    item_name = models.CharField(max_length=100)
-    item_description = models.CharField(max_length=255, null=True, blank=True)
-    amount = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
-
-
-    custom_str1 = models.CharField(max_length=255, null=True, blank=True)
-    custom_str2 = models.CharField(max_length=255, null=True, blank=True)
-    custom_str3 = models.CharField(max_length=255, null=True, blank=True)
-    custom_str4 = models.CharField(max_length=255, null=True, blank=True)
-    custom_str5 = models.CharField(max_length=255, null=True, blank=True)
-
-    custom_int1 = models.IntegerField(null=True, blank=True)
-    custom_int2 = models.IntegerField(null=True, blank=True)
-    custom_int3 = models.IntegerField(null=True, blank=True)
-    custom_int4 = models.IntegerField(null=True, blank=True)
-    custom_int5 = models.IntegerField(null=True, blank=True)
-
-    #payer information
-    name_first = models.CharField(max_length=100, null=True, blank=True)
-    name_last = models.CharField(max_length=100, null=True, blank=True)
-    email_address = models.CharField(max_length=100, null=True, blank=True)
-
-    #Receiver Information
-    merchant_id = models.CharField(max_length=15)
-    merchant_key = models.CharField(max_length=40)
-    sitter_merchant_id = models.CharField(max_length=15)
-    sitter_percantage = models.FloatField(default = 0.2)
-    user_pay = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    payfast_url = models.CharField(max_length=100, default = "https://payfast.co.za/eng/process")
+    merchant_id = models.CharField(max_length=20, default = "14938518")
+    merchant_key = models.CharField(max_length=50, default = "w0rseik5fm412")
+    return_url = models.CharField(max_length=200, default = "")
+    cancel_url = models.CharField(max_length=200, default = "http://www.miipets.com/payments/cancel-payment")
+    notify_url = models.CharField(max_length=200, default = "http://www.miipets.com/payments/notify-payment")
+    name_first = models.CharField(max_length=200, null=True)
+    name_last = models.CharField(max_length=200, null=True)
+    email_address = models.CharField(max_length=200, null=True)
+    m_payment_id = models.CharField(max_length=200, null=True)
+    amount = models.FloatField(max_length=200, null=True)
+    item_name = models.CharField(max_length=500, null=True)
+    item_description = models.CharField(max_length=500, null=True)
+    email_confirmation = models.CharField(max_length=2, default='1')
+    confirmation_address = models.CharField(max_length=100, default='info@miipets.com')
+    signature = models.CharField(max_length=100, null=True)
+    signature_from_payfast = models.CharField(max_length=100, null=True)
+    sitter_merchant_id = models.CharField(max_length=100, null=True)
     booking = models.ForeignKey(ServiceBooking, on_delete=models.CASCADE)
-    # split info
-    setup = models.CharField(max_length=200)
-    # Security Information
-    signature = models.CharField(max_length=32, null=True, blank=True)
-    request_ip = models.GenericIPAddressField(null=True, blank=True)
-
-
-    class HelpText:
-        m_payment_id = "Unique transaction ID on the receiver's system."
-        pf_payment_id = "Unique transaction ID on PayFast."
-        payment_status = "The status of the payment."
-        item_name = "The name of the item being charged for."
-        item_description = "The description of the item being charged for."
-        amount_gross = "The total amount which the payer paid."
-        amount_fee = "The total in fees which was deducted from the amount."
-        amount_net = "The net amount credited to the receiver's account."
-
-        first_name_payer = "First name of the payer."
-        last_name_payer = "Last name of the payer."
-        email_address = "Email address of the payer."
-
-        merchant_id = "The Merchant ID as given by the PayFast system."
-        sitter_merchant_id = "The Merchant ID of sitter as given by the PayFast system."
-        signature = "A security signature of the transmitted data"
+    amount_gross = models.CharField(max_length=200, null=True) # amount person paid
+    amount_fee = models.FloatField(max_length=200, null=True)  # amount payfast took
+    amount_net = models.FloatField(null=True)  # amount we get in
+    payment_status = models.CharField(max_length=200, default="Not completed")
+    pf_payment_id =  models.CharField(max_length=200, null=True)
+    trusted = models.BooleanField(default = True)
+    went_to_payfast = models.BooleanField(default = False)
+    notified_sitter = models.BooleanField(default=False)
+    notified_owner = models.BooleanField(default=False)
 
     def __str__(self):
-        return 'PayFastOrder {id} of booking'.format(self.m_payment_id, self.booking.id)
-
-    class Meta:
-        verbose_name = 'PayFast order'
+        return ("Payment of booking {}".format(self.booking.id))
