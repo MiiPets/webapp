@@ -251,20 +251,8 @@ def create_signature(list_of_values):
     Required to create hash function for Payfast payments
     """
 
-    CHECKOUT_SIGNATURE_IGNORED_WHITESPACE = ''.join([
-    ' ',
-    '\t',
-    '\n',
-    '\r',
-    '\x0b',  # \N{LINE TABULATION} (Python 2 does not know this Unicode character name)
-
-    # XXX: trim() strips '\0', but it's not clear whether to actually strip it here.
-    # We can't really test it, since the endpoint seems to refuse any requests with null values.
-    # '\0',
-    ])
-
-    signature_string = urllib.parse.urlencode(list_of_values)
-    signature = hashlib.md5(signature_string.strip(CHECKOUT_SIGNATURE_IGNORED_WHITESPACE).encode()).hexdigest()
+    signature_string = urllib.parse.urlencode(list_of_values, encoding='utf-8', errors='strict')
+    signature = hashlib.md5(signature_string.rstrip().encode('ascii')).hexdigest()
     print(signature_string)
     print(signature)
     return signature
