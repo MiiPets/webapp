@@ -10,9 +10,18 @@
                     <div class="col-md-12 text-center">
                         <div class="booking-confirmation-page">
                             <i class="ion-android-checkmark-circle"></i>
-                            <h2 class="margin-top-30">Thank you for notifying us!</h2>
-                            <p>Your owner will complete the payment within 24 hours where after you will be notified with confirmation.</p>
-                            <p>Thank you for providing peace of mind!</p>
+                            {% if sitter_answer %}
+                                <h2 class="margin-top-30">Thank you for notifying us!</h2>
+                                <p>Your owner will complete the payment within 24 hours where after you will be notified with confirmation.</p>
+                                <p>Thank you for providing peace of mind!</p>
+                            {%else%}
+                                <h2 class="margin-top-30">Thank you for notifying us!</h2>
+                                <p>We are sorry that you can not complete your service this time.</p>
+                                <p>If you have the time could you please email us at info@miipets.com 
+                                    (using the subject “Reason for not completing booking”) 
+                                    that we can just try to see if other sitters are experiencing the same issues?
+                                </p>
+                            {%endif%}
                         </div>
                     </div>
                 </div>
