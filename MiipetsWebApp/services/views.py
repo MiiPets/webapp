@@ -70,7 +70,7 @@ def view_services(request, type):
             start_date, end_date = sort_out_dates(request.GET['date_begin_input'],
                                                   request.GET['date_end_input'])
         except:
-            start_date, end_date = sort_out_dates('2020-01-01', '')
+            start_date, end_date = sort_out_dates('', '')
 
         try:
             price_start = request.GET['price_start']
