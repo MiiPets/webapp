@@ -56,9 +56,9 @@ def view_invoice(request, booking_id):
     booking = ServiceBooking.objects.get(id=booking_id)
     sitter = MiiSitter.objects.get(user = booking.service.sitter)
 
-    payfast_url = "https://www.payfast.co.za/eng/process"
-    merchant_id = os.environ['MERCHANT_ID']
-    merchant_key = os.environ['MERCHANT_KEY']
+    payfast_url = "https://sanbox.payfast.co.za/eng/process"
+    merchant_id = 10016213
+    merchant_key = 'qpy7a8jq1hgz1'
     return_url = "http://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
     cancel_url = "http://miipets.com:8080/payments/cancel-payment"
     notify_url = "http://miipets.com:8080/payments/notify-payment"
@@ -167,9 +167,9 @@ def checkout_payment(request, booking_id):
     booking = ServiceBooking.objects.get(id=booking_id)
     sitter = MiiSitter.objects.get(user = booking.service.sitter)
 
-    payfast_url = "https://www.payfast.co.za/eng/process"
-    merchant_id = os.environ['MERCHANT_ID']
-    merchant_key = os.environ['MERCHANT_KEY']
+    payfast_url = "https://sandbox.payfast.co.za/eng/process"
+    merchant_id = 10016213
+    merchant_key = 'qpy7a8jq1hgz1'
     return_url = "http://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
     cancel_url = "http://miipets.com:8080/payments/cancel-payment"
     notify_url = "http://miipets.com:8080/payments/notify-payment"
