@@ -12,6 +12,7 @@ from django.utils.html import strip_tags
 from django.core import mail
 from django.conf import settings
 import urllib
+import os
 
 
 def send_owner_payment_confirmation(first_name, email_address, booking):
@@ -55,12 +56,12 @@ def view_invoice(request, booking_id):
     booking = ServiceBooking.objects.get(id=booking_id)
     sitter = MiiSitter.objects.get(user = booking.service.sitter)
 
-    payfast_url = "https://sandbox.payfast.co.za/eng/process"
-    merchant_id = 10016213
-    merchant_key = "qpy7a8jq1hgz1"
-    return_url = "http://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
-    cancel_url = "http://miipets.com:8080/payments/cancel-payment"
-    notify_url = "http://miipets.com:8080/payments/notify-payment"
+    payfast_url = "https://payfast.co.za/eng/process"
+    merchant_id = os.environ['MERCHANT_ID']
+    merchant_key = os.environ['MERCHANT_KEY']
+    return_url = "http://miipets.com/payments/payment-complete/{}".format(booking.id)
+    cancel_url = "http://miipets.com/payments/cancel-payment"
+    notify_url = "http://miipets.com/payments/notify-payment"
     name_first = (booking.requester.first_name).replace(" ", "")
     name_last = (booking.requester.last_name).replace(" ", "")
     email_address = (booking.requester.email).replace(" ", "")
@@ -166,12 +167,12 @@ def checkout_payment(request, booking_id):
     booking = ServiceBooking.objects.get(id=booking_id)
     sitter = MiiSitter.objects.get(user = booking.service.sitter)
 
-    payfast_url = "https://sandbox.payfast.co.za/eng/process"
-    merchant_id = 10016213
-    merchant_key = "qpy7a8jq1hgz1"
-    return_url = "http://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
-    cancel_url = "http://miipets.com:8080/payments/cancel-payment"
-    notify_url = "http://miipets.com:8080/payments/notify-payment"
+    payfast_url = "https://payfast.co.za/eng/process"
+    merchant_id = os.environ['MERCHANT_ID']
+    merchant_key = os.environ['MERCHANT_KEY']
+    return_url = "http://miipets.com/payments/payment-complete/{}".format(booking.id)
+    cancel_url = "http://miipets.com/payments/cancel-payment"
+    notify_url = "http://miipets.com/payments/notify-payment"
     name_first = (booking.requester.first_name).replace(" ", "")
     name_last = (booking.requester.last_name).replace(" ", "")
     email_address = (booking.requester.email).replace(" ", "")
@@ -218,7 +219,7 @@ def checkout_payment(request, booking_id):
         "email_confirmation":email_confirmation,
         "confirmation_address":confirmation_address,
         "signature":signature,
-        "sitter_merchant_id":"10016213",
+        "sitter_merchant_id":sitter.merchant_id,
         "booking":booking
     }
 
@@ -405,7 +406,7 @@ def paysoft_check(request):
     print("NOW I AM HERE")
     try:
         post_bytes = urllib.parse.urlencode(list_of_values, encoding='utf-8', errors='strict').encode('ascii')
-        response = urllib.request.urlopen("https://sandbox.payfast.co.za/eng/query/validate", data=post_bytes)
+        response = urllib.request.urlopen("https://payfast.co.za/eng/query/validate", data=post_bytes)
         result = response.read().decode('utf-8')
         print("RESULT:{}".format(result))
     except Exception as e: print(e)
@@ -462,7 +463,7 @@ def paysoft_check(request):
             order.notified_owner = True
             order.save(update_fields = ['notified_owner'])
         except:
-            print('could not notify owner in payment')
+            print('Could not notify owner in payment')
 
     # notify owner and sitter that payment has been made and booking confirmed
     print("MADE IT TO THE END!!")
