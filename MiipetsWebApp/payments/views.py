@@ -56,7 +56,7 @@ def view_invoice(request, booking_id):
     booking = ServiceBooking.objects.get(id=booking_id)
     sitter = MiiSitter.objects.get(user = booking.service.sitter)
 
-    payfast_url = "https://payfast.co.za/eng/process"
+    payfast_url = "https://www.payfast.co.za/eng/process"
     merchant_id = os.environ['MERCHANT_ID']
     merchant_key = os.environ['MERCHANT_KEY']
     return_url = "http://miipets.com/payments/payment-complete/{}".format(booking.id)
@@ -167,7 +167,7 @@ def checkout_payment(request, booking_id):
     booking = ServiceBooking.objects.get(id=booking_id)
     sitter = MiiSitter.objects.get(user = booking.service.sitter)
 
-    payfast_url = "https://payfast.co.za/eng/process"
+    payfast_url = "https://www.payfast.co.za/eng/process"
     merchant_id = os.environ['MERCHANT_ID']
     merchant_key = os.environ['MERCHANT_KEY']
     return_url = "http://miipets.com/payments/payment-complete/{}".format(booking.id)
