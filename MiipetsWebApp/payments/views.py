@@ -114,7 +114,7 @@ def view_invoice(request, booking_id):
     # saving order
     try:
         already_there = PayFastOrder.objects.filter(m_payment_id = m_payment_id)
-        if already_there[0].payment_status == "COMPLETE"::
+        if already_there[0].payment_status == "COMPLETE":
             pass
         else:
             PayFastOrder.objects.create(payfast_url = payfast_url,
