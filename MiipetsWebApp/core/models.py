@@ -168,7 +168,7 @@ class SitterServices(TimeStampMixin):
     reptiles_allowed = models.BooleanField(default=False)
     other_pets_allowed = models.BooleanField(default=False)
     description = models.TextField(null = "No description")
-    price = models.PositiveIntegerField(default=10, validators=[MinValueValidator(50)])
+    price = models.PositiveIntegerField(default=25, validators=[MinValueValidator(25)])
     profile_picture = ProcessedImageField(upload_to=image_directory_path_service,
                                           processors=[ResizeToFill(400, 400)],
                                           format='JPEG',
@@ -238,8 +238,8 @@ class ServiceBooking(TimeStampMixin):
     sitter_confirmed = models.BooleanField(default=False)
     owner_payed = models.BooleanField(default=False)
     invoice_sent = models.BooleanField(default=False)
-    price = models.PositiveIntegerField(default=50, validators=[MinValueValidator(50)])
-    price_in_cents = models.PositiveIntegerField(default=5000, validators=[MinValueValidator(5000)])
+    price = models.PositiveIntegerField(default=25, validators=[MinValueValidator(25)])
+    price_in_cents = models.PositiveIntegerField(default=2500, validators=[MinValueValidator(2500)])
     number_of_pets = models.PositiveIntegerField(default=1)
     reason_for_not_being_able = models.CharField(default = "", max_length=500)
 
