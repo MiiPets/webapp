@@ -447,22 +447,24 @@ def paysoft_check(request):
 
     print("SITTER NOTIFIED {}".format(order.notified_owner))
     if not order.notified_sitter:
-       try:
+        try:
             send_sitter_payment_confirmation(order.booking.service.sitter.first_name,
-                                                order.booking.service.sitter.email,
-                                                order.booking)
+            order.booking.service.sitter.email,
+            order.booking)
             order.notified_sitter = True
             order.save(update_fields = ['notified_sitter'])
         except:
             print('could not notify sitter in payment')
+
     print("OWNER NOTIFIED {}".format(order.notified_owner))
+
     if not order.notified_owner:
         try:
-        send_owner_payment_confirmation(order.booking.requester.first_name,
-                                        order.booking.requester.email,
-                                        order.booking)
-        order.notified_owner = True
-        order.save(update_fields = ['notified_owner'])
+            send_owner_payment_confirmation(order.booking.requester.first_name,
+                                            order.booking.requester.email,
+                                            order.booking)
+            order.notified_owner = True
+            order.save(update_fields = ['notified_owner'])
         except:
             print('Could not notify owner in payment')
 
