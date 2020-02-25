@@ -59,9 +59,9 @@ def view_invoice(request, booking_id):
     payfast_url = "https://www.payfast.co.za/eng/process"
     merchant_id = os.environ['MERCHANT_ID']
     merchant_key = os.environ['MERCHANT_KEY']
-    return_url = "http://miipets.com/payments/payment-complete/{}".format(booking.id)
-    cancel_url = "http://miipets.com/payments/cancel-payment"
-    notify_url = "http://miipets.com/payments/notify-payment"
+    return_url = "http://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
+    cancel_url = "http://miipets.com:8080/payments/cancel-payment"
+    notify_url = "http://miipets.com:8080/payments/notify-payment"
     name_first = (booking.requester.first_name).replace(" ", "")
     name_last = (booking.requester.last_name).replace(" ", "")
     email_address = (booking.requester.email).replace(" ", "")
@@ -170,9 +170,9 @@ def checkout_payment(request, booking_id):
     payfast_url = "https://www.payfast.co.za/eng/process"
     merchant_id = os.environ['MERCHANT_ID']
     merchant_key = os.environ['MERCHANT_KEY']
-    return_url = "http://miipets.com/payments/payment-complete/{}".format(booking.id)
-    cancel_url = "http://miipets.com/payments/cancel-payment"
-    notify_url = "http://miipets.com/payments/notify-payment"
+    return_url = "http://miipets.com:8080/payments/payment-complete/{}".format(booking.id)
+    cancel_url = "http://miipets.com:8080/payments/cancel-payment"
+    notify_url = "http://miipets.com:8080/payments/notify-payment"
     name_first = (booking.requester.first_name).replace(" ", "")
     name_last = (booking.requester.last_name).replace(" ", "")
     email_address = (booking.requester.email).replace(" ", "")
@@ -442,28 +442,29 @@ def paysoft_check(request):
         order.save(update_fields = ["pf_payment_id", "payment_status", "amount_gross", "went_to_payfast",
                                     "amount_fee", "amount_net", "signature_from_payfast","trusted"])
     except Exception as e:
+        print('update failed!')
         print(e)
 
-
+    print("SITTER NOTIFIED {}".format(order.notified_owner))
     if not order.notified_sitter:
-       # try:
-        send_sitter_payment_confirmation(order.booking.service.sitter.first_name,
-                                            order.booking.service.sitter.email,
-                                            order.booking)
-        order.notified_sitter = True
-        order.save(update_fields = ['notified_sitter'])
-        # except:
-        #     print('could not notify sitter in payment')
-
+       try:
+            send_sitter_payment_confirmation(order.booking.service.sitter.first_name,
+                                                order.booking.service.sitter.email,
+                                                order.booking)
+            order.notified_sitter = True
+            order.save(update_fields = ['notified_sitter'])
+        except:
+            print('could not notify sitter in payment')
+    print("OWNER NOTIFIED {}".format(order.notified_owner))
     if not order.notified_owner:
-        #try:
+        try:
         send_owner_payment_confirmation(order.booking.requester.first_name,
                                         order.booking.requester.email,
                                         order.booking)
         order.notified_owner = True
         order.save(update_fields = ['notified_owner'])
-        # except:
-        #     print('Could not notify owner in payment')
+        except:
+            print('Could not notify owner in payment')
 
     # notify owner and sitter that payment has been made and booking confirmed
     print("MADE IT TO THE END!!")
