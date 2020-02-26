@@ -80,6 +80,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'MiipetsWebApp.wsgi.application'
 
+AUTHENTICATION_BACKENDS = [
+    'core.methods.CustomBackend',
+]
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

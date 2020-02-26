@@ -16,6 +16,8 @@
                       <div class="ui-dash tab-content">
                           <div class="tab-pane fade show active" id="login" role="tabpanel">
                               <form id="login-form" action="#" method="post">
+                                  <p>You may use either your username or email to login.</p>
+                                  <br>
                                   {% csrf_token %}
                                   {{ form|crispy }}
                                   <div class="res-box text-center mar-top-30">
