@@ -10,6 +10,7 @@ import hashlib
 from django.contrib.auth import get_user_model  # gets the user_model django  default or your own custom
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
+import urllib
 
 def sort_out_dates(start_date, end_date):
     """
