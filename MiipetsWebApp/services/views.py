@@ -58,7 +58,7 @@ def view_services(request, type):
             if request.GET['service_type_input'] in type_dictionary.keys():
                 type = [type_dictionary[request.GET['service_type_input']]]
             else:
-                type = type_dictionary.values()
+                type = list(type_dictionary.values())
         except:
             try:
                 type = [type_dictionary[type]]
@@ -72,59 +72,33 @@ def view_services(request, type):
         except:
             start_date, end_date = sort_out_dates('', '')
 
+
         try:
             price_start = request.GET['price_start']
-            price_end = request.GET['price_end']
-
-            if price_start > price_end:
-                price_start, price_end = price_end, price_start
-
-            if not price_start:
+            if price_start == "":
                 price_start = 0
-                price_end = 99999999
         except:
             price_start = 0
-            price_end = 99999999
+
+        try:
+            price_end = request.GET['price_end']
+            if price_end == "":
+                price_end = 500
+        except:
+            price_end = 500
+
+        price_start = int(price_start)
+        price_end = int(price_end)
+
+        if  price_start> price_end:
+            price_start, price_end = price_end, price_start
+
 
         # checking for pet type
         try:
             pet_type = request.GET['pet_type']
         except:
             pet_type = "All Pets"
-
-        want_dog = True
-        want_cat = True
-        want_bird = True
-        want_reptile = True
-        want_other = True
-
-        if pet_type == "Dog":
-            want_cat = False
-            want_bird = False
-            want_reptile = False
-            want_other = False
-        elif pet_type == "Cat":
-            want_dog = False
-            want_bird = False
-            want_reptile = False
-            want_other = False
-        elif pet_type == "Bird":
-            want_cat = False
-            want_dog = False
-            want_reptile = False
-            want_other = False
-        elif pet_type == "Reptile":
-            want_dog = False
-            want_cat = False
-            want_bird = False
-            want_other = False
-        elif pet_type == "Other":
-            want_dog = False
-            want_cat = False
-            want_bird = False
-            want_reptile = False
-
-
 
         try:
             review_score = request.GET['review_score']
@@ -136,7 +110,8 @@ def view_services(request, type):
         except:
             review_score = -1
 
-        #get relevant services not based on location
+
+                #get relevant services not based on location
         if pet_type == "All Pets":
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
@@ -147,19 +122,47 @@ def view_services(request, type):
 
             print("QUERIED SERVICES in all pets")
             print(services)
-
-        else:
+        elif pet_type == "Dog":
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
                                                      Q(date_start__lte=start_date)&
                                                      Q(date_end__gte=end_date)&
                                                      Q(price__range=[price_start, price_end])&
-                                                     Q(dogs_allowed=want_dog)&
-                                                     Q(cats_allowed=want_cat)&
-                                                     Q(birds_allowed=want_bird)&
-                                                     Q(reptiles_allowed=want_reptile)&
-                                                     Q(other_pets_allowed=want_other)&
+                                                     Q(dogs_allowed=True)&
                                                      Q(review_score__gte=review_score))
+        elif pet_type == "Cat":
+            services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(allowed_to_show=True)&
+                                                     Q(date_start__lte=start_date)&
+                                                     Q(date_end__gte=end_date)&
+                                                     Q(price__range=[price_start, price_end])&
+                                                     Q(cats_allowed=True)&
+                                                     Q(review_score__gte=review_score))
+        elif pet_type == "Bird":
+            services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(allowed_to_show=True)&
+                                                     Q(date_start__lte=start_date)&
+                                                     Q(date_end__gte=end_date)&
+                                                     Q(price__range=[price_start, price_end])&
+                                                     Q(birds_allowed=True)&
+                                                     Q(review_score__gte=review_score))
+        elif pet_type == "Reptile":
+            services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(allowed_to_show=True)&
+                                                     Q(date_start__lte=start_date)&
+                                                     Q(date_end__gte=end_date)&
+                                                     Q(price__range=[price_start, price_end])&
+                                                     Q(reptiles_allowed=True)&
+                                                     Q(review_score__gte=review_score))
+        elif pet_type == "Other":
+            services = SitterServices.objects.filter(Q(type__in=type)&
+                                                     Q(allowed_to_show=True)&
+                                                     Q(date_start__lte=start_date)&
+                                                     Q(date_end__gte=end_date)&
+                                                     Q(price__range=[price_start, price_end])&
+                                                     Q(other_pets_allowed=True)&
+                                                     Q(review_score__gte=review_score))
+
 
         if len(services) < 1:
             services = SitterServices.objects.filter(Q(allowed_to_show=True))
@@ -189,7 +192,8 @@ def view_services(request, type):
                     "type":"Services",
                     "sitter_user":True,
                     "services":services,
-                    "location_input":location_input
+                    "location_input":location_input,
+
                     }
             else:
                 context = {
@@ -197,7 +201,7 @@ def view_services(request, type):
                     "type":"Services",
                     "sitter_user":False,
                     "services":services,
-                    "location_input":location_input
+                    "location_input":location_input,
                     }
         except:
             context = {
@@ -205,7 +209,7 @@ def view_services(request, type):
                 "type":"Services",
                 "sitter_user":False,
                 "services":services,
-                "location_input":location_input
+                "location_input":location_input,
                 }
 
 
