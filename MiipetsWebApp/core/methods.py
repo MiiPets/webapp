@@ -33,7 +33,7 @@ def sort_out_dates(start_date, end_date):
         start_date = datetime(int(year_s), int(month_s), int(day_s))
 
     if not end_date:
-        end_date = start_date + timedelta(7)
+        end_date = start_date + timedelta(365)
     else:
         month_e,day_e,year_e = end_date.split('/')
         end_date = datetime(int(year_e), int(month_e), int(day_e))

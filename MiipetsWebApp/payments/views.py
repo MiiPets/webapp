@@ -274,7 +274,30 @@ def checkout_payment(request, booking_id):
 @login_required(login_url='core-login')
 @agreed_terms_required
 def success_payment(request, booking_id):
+    
     booking = ServiceBooking.objects.get(id=booking_id)
+    order = get_object_or_404(PayFastOrder, booking=booking)
+
+    if not order.notified_sitter:
+        try:
+            send_sitter_payment_confirmation(order.booking.service.sitter.first_name,
+                                                order.booking.service.sitter.email,
+                                                order.booking)
+            order.notified_sitter = True
+            order.save(update_fields = ['notified_sitter'])
+        except:
+            print('could not notify sitter in payment')
+
+    if not order.notified_owner:
+        try:
+            send_owner_payment_confirmation(order.booking.requester.first_name,
+                                            order.booking.requester.email,
+                                            order.booking)
+            order.notified_owner = True
+            order.save(update_fields = ['notified_owner'])
+        except:
+            print('Could not notify owner in payment')
+
     #update booking as everything is now good
     booking.owner_payed = True
     booking.invoice_sent = True
@@ -442,28 +465,8 @@ def paysoft_check(request):
         order.save(update_fields = ["pf_payment_id", "payment_status", "amount_gross", "went_to_payfast",
                                     "amount_fee", "amount_net", "signature_from_payfast","trusted"])
     except Exception as e:
+        print('update failed!')
         print(e)
-
-
-    if not order.notified_sitter:
-        try:
-            send_sitter_payment_confirmation(order.booking.service.sitter.first_name,
-                                             order.booking.service.sitter.email,
-                                             order.booking)
-            order.notified_sitter = True
-            order.save(update_fields = ['notified_sitter'])
-        except:
-            print('could not notify sitter in payment')
-
-    if not order.notified_owner:
-        try:
-            send_owner_payment_confirmation(order.booking.requester.first_name,
-                                            order.booking.requester.email,
-                                            order.booking)
-            order.notified_owner = True
-            order.save(update_fields = ['notified_owner'])
-        except:
-            print('Could not notify owner in payment')
 
     # notify owner and sitter that payment has been made and booking confirmed
     print("MADE IT TO THE END!!")

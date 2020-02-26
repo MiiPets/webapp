@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.views.generic import View
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
@@ -263,20 +263,47 @@ def terms_and_conditions(request):
     """
     View that displays the terms and conditions
     """
-    context = {
-        "title":"Terms and Conditions"
-    }
+    
+    try:
+        if request.user.is_sitter:
+            context = {
+                "title":"Terms and Conditions",
+                "sitter_user":True
+                }
+        else:
+            context = {
+                "title":"Terms and Conditions",
+                "sitter_user":False
+                }
+    except:
+        context = {
+            "title":"Terms and Conditions",
+            "sitter_user":False
+            }
 
     return render(request, 'core/tcs.html', context)
 
 
 def privacy(request):
     """
-    View that displays the terms and conditions
+    View that displays the Privacy policy
     """
-    context = {
-        "title":"Privacy Policy"
-    }
+    try:
+        if request.user.is_sitter:
+            context = {
+                "title":"Privacy Policy",
+                "sitter_user":True
+                }
+        else:
+            context = {
+                "title":"Privacy Policy",
+                "sitter_user":False
+                }
+    except:
+        context = {
+            "title":"Privacy Policy",
+            "sitter_user":False
+            }
 
     return render(request, 'core/privacy.html', context)
 
@@ -295,9 +322,44 @@ def agree_to_terms(request):
     else:
         form = AgreeToTerms(user=request.user)
 
-    context = {
-        "title":"Agreement to terms",
-        "form":form
-    }
-
+    try:
+        if request.user.is_sitter:
+            context = {
+                "title":"Agreement to terms",
+                "form":form,
+                "sitter_user":True
+                }
+        else:
+            context = {
+                "title":"Agreement to terms",
+                "form":form,
+                "sitter_user":False
+                }
+    except:
+        context = {
+            "title":"Agreement to terms",
+            "form":form,
+            "sitter_user":False
+            }
     return render(request, 'core/require_agreement.html', context)
+
+
+def error_404(request, exception):
+    try:
+        if request.user.is_sitter:
+            context = {
+                "title":"Page not found",
+                "sitter_user":True
+                }
+        else:
+            context = {
+                "title":"Page not found",
+                "sitter_user":False
+                }
+    except:
+        context = {
+            "title":"Page not found",
+            "sitter_user":False
+            }
+
+    return render(request, 'core/404.html', context)

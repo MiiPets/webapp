@@ -161,6 +161,8 @@ def view_services(request, type):
                                                      Q(other_pets_allowed=want_other)&
                                                      Q(review_score__gte=review_score))
 
+        if len(services) < 1:
+            services = SitterServices.objects.filter(Q(allowed_to_show=True))
 
         #filter on location
         try:
