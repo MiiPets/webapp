@@ -100,7 +100,7 @@
                             </li>
                             <li>
                               <i class="ion-card"  style="color: #007A33;"></i>
-                              <p>R{{service.price}} per {%if service.type == 'WALK' or service.type == 'SIT' %} hour {%else%} day {%endif%}</p>
+                              <p>R{{service.price}} per {%if service.type == 'WALK' %} hour {%else%} day {%endif%}</p>
                             </li>
                             {%if service.dogs_allowed%}
                             <li>

@@ -16,14 +16,16 @@
                       <div class="ui-dash tab-content">
                           <div class="tab-pane fade show active" id="login" role="tabpanel">
                               <form id="login-form" action="#" method="post">
+                                  <p>You may use either your username or email to login.</p>
+                                  <br>
                                   {% csrf_token %}
                                   {{ form|crispy }}
                                   <div class="res-box text-center mar-top-30">
                                       <button type="submit" class="btn v3"  style="background-color: #027931;"><i class="ion-log-in"></i> Log In</button>
                                   </div>
+                                  <a href="{%url 'password_reset'%}">Forgot Password?</a>
                               </form>
-                          </div>
-                      </div>
+                            </div>
                   </div>
               </div>
           </div>
