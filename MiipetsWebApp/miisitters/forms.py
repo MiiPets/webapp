@@ -147,8 +147,12 @@ class AddService(forms.ModelForm):
     extra_pictures = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
                                      required=False)
 
-    service_start_date = forms.DateField(widget=DateInput(), required=True)
-    service_end_date = forms.DateField(widget=DateInput(), required=True)
+    service_start_date = forms.DateField(widget=DateInput(),
+                                         help_text="For Safari browsers, input date with format of mm/dd/yyyy", 
+                                         required=True)
+    service_end_date = forms.DateField(widget=DateInput(),
+                                       help_text="For Safari browsers, input date with format of mm/dd/yyyy",
+                                       required=True)
 
     monday_start_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
     monday_end_time = forms.ChoiceField(choices = TIME_CHOICES, required=True)
