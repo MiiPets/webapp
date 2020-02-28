@@ -97,36 +97,38 @@
                           </div>
 
                       </div>
-                      <div id="gallery" class="list-details-section">
-                          <h4>Gallery</h4>
-                          <!--Carousel Wrapper-->
-                          <div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails list-gallery" data-ride="carousel">
-                              <!--Slides-->
-                              <div class="carousel-inner" role="listbox">
-                                  <div class="carousel-item active">
-                                      <!-- <img class="d-block w-100" src="images/single-listing/restaurant-1.jpg" alt="slide"> -->
-                                  </div>
-                              </div>
-                              <!--Controls starts-->
-                              <a class="carousel-control-prev" href="#carousel-thumb" role="button" data-slide="prev">
-                                  <span class="ion-arrow-left-c" aria-hidden="true" style="background-color: #007A33;"></span>
-                                  <span class="sr-only">Previous</span>
-                              </a>
-                              <a class="carousel-control-next" href="#carousel-thumb" role="button" data-slide="next">
-                                  <span class="ion-arrow-right-c" aria-hidden="true" style="background-color: #007A33;"></span>
-                                  <span class="sr-only">Next</span>
-                              </a>
-                              <!--Controls ends-->
-                              <ol class="carousel-indicators  list-gallery-thumb">
-                                {%for photo in photos%}
-                                  <li data-target="#carousel-thumb" data-slide-to="0">
-                                    <img class="img-fluid d-block w-100" style="width:400%" src="{{photo.profile_picture.url}}">
-                                  </li>
-                                {%endfor%}
-                              </ol>
-                          </div>
-                          <!--/.Carousel Wrapper-->
-                      </div>
+                      {%if photos %}
+                        <div id="gallery" class="list-details-section">
+                            <h4>Gallery</h4>
+                            <!--Carousel Wrapper-->
+                            <div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails list-gallery" data-ride="carousel">
+                                <!--Slides-->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="carousel-item active">
+                                        <!-- <img class="d-block w-100" src="images/single-listing/restaurant-1.jpg" alt="slide"> -->
+                                    </div>
+                                </div>
+                                <!--Controls starts-->
+                                <a class="carousel-control-prev" href="#carousel-thumb" role="button" data-slide="prev">
+                                    <span class="ion-arrow-left-c" aria-hidden="true" style="background-color: #007A33;"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carousel-thumb" role="button" data-slide="next">
+                                    <span class="ion-arrow-right-c" aria-hidden="true" style="background-color: #007A33;"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                                <!--Controls ends-->
+                                <ol class="carousel-indicators  list-gallery-thumb">
+                                  {%for photo in photos%}
+                                    <li data-target="#carousel-thumb" data-slide-to="0">
+                                      <img class="img-fluid d-block w-100" style="width:400%" src="{{photo.profile_picture.url}}">
+                                    </li>
+                                  {%endfor%}
+                                </ol>
+                            </div>
+                            <!--/.Carousel Wrapper-->
+                        </div>
+                      {%endif%}
                       <div id="price" class="list-details-section mar-top-80">
                         <h4>Pricing</h4>
                         <h6>R{{price}} per {%if type == 'WALK' or type == 'SIT' %} hour {%else%} day {%endif%}</h6>
@@ -221,7 +223,11 @@
                             {% csrf_token %}
                             {{form|crispy}}
                             <div class="res-box text-center mar-top-30">
-                              <button type="submit" class="btn v3" style="background-color: #007A33;"><i class="ion-log-in" ></i>Book now</button>
+                              {% if user.is_authenticated %}
+                               <button type="submit" class="btn v3" style="background-color: #007A33;"><i class="ion-log-in" ></i>Book now</button>
+                              {%else%}
+                               <p>Please <a href="https://www.miipets.com/login?next=/services/single-service/{{service.id}}">login</a> to book this service.</p>
+                              {%endif%}
                             </div>
                           </form>
                       </div>
@@ -339,20 +345,16 @@
   <!--Listing Details Info ends-->
 
 
-
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
 
     $("#id_start_date").change(function () {
       var url = $("#bookingForm").attr("data-timeslots-url");
       var date = $(this).val();
-      var booked_pets = $("#id_number_of_pets").val();
-
       $.ajax({
         url: url,
         data: {
           'date': date,
-          'booked_pets':booked_pets
         },
         success: function (data) {
           $(".nice-select .current").html("Please choose a time slot")

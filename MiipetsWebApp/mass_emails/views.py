@@ -29,7 +29,7 @@ def send_sitter_notification_add_services(request):
         for email, first_name in sitter_email_first_names:
             try:
                 print("Sending to {} at email {}".format(first_name, email))
-                subject = 'MiiPets is days from launching!'
+                subject = 'MiiPets is live'
                 html_message = render_to_string(template,
                                                 {'first_name': first_name})
                 plain_message = strip_tags(html_message)
