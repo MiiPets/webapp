@@ -216,8 +216,6 @@ def view_services(request, type):
     return render(request, 'services/single-type-services.html', context)
 
 
-@login_required(login_url='core-login')
-@agreed_terms_required
 def view_single_service(request, service_id):
 
     service = SitterServices.objects.get(id=service_id)
@@ -417,7 +415,6 @@ def view_single_service(request, service_id):
 
 def load_timeslots(request, service_id):
     date = request.GET.get('date')
-    booked_pets = request.GET.get('booked_pets')
     service = SitterServices.objects.get(id=service_id)
     day_of_week = return_day_of_week_from_date(date)
 
@@ -450,7 +447,6 @@ def load_timeslots(request, service_id):
 
 
     bookings = ServiceBooking.objects.filter(Q(service=service) &
-                                             Q(allowed_to_show=True)&
                                              Q(start_date = date)).values_list('time_slot',
                                                                                'number_of_pets')
     bookings = list(set(bookings))
