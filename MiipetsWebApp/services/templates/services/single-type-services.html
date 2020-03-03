@@ -8,9 +8,9 @@
       <form class="hero__form v1" method = 'GET' action = "{% url 'services' type='Placeholder' %}">
           <div class="row">
                 <div class="col-lg-4 col-md-12">
-                  <input class="hero__form-input custom-select" type="text" name="location_input" autocomplete="off" id="place-event" placeholder="{{location_input}}">
+                  <input class="hero__form-input custom-select" type="text" name="location_input" autocomplete="off" id="place-event" placeholder="Location of service">
                 </div>
-                <div class="col-lg-2 col-md-12">
+                <div class="col-lg-4 col-md-12">
                       <select class="hero__form-input  custom-select" name = "service_type_input">
                           <option>Type of service</option>
                           <option>Sitter/Feeder</option>
@@ -19,22 +19,22 @@
                           <option>Daycare</option>
                       </select>
                 </div>
-                <div class="col-lg-1 col-md-12">
+                <div class="col-lg-2 col-md-12">
                   <input class="hero__form-input custom-select" type="text" name="date_begin_input" autocomplete="off" id="datepicker-from" placeholder="From">
                 </div>
-                <div class="col-lg-1 col-md-12">
+                <div class="col-lg-2 col-md-12">
                   <input class="hero__form-input custom-select" type="text" name="date_end_input" autocomplete="off" id="datepicker-to" placeholder="To">
                 </div>
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-2 col-md-12">
+                  <div class="col-lg-3 col-md-12">
                     <input class="hero__form-input custom-select" type="number" name="price_start" id="place-event" placeholder="Min Price">
                   </div>
-                  <div class="col-lg-2 col-md-12">
+                  <div class="col-lg-3 col-md-12">
                     <input class="hero__form-input custom-select" type="number" name="price_end" id="place-event" placeholder="Max Price">
                   </div>
-                  <div class="col-lg-2 col-md-12">
+                  <div class="col-lg-3 col-md-12">
                         <select class="hero__form-input  custom-select" name = "review_score">
                             <option>Review score</option>
                             <option>1+</option>
@@ -43,7 +43,7 @@
                             <option>4+</option>
                         </select>
                   </div>
-                  <div class="col-lg-2 col-md-12">
+                  <div class="col-lg-3 col-md-12">
                         <select class="hero__form-input  custom-select" name = "pet_type">
                             <option>All Pets</option>
                             <option>Cat</option>

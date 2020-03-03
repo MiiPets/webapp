@@ -110,8 +110,7 @@ def view_services(request, type):
         except:
             review_score = -1
 
-
-                #get relevant services not based on location
+        #get relevant services not based on location
         if pet_type == "All Pets":
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
@@ -168,6 +167,7 @@ def view_services(request, type):
             services = SitterServices.objects.filter(Q(allowed_to_show=True))
 
         #filter on location
+        print(request.GET['location_input'])
         try:
             location_input = request.GET['location_input']
             services,locations = filter_on_location(services, location_input)
@@ -184,7 +184,7 @@ def view_services(request, type):
             location_input = "Location"
 
         services = zip(services, locations, reviews, number_of_reviews)
-
+        print("FJKDFS", str(settings.GOOGLE_API_KEY))
         try:
             if request.user.is_sitter:
                 context = {
@@ -193,6 +193,7 @@ def view_services(request, type):
                     "sitter_user":True,
                     "services":services,
                     "location_input":location_input,
+                    "google_api":str(settings.GOOGLE_API_KEY),
 
                     }
             else:
@@ -202,6 +203,7 @@ def view_services(request, type):
                     "sitter_user":False,
                     "services":services,
                     "location_input":location_input,
+                    "google_api":str(settings.GOOGLE_API_KEY),
                     }
         except:
             context = {
@@ -210,6 +212,7 @@ def view_services(request, type):
                 "sitter_user":False,
                 "services":services,
                 "location_input":location_input,
+                "google_api":str(settings.GOOGLE_API_KEY),
                 }
 
 
@@ -217,6 +220,12 @@ def view_services(request, type):
 
 
 def view_single_service(request, service_id):
+
+        # get all services with type requested
+    type_dictionary = {"WALK":"Walking Service",
+                       'BOARD':"Boarding Service",
+                       'SIT' :'Sitting Service',
+                       'DAYCARE' :'Daycare Service'}
 
     service = SitterServices.objects.get(id=service_id)
     reviews = ServiceReviews.objects.filter(service=service)
@@ -264,10 +273,6 @@ def view_single_service(request, service_id):
     sitter = User.objects.get(id=service.sitter.id)
     miisitter = MiiSitter.objects.get(user=sitter)
 
-    type_converter = {"BOARD":"Boarding",
-                      "SIT": "House Sitter/Feeder",
-                      "WALK":"Walker",
-                      "DAYCARE":"Daycare"}
 
     time_converter = {'9999':"Not availibe",
                       '1':"01:00",
@@ -322,7 +327,7 @@ def view_single_service(request, service_id):
                 "similar_services":similar_services,
                 "sitter_user":True,
                 "review_html":generate_review_html_start(service.review_score),
-                'type':type_converter[service.type],
+                'type':type_dictionary[service.type],
                 "service_name":service.service_name,
                 "service_description":service.description,
                 'price':service.price,
@@ -353,7 +358,7 @@ def view_single_service(request, service_id):
                 "miisitter":miisitter,
                 "reviews":reviews,
                 "sitter_user":False,
-                'type':service.type,
+                'type':type_dictionary[service.type],
                 "review_html":generate_review_html_start(service.review_score),
                 "service_name":service.service_name,
                 "service_description":service.description,
@@ -385,7 +390,7 @@ def view_single_service(request, service_id):
                 "miisitter":miisitter,
                 "reviews":reviews,
                 "sitter_user":False,
-                'type':service.type,
+                'type':type_dictionary[service.type],
                 "review_html":generate_review_html_start(service.review_score),
                 "service_name":service.service_name,
                 "service_description":service.description,

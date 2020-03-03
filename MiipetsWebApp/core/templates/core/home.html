@@ -241,9 +241,18 @@
     <!--Scripts starts-->
     <!--plugin js-->
 
+    <script>
+        var onLoaded = function() {
+           // I am assuming your field has id of where_load, it might be different
+            var location_input = document.getElementById('place-event');
+            var autocomplete = new google.maps.places.Autocomplete(location_input);
+    
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&key={{google_api}}&libraries=places&callback=onLoaded" async defer></script>
+
     <script src="{% static 'js/plugin.js' %}"></script>
     <!--google maps-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8C7p0Ws2gUu7wo0b6pK9Qu7LuzX2iWY&amp;libraries=places&amp;callback=initAutocomplete"></script>
     <!--Main js-->
     <script src="{% static 'js/main.js'  %}"></script>
     <!--Scripts ends-->
