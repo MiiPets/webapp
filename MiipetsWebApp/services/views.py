@@ -119,8 +119,6 @@ def view_services(request, type):
                                                      Q(price__range=[price_start, price_end])&
                                                      Q(review_score__gte=review_score))
 
-            print("QUERIED SERVICES in all pets")
-            print(services)
         elif pet_type == "Dog":
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
@@ -167,24 +165,22 @@ def view_services(request, type):
             services = SitterServices.objects.filter(Q(allowed_to_show=True))
 
         #filter on location
-        print(request.GET['location_input'])
         try:
             location_input = request.GET['location_input']
             services,locations = filter_on_location(services, location_input)
             reviews = [generate_review_html_start(service.review_score) for service in services]
             number_of_reviews = [service.number_of_reviews for service in services]
         except:
-            location_input = ""
+            location_input = "Location"
             ids = [service.id for service in services]
             locations = ServiceLocation.objects.filter(id__in=ids)
             reviews = [generate_review_html_start(service.review_score) for service in services]
             number_of_reviews = [service.number_of_reviews for service in services]
 
-        if not location_input:
-            location_input = "Location"
+        # if not location_input:
+        #     location_input = "Location"
 
         services = zip(services, locations, reviews, number_of_reviews)
-        print("FJKDFS", str(settings.GOOGLE_API_KEY))
         try:
             if request.user.is_sitter:
                 context = {
@@ -633,6 +629,7 @@ def sitter_confirmation(request, service_id, booking_id, sitter_answer):
 
     return render(request, 'services/booking_confirmation_sitter.html', {"user":request.user, "sitter_answer":sitter_answer})
 
+@login_required(login_url='core-login')
 @agreed_terms_required
 def view_sitter_profile(request, sitter_id):
     """
@@ -672,7 +669,7 @@ def view_sitter_profile(request, sitter_id):
 
     return render(request, 'services/view_sitter_profile.html', context)
 
-
+@login_required(login_url='core-login')
 @agreed_terms_required
 def view_owner_profile(request, owner_id):
     """
