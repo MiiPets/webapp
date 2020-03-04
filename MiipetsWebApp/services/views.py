@@ -110,8 +110,7 @@ def view_services(request, type):
         except:
             review_score = -1
 
-
-                #get relevant services not based on location
+        #get relevant services not based on location
         if pet_type == "All Pets":
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
@@ -120,8 +119,6 @@ def view_services(request, type):
                                                      Q(price__range=[price_start, price_end])&
                                                      Q(review_score__gte=review_score))
 
-            print("QUERIED SERVICES in all pets")
-            print(services)
         elif pet_type == "Dog":
             services = SitterServices.objects.filter(Q(type__in=type)&
                                                      Q(allowed_to_show=True)&
@@ -174,17 +171,16 @@ def view_services(request, type):
             reviews = [generate_review_html_start(service.review_score) for service in services]
             number_of_reviews = [service.number_of_reviews for service in services]
         except:
-            location_input = ""
+            location_input = "Location"
             ids = [service.id for service in services]
             locations = ServiceLocation.objects.filter(id__in=ids)
             reviews = [generate_review_html_start(service.review_score) for service in services]
             number_of_reviews = [service.number_of_reviews for service in services]
 
-        if not location_input:
-            location_input = "Location"
+        # if not location_input:
+        #     location_input = "Location"
 
         services = zip(services, locations, reviews, number_of_reviews)
-
         try:
             if request.user.is_sitter:
                 context = {
@@ -193,6 +189,7 @@ def view_services(request, type):
                     "sitter_user":True,
                     "services":services,
                     "location_input":location_input,
+                    "google_api":str(settings.GOOGLE_API_KEY),
 
                     }
             else:
@@ -202,6 +199,7 @@ def view_services(request, type):
                     "sitter_user":False,
                     "services":services,
                     "location_input":location_input,
+                    "google_api":str(settings.GOOGLE_API_KEY),
                     }
         except:
             context = {
@@ -210,6 +208,7 @@ def view_services(request, type):
                 "sitter_user":False,
                 "services":services,
                 "location_input":location_input,
+                "google_api":str(settings.GOOGLE_API_KEY),
                 }
 
 
@@ -217,6 +216,12 @@ def view_services(request, type):
 
 
 def view_single_service(request, service_id):
+
+        # get all services with type requested
+    type_dictionary = {"WALK":"Walking Service",
+                       'BOARD':"Boarding Service",
+                       'SIT' :'Sitting Service',
+                       'DAYCARE' :'Daycare Service'}
 
     service = SitterServices.objects.get(id=service_id)
     reviews = ServiceReviews.objects.filter(service=service)
@@ -264,10 +269,6 @@ def view_single_service(request, service_id):
     sitter = User.objects.get(id=service.sitter.id)
     miisitter = MiiSitter.objects.get(user=sitter)
 
-    type_converter = {"BOARD":"Boarding",
-                      "SIT": "House Sitter/Feeder",
-                      "WALK":"Walker",
-                      "DAYCARE":"Daycare"}
 
     time_converter = {'9999':"Not availibe",
                       '1':"01:00",
@@ -322,7 +323,7 @@ def view_single_service(request, service_id):
                 "similar_services":similar_services,
                 "sitter_user":True,
                 "review_html":generate_review_html_start(service.review_score),
-                'type':type_converter[service.type],
+                'type':type_dictionary[service.type],
                 "service_name":service.service_name,
                 "service_description":service.description,
                 'price':service.price,
@@ -353,7 +354,7 @@ def view_single_service(request, service_id):
                 "miisitter":miisitter,
                 "reviews":reviews,
                 "sitter_user":False,
-                'type':service.type,
+                'type':type_dictionary[service.type],
                 "review_html":generate_review_html_start(service.review_score),
                 "service_name":service.service_name,
                 "service_description":service.description,
@@ -385,7 +386,7 @@ def view_single_service(request, service_id):
                 "miisitter":miisitter,
                 "reviews":reviews,
                 "sitter_user":False,
-                'type':service.type,
+                'type':type_dictionary[service.type],
                 "review_html":generate_review_html_start(service.review_score),
                 "service_name":service.service_name,
                 "service_description":service.description,
@@ -628,6 +629,7 @@ def sitter_confirmation(request, service_id, booking_id, sitter_answer):
 
     return render(request, 'services/booking_confirmation_sitter.html', {"user":request.user, "sitter_answer":sitter_answer})
 
+@login_required(login_url='core-login')
 @agreed_terms_required
 def view_sitter_profile(request, sitter_id):
     """
@@ -667,7 +669,7 @@ def view_sitter_profile(request, sitter_id):
 
     return render(request, 'services/view_sitter_profile.html', context)
 
-
+@login_required(login_url='core-login')
 @agreed_terms_required
 def view_owner_profile(request, owner_id):
     """

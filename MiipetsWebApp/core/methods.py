@@ -35,8 +35,9 @@ def sort_out_dates(start_date, end_date):
         month_s,day_s,year_s = start_date.split('/')
         start_date = datetime(int(year_s), int(month_s), int(day_s))
 
+    print("IN METHOD: {}".format(end_date))
     if not end_date:
-        end_date = start_date + timedelta(365)
+        end_date = start_date + timedelta(1)
     else:
         month_e,day_e,year_e = end_date.split('/')
         end_date = datetime(int(year_e), int(month_e), int(day_e))
