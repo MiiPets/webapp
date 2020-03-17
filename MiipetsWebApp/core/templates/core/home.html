@@ -62,23 +62,8 @@
                                         <ul class="site-menu js-clone-nav d-none d-lg-block">
                                             <li class="no-children">
                                                 <a href="{% url 'core-home' %}"> Home</a>
-                                                <li class="has-children">
+                                                <li class="no-children">
                                                     <a href="{%url 'services-all' %}">Services</a>
-                                                    <ul class="dropdown">
-                                                      <li><a href="{% url 'services' type='Walker' %}">Walker</a></li>
-                                                      <li><a href="{% url 'services' type='Boarding' %}">Boarding</a></li>
-                                                      <li><a href="{% url 'services' type='Sitter' %}">House Sitting</a></li>
-                                                      <li><a href="{% url 'services' type='Daycare' %}">Daycare</a></li>
-                                                      <!--
-                                                      <li class="has-children">
-                                                          <a href="#">MiiProvider Services</a>
-                                                          <ul class="dropdown sub-menu">
-                                                              <li><a href="#">Grooming</a></li>
-                                                              <li><a href="#">Trainer</a></li>
-                                                              <li><a href="#">Adoption</a></li>
-                                                          </ul>
-                                                      </li>-->
-                                                  </ul>
                                                 </li>
                                             <li class="has-children">
                                                 <a href="{% url 'core-about' %}">About</a>
@@ -160,50 +145,21 @@
                         {% endfor %}
                       {% endif %}
                       <br>
-                        <h1 class="hero-title v2">
-                            {%if sitter_user%}
-                              Thank you for providing freedom  {% if request.user.is_authenticated %} {{user.first_name}} {%endif%}<!-- MAIN MESSAGE SEEN -->
-                            {%else%}
-                              Enjoy your freedom  {% if request.user.is_authenticated %} {{user.first_name}} {%endif%}<!-- MAIN MESSAGE SEEN -->
-                            {%endif%}
-                        </h1>
-                        <p class="hero-desc v2">
-                            {%if sitter_user%}
-                            {%else%}
-                              With Peace of Mind <!-- Just below that -->
-                            {%endif%}
+                        <p style="color: white; font-size: 20px;">
+                            <strong>
+                            To help battle the spread of the COVID-19 virus and to keep our MiiCommunity safe,
+                            MiiPets will not be taking any bookings for the foreseeable future.
+                            </strong>
+                        </p>
+                        <br>
+                        <p style="color: white; font-size: 20px;">
+                            <strong>
+                                We will send out communication as soon as we are taking bookings again. While we are
+                                away we will work on exciting new features to provide you even better Freedom with Peace of Mind.
+                          </strong>
                         </p>
                     </div>
 
-                    <div class="col-md-12 text-center mar-top-10">
-                        <form class="hero__form v2" method = 'GET' action = "{% url 'services' type='Placeholder' %}">
-                            <div class="row">
-                                <div class="col-lg-3 col-md-12">
-                                  <input class="hero__form-input custom-select" type="text" name="location_input" id="place-event" placeholder="Where do you want this service?">
-                                </div>
-                                <div class="col-lg-3 col-md-12">
-                                      <select class="hero__form-input  custom-select" name = "service_type_input">
-                                          <option>Select type of service</option>
-                                          <option>Sitter/Feeder</option>
-                                          <option >Walker</option>
-                                          <option>Boarding</option>
-                                          <option>Daycare</option>
-                                      </select>
-                                </div>
-                                <div class="col-lg-2 col-md-12">
-                                  <input class="hero__form-input custom-select" type="text" name="date_begin_input"  id="datepicker-from" placeholder="From">
-                                </div>
-                                <div class="col-lg-2 col-md-12">
-                                  <input class="hero__form-input custom-select" type="text" name="date_end_input" id="datepicker-to" placeholder="To">
-                                </div>
-                                <div class="col-lg-2 col-md-12">
-                                    <div class="submit_btn text-right md-left">
-                                        <button class="btn v3  mar-right-5" type="submit" style="background-color: #007A33;"><i class="ion-search" aria-hidden="true"></i> Search</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
              <!--Secondary Footer starts-->
