@@ -188,19 +188,22 @@ def contact(request):
                 "title":"Contact Us",
                 "sitter_user":True,
                 "send":send,
-                "form":form
+                "form":form,
+                "google_api":str(settings.GOOGLE_API_KEY),
             }
         else:
-            contex={
+            context={
                 "title":"Contact Us",
                 "send":send,
-                "form":form
+                "form":form,
+                "google_api":str(settings.GOOGLE_API_KEY),
             }
     except:
         context= {
             "title":"Contact Us",
             "send":send,
-            "form":form
+            "form":form,
+            "google_api":str(settings.GOOGLE_API_KEY),
         }
 
     return render(request, "core/contact.html", context)
