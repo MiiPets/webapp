@@ -51,6 +51,39 @@ def send_sitter_notification_add_services(request):
 
     return render(request, "mass_emails/press_before_send.html", context)
 
+@superuser_required(login_url='core-login')
+def notify_everyone_bookings_closed(request):
+    """
+    Notify all owners whose services ended the day before to review their service.
+    """
+    template = 'mass_emails/miipets_break.html'
+    users = User.objects.all()
+    if request.method == 'POST':
+        for user in users:
+            try:
+                print("Sending to {} at email {}".format(user.first_name, user.email))
+                subject = 'MiiPets and the COVID-19 virus'
+                html_message = render_to_string(template,
+                                                {'first_name': user.first_name})
+                plain_message = strip_tags(html_message)
+                from_email = 'ruan@miipets.com'
+                to = user.email
+                try:
+                    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+                except mail.BadHeaderError:
+                    return HttpResponse('Invalid header found.')
+            except:
+                print("Sending to {} at email {} FAILED".format(user.first_name, user.email))
+
+
+    context= {
+        "who":"Everyone",
+        "what":"Notify of Miipets not taking bookings",
+        "template":template
+    }
+
+    return render(request, "mass_emails/press_before_send.html", context)
+
 
 @superuser_required(login_url='core-login')
 def send_owners_notification_to_review_service(request):

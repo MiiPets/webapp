@@ -11,6 +11,9 @@ urlpatterns = [
     path('notify-owners-to-review',
          mass_emails_views.send_owners_notification_to_review_service,
          name='mass-emails-notify-owners-to-review'),
+     path('notify-everyone-bookings-closed',
+          mass_emails_views.notify_everyone_bookings_closed,
+          name='notify-everyone-bookings-closed'),
 ]
 
 if settings.DEBUG:
